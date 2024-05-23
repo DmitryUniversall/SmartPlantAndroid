@@ -1,11 +1,20 @@
 package com.smartplant.smartplantandroid.storage.models;
 
-public class DeviceSettings {
-    int data_update_interval;
-    int watering_duration;
+import com.google.gson.annotations.SerializedName;
 
-    public DeviceSettings(int data_update_interval, int watering_duration) {
-        this.data_update_interval = data_update_interval;
-        this.watering_duration = watering_duration;
+public class DeviceSettings {
+    @SerializedName("watering_duration")
+    private int _wateringDuration;
+
+    public DeviceSettings(int watering_duration) {
+        this._wateringDuration = watering_duration;
+    }
+
+    public int getWateringDuration() {
+        return _wateringDuration;
+    }
+
+    public void setWateringDuration(int _wateringDuration) {
+        this._wateringDuration = _wateringDuration;
     }
 }

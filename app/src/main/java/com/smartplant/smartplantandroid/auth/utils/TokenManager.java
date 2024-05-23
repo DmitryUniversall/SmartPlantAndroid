@@ -14,22 +14,22 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 public class TokenManager {
-    private static final String PREFERENCES_FILENAME = "authPrefs";
-    private static final String KEY_ACCESS_TOKEN = "accessToken";
-    private static final String KEY_REFRESH_TOKEN = "refreshToken";
+    private static final @NonNull String _PREFERENCES_FILENAME = "authPrefs";
+    private static final @NonNull String _KEY_ACCESS_TOKEN = "accessToken";
+    private static final @NonNull String _KEY_REFRESH_TOKEN = "refreshToken";
 
-    private final @NonNull Context context;
-    private final @NonNull SharedPreferences preferences;
+    private final @NonNull Context _context;
+    private final @NonNull SharedPreferences _preferences;
 
     public TokenManager(@NonNull Context context) {
-        this.context = context;
-        this.preferences = this.createEncryptedPreferences(context);
+        this._context = context;
+        this._preferences = this.createEncryptedPreferences(context);
     }
 
     private @NonNull SharedPreferences createEncryptedPreferences(Context ctx) {
         try {
             return EncryptedSharedPreferences.create(
-                    PREFERENCES_FILENAME,
+                    _PREFERENCES_FILENAME,
                     MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
                     ctx,
                     EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
@@ -41,7 +41,7 @@ public class TokenManager {
     }
 
     public void clear() {
-        SharedPreferences.Editor editor = preferences.edit();
+        SharedPreferences.Editor editor = _preferences.edit();
         editor.clear();
         editor.apply();
     }
@@ -51,19 +51,19 @@ public class TokenManager {
     }
 
     public void saveTokens(@NonNull AuthTokenPair tokenPair) {
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(KEY_ACCESS_TOKEN, tokenPair.getAccessToken());
-        editor.putString(KEY_REFRESH_TOKEN, tokenPair.getRefreshToken());
+        SharedPreferences.Editor editor = _preferences.edit();
+        editor.putString(_KEY_ACCESS_TOKEN, tokenPair.getAccessToken());
+        editor.putString(_KEY_REFRESH_TOKEN, tokenPair.getRefreshToken());
         editor.apply();
     }
 
     public @Nullable AuthTokenPair getAuthTokenPair() {
-        String accessToken = preferences.getString(KEY_ACCESS_TOKEN, null);
-        String refreshToken = preferences.getString(KEY_REFRESH_TOKEN, null);
+        String accessToken = _preferences.getString(_KEY_ACCESS_TOKEN, null);
+        String refreshToken = _preferences.getString(_KEY_REFRESH_TOKEN, null);
         return (accessToken != null && refreshToken != null) ? new AuthTokenPair(accessToken, refreshToken) : null;
     }
 
     public @NonNull Context getContext() {
-        return context;
+        return _context;
     }
 }

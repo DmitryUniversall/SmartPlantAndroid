@@ -2,17 +2,38 @@ package com.smartplant.smartplantandroid.utils.network;
 
 import com.google.gson.JsonObject;
 
+import androidx.annotation.NonNull;
+import org.jetbrains.annotations.Nullable;
+
 
 public class TransferResponse {
-    public final boolean ok;
-    public final int applicationStatusCode;
-    public final String message;
-    public JsonObject data;
+    private final boolean _ok;
+    private final int _applicationStatusCode;
+    private final @NonNull String _message;
+    private final @Nullable JsonObject _data;
 
-    public TransferResponse(boolean ok, int applicationStatusCode, String message, JsonObject data) {
-        this.ok = ok;
-        this.applicationStatusCode = applicationStatusCode;
-        this.message = message;
-        this.data = data;
+    public TransferResponse(boolean ok, int applicationStatusCode, @NonNull String message, @Nullable JsonObject data) {
+        this._ok = ok;
+        this._applicationStatusCode = applicationStatusCode;
+        this._message = message;
+        this._data = data;
+    }
+
+    public boolean isOk() {
+        return _ok;
+    }
+
+    public int getApplicationStatusCode() {
+        return _applicationStatusCode;
+    }
+
+    @NonNull
+    public String getMessage() {
+        return _message;
+    }
+
+    @Nullable
+    public JsonObject getData() {
+        return _data;
     }
 }

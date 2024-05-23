@@ -1,31 +1,42 @@
 package com.smartplant.smartplantandroid.auth.models;
 
+import com.google.gson.annotations.SerializedName;
+
+import androidx.annotation.NonNull;
+
 import java.util.Date;
 
 public class User {
-    private final int id;
-    private final Date created_at;
-    private String username;
+    @SerializedName("id")
+    private final int _id;
 
-    public User(int id, String username, Date created_at) {
-        this.id = id;
-        this.username = username;
-        this.created_at = created_at;
+    @SerializedName("created_at")
+    private final @NonNull Date _createdAt;
+
+    @SerializedName("username")
+    private @NonNull String _username;
+
+    public User(int id, @NonNull String username, @NonNull Date created_at) {
+        this._id = id;
+        this._username = username;
+        this._createdAt = created_at;
     }
 
     public int getId() {
-        return id;
+        return _id;
     }
 
+    @NonNull
     public Date getCreated_at() {
-        return created_at;
+        return _createdAt;
     }
 
+    @NonNull
     public String getUsername() {
-        return username;
+        return _username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsername(@NonNull String username) {
+        this._username = username;
     }
 }

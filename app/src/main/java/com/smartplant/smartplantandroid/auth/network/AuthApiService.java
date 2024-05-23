@@ -1,6 +1,8 @@
 package com.smartplant.smartplantandroid.auth.network;
 
 public class AuthApiService {
+//    private final OkHttpClient client = new OkHttpClient();
+//
 //    public User register() {
 //    }
 //

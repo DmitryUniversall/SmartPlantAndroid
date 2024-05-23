@@ -6,26 +6,29 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.smartplant.smartplantandroid.auth.models.AuthTokenPair;
+import com.smartplant.smartplantandroid.auth.network.AuthApiService;
 import com.smartplant.smartplantandroid.auth.utils.TokenManager;
 
 public class AuthRepositoryST {
-    private static @Nullable AuthRepositoryST instance;
+    private static @Nullable AuthRepositoryST _instance;
     private final @NonNull TokenManager tokenManager;
+    private final @NonNull AuthApiService authApiService;
 
     public static synchronized void createInstance(@NonNull Context context) {
-        if (instance != null)
+        if (_instance != null)
             throw new RuntimeException("AuthRepositoryST has already been initialized");
-        instance = new AuthRepositoryST(context);
+        _instance = new AuthRepositoryST(context);
     }
 
     public static synchronized @NonNull AuthRepositoryST getInstance() {
-        if (instance == null)
+        if (_instance == null)
             throw new RuntimeException("AuthRepositoryST has not been initialized");
-        return instance;
+        return _instance;
     }
 
     private AuthRepositoryST(@NonNull Context context) {
         this.tokenManager = new TokenManager(context);
+        this.authApiService = new AuthApiService();
     }
 
     public boolean hasTokens() {
