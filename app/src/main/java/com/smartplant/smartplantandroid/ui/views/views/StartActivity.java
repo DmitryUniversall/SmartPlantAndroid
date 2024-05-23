@@ -1,4 +1,4 @@
-package com.smartplant.smartplantandroid.ui.views;
+package com.smartplant.smartplantandroid.ui.views.views;
 
 import android.os.Bundle;
 

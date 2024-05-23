@@ -31,6 +31,7 @@ android {
 dependencies {
     implementation libs.flexbox
     implementation libs.gson
+    implementation libs.security.crypto
 
     implementation libs.appcompat
     implementation libs.material
