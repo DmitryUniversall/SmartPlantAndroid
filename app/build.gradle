@@ -32,6 +32,7 @@ dependencies {
     implementation libs.flexbox
     implementation libs.gson
     implementation libs.security.crypto
+    implementation libs.okhttp
 
     implementation libs.appcompat
     implementation libs.material

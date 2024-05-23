@@ -22,6 +22,8 @@ public class InitActivity extends CustomAppCompatActivity {
     private void redirect() {
         if (this.authRepository.isAuthenticated()) {
             startActivity(MainActivity.class);
+        } else {
+            startActivity(StartActivity.class);
         }
     }
 }

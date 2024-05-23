@@ -2,8 +2,6 @@ package com.smartplant.smartplantandroid.auth.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import androidx.annotation.NonNull;
-
 import java.util.Date;
 
 public class User {
@@ -11,12 +9,12 @@ public class User {
     private final int _id;
 
     @SerializedName("created_at")
-    private final @NonNull Date _createdAt;
+    private final Date _createdAt;
 
     @SerializedName("username")
-    private @NonNull String _username;
+    private String _username;
 
-    public User(int id, @NonNull String username, @NonNull Date created_at) {
+    public User(int id, String username, Date created_at) {
         this._id = id;
         this._username = username;
         this._createdAt = created_at;
@@ -26,17 +24,15 @@ public class User {
         return _id;
     }
 
-    @NonNull
     public Date getCreated_at() {
         return _createdAt;
     }
 
-    @NonNull
     public String getUsername() {
         return _username;
     }
 
-    public void setUsername(@NonNull String username) {
+    public void setUsername(String username) {
         this._username = username;
     }
 }

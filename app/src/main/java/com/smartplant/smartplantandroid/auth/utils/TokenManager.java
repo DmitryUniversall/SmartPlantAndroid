@@ -3,7 +3,6 @@ package com.smartplant.smartplantandroid.auth.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
@@ -14,19 +13,19 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 public class TokenManager {
-    private static final @NonNull String _PREFERENCES_FILENAME = "authPrefs";
-    private static final @NonNull String _KEY_ACCESS_TOKEN = "accessToken";
-    private static final @NonNull String _KEY_REFRESH_TOKEN = "refreshToken";
+    private static final String _PREFERENCES_FILENAME = "authPrefs";
+    private static final String _KEY_ACCESS_TOKEN = "accessToken";
+    private static final String _KEY_REFRESH_TOKEN = "refreshToken";
 
-    private final @NonNull Context _context;
-    private final @NonNull SharedPreferences _preferences;
+    private final Context _context;
+    private final SharedPreferences _preferences;
 
-    public TokenManager(@NonNull Context context) {
+    public TokenManager(Context context) {
         this._context = context;
         this._preferences = this.createEncryptedPreferences(context);
     }
 
-    private @NonNull SharedPreferences createEncryptedPreferences(Context ctx) {
+    private SharedPreferences createEncryptedPreferences(Context ctx) {
         try {
             return EncryptedSharedPreferences.create(
                     _PREFERENCES_FILENAME,
@@ -50,7 +49,7 @@ public class TokenManager {
         return this.getAuthTokenPair() != null;
     }
 
-    public void saveTokens(@NonNull AuthTokenPair tokenPair) {
+    public void saveTokens(AuthTokenPair tokenPair) {
         SharedPreferences.Editor editor = _preferences.edit();
         editor.putString(_KEY_ACCESS_TOKEN, tokenPair.getAccessToken());
         editor.putString(_KEY_REFRESH_TOKEN, tokenPair.getRefreshToken());
@@ -63,7 +62,7 @@ public class TokenManager {
         return (accessToken != null && refreshToken != null) ? new AuthTokenPair(accessToken, refreshToken) : null;
     }
 
-    public @NonNull Context getContext() {
+    public Context getContext() {
         return _context;
     }
 }

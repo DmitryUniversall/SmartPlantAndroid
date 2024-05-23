@@ -1,6 +1,5 @@
 package com.smartplant.smartplantandroid.storage.models;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.gson.JsonObject;
@@ -14,12 +13,12 @@ public class ActionResponse {
     private final int _applicationStatusCode;
 
     @SerializedName("message")
-    private final @NonNull String _message;
+    private final String _message;
 
     @SerializedName("data")
     private final @Nullable JsonObject _data;
 
-    public ActionResponse(boolean ok, int applicationStatusCode, @NonNull String message, @Nullable JsonObject data) {
+    public ActionResponse(boolean ok, int applicationStatusCode, String message, @Nullable JsonObject data) {
         this._ok = ok;
         this._applicationStatusCode = applicationStatusCode;
         this._message = message;
@@ -34,7 +33,6 @@ public class ActionResponse {
         return _applicationStatusCode;
     }
 
-    @NonNull
     public String getMessage() {
         return _message;
     }
