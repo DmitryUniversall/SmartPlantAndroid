@@ -29,6 +29,18 @@ public class HTTPApiHelper {
         return new Request.Builder().header("Authorization", projectSettings.getAuthTokenType() + " " + tokenPair.getAccessToken());
     }
 
+    public static Request.Builder getAuthorizedRequestBuilder(Request request) throws UnauthorizedException {
+        ProjectSettingsST projectSettings = ProjectSettingsST.getInstance();
+        AuthRepositoryST authRepository = AuthRepositoryST.getInstance();
+
+        if (!authRepository.hasTokens())
+            throw new UnauthorizedException("Cannot get authorized request builder: Unauthorized");
+
+        AuthTokenPair tokenPair = authRepository.getTokenPair();
+        assert tokenPair != null;
+        return request.newBuilder().header("Authorization", projectSettings.getAuthTokenType() + " " + tokenPair.getAccessToken());
+    }
+
     public static String getBaseURL(String protocol) {
         ProjectSettingsST projectSettings = ProjectSettingsST.getInstance();
 

@@ -2,6 +2,7 @@ package com.smartplant.smartplantandroid.ui.views.views.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
@@ -12,11 +13,16 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.smartplant.smartplantandroid.R;
+import com.smartplant.smartplantandroid.auth.exceptions.UnauthorizedException;
+import com.smartplant.smartplantandroid.auth.models.AuthTokenPair;
+import com.smartplant.smartplantandroid.auth.models.User;
+import com.smartplant.smartplantandroid.auth.repository.AuthRepositoryST;
 import com.smartplant.smartplantandroid.ui.viewmodels.AuthViewModel;
 import com.smartplant.smartplantandroid.ui.views.views.auth.fragments.LoginFragment;
 import com.smartplant.smartplantandroid.ui.views.views.auth.fragments.RegisterFragment;
 import com.smartplant.smartplantandroid.ui.views.views.main.MainActivity;
 import com.smartplant.smartplantandroid.utils.AppLogger;
+import com.smartplant.smartplantandroid.utils.network.http.api_request.ApiHttpRequest;
 import com.smartplant.smartplantandroid.utils.ui.CustomAppCompatActivity;
 import com.smartplant.smartplantandroid.utils.ui.components.CustomButton;
 
@@ -133,7 +139,7 @@ public class AuthActivity extends CustomAppCompatActivity {
             AppLogger.info("Login MESSAGE: %d", authResult.message);
             Toast.makeText(this, authResult.message, Toast.LENGTH_LONG).show();
 
-            if (authResult.applicationStatusCode == 4007) {  // Wrong auth credentials
+            if (authResult.applicationStatusCode == 3006) {  // Wrong auth credentials
                 loginFragment.setErrorFor(R.id.usernameEdittext, getText(authResult.message).toString());
                 loginFragment.setErrorFor(R.id.passwordEdittext, getText(authResult.message).toString());
             }

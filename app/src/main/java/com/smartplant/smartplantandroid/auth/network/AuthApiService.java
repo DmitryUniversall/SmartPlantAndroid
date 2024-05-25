@@ -46,10 +46,10 @@ public class AuthApiService {
                 throw new AuthFailedException(error);
             } else if (error instanceof HttpTransferResponseException) {
                 TransferResponse transferResponse = ((HttpTransferResponseException) error).getTransferResponse();
-                AppLogger.error(error, "Received register fail (%d): %s", transferResponse.getApplicationStatusCode(), transferResponse.getMessage());
+                AppLogger.error(error, "Received request fail (%d): %s", transferResponse.getApplicationStatusCode(), transferResponse.getMessage());
                 throw new AuthFailedException((HttpTransferResponseException) error);
             } else if (error instanceof IOException) {
-                AppLogger.error("Got unknown IO error while sending register request", error);
+                AppLogger.error("Got unknown IO error while sending request", error);
                 throw new AuthFailedException(error);
             }
         });
