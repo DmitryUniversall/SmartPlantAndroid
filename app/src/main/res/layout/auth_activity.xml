@@ -8,13 +8,15 @@
         tools:context=".ui.views.views.auth.AuthActivity"
         android:background="@color/background_primary">
 
+    <!-- Main -->
     <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:flexDirection="column"
+            app:justifyContent="space_between"
             app:alignItems="center">
 
-        <!-- Main block -->
+        <!-- Main content block -->
         <com.google.android.flexbox.FlexboxLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,8 +57,9 @@
             <!-- Data -->
             <com.google.android.flexbox.FlexboxLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     app:flexDirection="column"
+                    app:justifyContent="space_between"
                     android:padding="15dp">
 
                 <!-- Menu -->
@@ -87,15 +90,19 @@
                         android:id="@+id/fragmentContainerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
-
-                <!-- Submit -->
-                <com.smartplant.smartplantandroid.utils.ui.components.CustomButton
-                        android:id="@+id/submitButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="43dp"
-                        android:layout_marginTop="15dp"/>
             </com.google.android.flexbox.FlexboxLayout>
         </com.google.android.flexbox.FlexboxLayout>
-    </com.google.android.flexbox.FlexboxLayout>
 
+        <!-- Submit block -->
+        <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:flexDirection="column"
+                android:padding="15dp">
+            <com.smartplant.smartplantandroid.utils.ui.components.CustomButton
+                    android:id="@+id/submitButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="43dp"/>
+        </com.google.android.flexbox.FlexboxLayout>
+    </com.google.android.flexbox.FlexboxLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

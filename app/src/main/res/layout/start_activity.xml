@@ -14,9 +14,7 @@
             android:layout_height="match_parent"
             android:background="#FFFFFF"
             app:flexDirection="column"
-            app:justifyContent="space_between"
-            android:padding="15dp"
-            >
+            app:justifyContent="space_between">
 
         <com.google.android.flexbox.FlexboxLayout
                 android:layout_width="match_parent"
@@ -65,15 +63,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="43dp"
                     android:text="@string/loginAction"
-                    android:layout_marginEnd="5dp"
                     android:layout_marginBottom="10dp"/>
 
             <com.smartplant.smartplantandroid.utils.ui.components.CustomButton
                     android:id="@+id/registerButton"
                     android:layout_width="match_parent"
                     android:layout_height="43dp"
-                    android:text="@string/registerAction"
-                    android:layout_marginEnd="5dp"/>
+                    android:text="@string/registerAction"/>
         </com.google.android.flexbox.FlexboxLayout>
     </com.google.android.flexbox.FlexboxLayout>
 
