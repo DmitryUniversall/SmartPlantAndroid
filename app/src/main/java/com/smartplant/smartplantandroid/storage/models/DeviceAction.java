@@ -8,13 +8,13 @@ public enum DeviceAction {
     COMMAND_WATER(5),
     COMMAND_LAMP(6);
 
-    private final int value;
+    private final int _value;
 
     DeviceAction(int value) {
-        this.value = value;
+        this._value = value;
     }
 
     public int getValue() {
-        return value;
+        return _value;
     }
 }

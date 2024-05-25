@@ -19,7 +19,7 @@ public class TokenManager {
 
     private final Context _context;
     private final SharedPreferences _preferences;
-    private AuthTokenPair tokenPair;
+    private AuthTokenPair _tokenPair;
 
     public TokenManager(Context context) {
         this._context = context;
@@ -54,17 +54,17 @@ public class TokenManager {
         editor.putString(_KEY_REFRESH_TOKEN, tokenPair.getRefreshToken());
         editor.apply();
 
-        this.tokenPair = tokenPair;
+        this._tokenPair = tokenPair;
     }
 
     public @Nullable AuthTokenPair getAuthTokenPair() {
-        if (this.tokenPair == null) {
+        if (this._tokenPair == null) {
             String accessToken = _preferences.getString(_KEY_ACCESS_TOKEN, null);
             String refreshToken = _preferences.getString(_KEY_REFRESH_TOKEN, null);
-            this.tokenPair = (accessToken != null && refreshToken != null) ? new AuthTokenPair(accessToken, refreshToken) : null;
+            this._tokenPair = (accessToken != null && refreshToken != null) ? new AuthTokenPair(accessToken, refreshToken) : null;
         }
 
-        return this.tokenPair;
+        return this._tokenPair;
     }
 
     public Context getContext() {

@@ -28,15 +28,15 @@ import okhttp3.RequestBody;
 
 
 public class AuthApiService {
-    private final Gson gson = getGson();
+    private final Gson _gson = getGson();
 
-    private final String apiAuthBase;
-    private final String apiUsersBase;
+    private final String _apiAuthBase;
+    private final String _apiUsersBase;
 
     public AuthApiService() {
         // Initializing here because settings will be loaded only after Application.onCreate performed
-        this.apiAuthBase = HTTPApiHelper.getBaseURL("http") + "auth/";
-        this.apiUsersBase = HTTPApiHelper.getBaseURL("http") + "users/";
+        this._apiAuthBase = HTTPApiHelper.getBaseURL("http") + "auth/";
+        this._apiUsersBase = HTTPApiHelper.getBaseURL("http") + "users/";
     }
 
     private <T> ApiHttpRequest<T> sendRequest(Request request, ApiHttpResponseProcessor<T> responseProcessor) {
@@ -47,7 +47,7 @@ public class AuthApiService {
             } else if (error instanceof HttpTransferResponseException) {
                 TransferResponse transferResponse = ((HttpTransferResponseException) error).getTransferResponse();
                 AppLogger.error(error, "Received register fail (%d): %s", transferResponse.getApplicationStatusCode(), transferResponse.getMessage());
-                throw new AuthFailedException(error);
+                throw new AuthFailedException((HttpTransferResponseException) error);
             } else if (error instanceof IOException) {
                 AppLogger.error("Got unknown IO error while sending register request", error);
                 throw new AuthFailedException(error);
@@ -66,13 +66,13 @@ public class AuthApiService {
         }
 
         RequestBody body = RequestBody.create(json.toString(), MediaType.get("application/json; charset=utf-8"));
-        Request request = new Request.Builder().url(apiAuthBase + "register/").post(body).build();
+        Request request = new Request.Builder().url(_apiAuthBase + "register/").post(body).build();
 
         return this.sendRequest(request, ((response, transferResponse) -> {
             assert transferResponse.getData() != null;
             JsonObject userJson = transferResponse.getData().getAsJsonObject("user");
             JsonObject tokensJson = transferResponse.getData().getAsJsonObject("tokens");
-            return new Pair<>(gson.fromJson(userJson, User.class), gson.fromJson(tokensJson, AuthTokenPair.class));
+            return new Pair<>(_gson.fromJson(userJson, User.class), _gson.fromJson(tokensJson, AuthTokenPair.class));
         }));
     }
 
@@ -87,13 +87,13 @@ public class AuthApiService {
         }
 
         RequestBody body = RequestBody.create(json.toString(), MediaType.get("application/json; charset=utf-8"));
-        Request request = new Request.Builder().url(apiAuthBase + "login/").post(body).build();
+        Request request = new Request.Builder().url(_apiAuthBase + "login/").post(body).build();
 
         return this.sendRequest(request, ((response, transferResponse) -> {
             assert transferResponse.getData() != null;
             JsonObject userJson = transferResponse.getData().getAsJsonObject("user");
             JsonObject tokensJson = transferResponse.getData().getAsJsonObject("tokens");
-            return new Pair<>(gson.fromJson(userJson, User.class), gson.fromJson(tokensJson, AuthTokenPair.class));
+            return new Pair<>(_gson.fromJson(userJson, User.class), _gson.fromJson(tokensJson, AuthTokenPair.class));
         }));
     }
 
@@ -107,22 +107,22 @@ public class AuthApiService {
         }
 
         RequestBody body = RequestBody.create(json.toString(), MediaType.get("application/json; charset=utf-8"));
-        Request request = new Request.Builder().url(apiAuthBase + "refresh/").post(body).build();
+        Request request = new Request.Builder().url(_apiAuthBase + "refresh/").post(body).build();
 
         return this.sendRequest(request, ((response, transferResponse) -> {
             assert transferResponse.getData() != null;
             JsonObject tokensJson = transferResponse.getData().getAsJsonObject("tokens");
-            return gson.fromJson(tokensJson, AuthTokenPair.class);
+            return _gson.fromJson(tokensJson, AuthTokenPair.class);
         }));
     }
 
     public ApiHttpRequest<User> getMe() throws UnauthorizedException {
-        Request request = HTTPApiHelper.getAuthorizedRequestBuilder().url(apiUsersBase + "me/").build();
+        Request request = HTTPApiHelper.getAuthorizedRequestBuilder().url(_apiUsersBase + "me/").build();
 
         return this.sendRequest(request, ((response, transferResponse) -> {
             assert transferResponse.getData() != null;
             JsonObject userJson = transferResponse.getData().getAsJsonObject("user");
-            return gson.fromJson(userJson, User.class);
+            return _gson.fromJson(userJson, User.class);
         }));
     }
 }

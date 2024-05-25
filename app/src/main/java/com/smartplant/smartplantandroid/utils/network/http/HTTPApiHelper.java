@@ -14,8 +14,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
 public class HTTPApiHelper {
-    private static final Gson gson = getGson();
-    private static final OkHttpClient client = new OkHttpClient();
+    private static final Gson _gson = getGson();
+    private static final OkHttpClient _client = new OkHttpClient();
 
     public static Request.Builder getAuthorizedRequestBuilder() throws UnauthorizedException {
         ProjectSettingsST projectSettings = ProjectSettingsST.getInstance();
@@ -41,6 +41,6 @@ public class HTTPApiHelper {
     }
 
     public static <T> ApiHttpRequest<T> createApiRequest(Request request, ApiHttpResponseProcessor<T> responseProcessor) {
-        return new ApiHttpRequest<>(request, responseProcessor, gson, client);
+        return new ApiHttpRequest<>(request, responseProcessor, _gson, _client);
     }
 }

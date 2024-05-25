@@ -20,13 +20,13 @@ public class AuthFailedException extends Exception {
         super(message, cause);
     }
 
-    public AuthFailedException(Throwable cause) {
-        super(cause);
-    }
-
     public AuthFailedException(HttpTransferResponseException cause) {
         super(cause);
         this.transferResponse = cause.getTransferResponse();
+    }
+
+    public AuthFailedException(Throwable cause) {
+        super(cause);
     }
 
     @Nullable

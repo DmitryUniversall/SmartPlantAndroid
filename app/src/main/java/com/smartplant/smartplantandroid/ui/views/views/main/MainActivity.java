@@ -4,11 +4,13 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
+import com.smartplant.smartplantandroid.R;
 import com.smartplant.smartplantandroid.utils.ui.CustomAppCompatActivity;
 
 public class MainActivity extends CustomAppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_activity);
     }
 }

@@ -12,7 +12,7 @@ import com.smartplant.smartplantandroid.R;
 
 
 public class CustomButton extends AppCompatButton {
-    private boolean isOutline;
+    private boolean _isOutline;
 
     public CustomButton(Context context) {
         super(context);
@@ -33,19 +33,19 @@ public class CustomButton extends AppCompatButton {
         if (attrs == null) return;
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CustomButton);
-        isOutline = a.getBoolean(R.styleable.CustomButton_outline, false);
+        _isOutline = a.getBoolean(R.styleable.CustomButton_outline, false);
         a.recycle();
 
         updateButtonBackground();
     }
 
     public void setOutline(boolean outline) {
-        isOutline = outline;
+        _isOutline = outline;
         updateButtonBackground();
     }
 
     private void updateButtonBackground() {
-        if (isOutline) {
+        if (_isOutline) {
             Drawable background = getBackgroundDrawable(getContext(), R.drawable.btn_outline_background);
             setBackground(background);
             setTextColor(ContextCompat.getColor(getContext(), R.color.btn_primary));

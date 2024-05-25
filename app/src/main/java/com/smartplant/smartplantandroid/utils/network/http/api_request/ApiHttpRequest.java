@@ -5,6 +5,9 @@ import androidx.annotation.Nullable;
 import androidx.annotation.ReturnThis;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.smartplant.smartplantandroid.utils.AppLogger;
 import com.smartplant.smartplantandroid.utils.network.TransferResponse;
@@ -36,13 +39,13 @@ public class ApiHttpRequest<T> {
         this._client = client == null ? new OkHttpClient() : client;
     }
 
-    protected void callSuccessCallStack(@NonNull T result) {
+    protected void callSuccessCallStack(@NonNull T result, @NonNull Response response, @NonNull TransferResponse transferResponse) {
         if (_failureCallbackStack.isEmpty()) {
             AppLogger.warning("Unprocessed request %s", _request.url());
             return;
         }
 
-        _successCallbackStack.forEach((handler) -> handler.onSuccess(result));
+        _successCallbackStack.forEach((handler) -> handler.onSuccess(result, response, transferResponse));
     }
 
     protected void callFailureCallStack(@NonNull Call call, @NonNull Throwable error) {
@@ -68,9 +71,16 @@ public class ApiHttpRequest<T> {
 
         TransferResponse transferResponse;
         try {
-            transferResponse = _gson.fromJson(body.string(), TransferResponse.class);
+            String responseBodyString = body.string();
+            if (responseBodyString.trim().isEmpty()) throw new BadResponseException("Empty response received");
+
+            JsonObject json = JsonParser.parseString(responseBodyString).getAsJsonObject();
+            boolean dataIsNull = json.get("data").isJsonNull();
+            if (dataIsNull) json.add("data", new JsonObject());
+            transferResponse = _gson.fromJson(json, TransferResponse.class);
+            if (dataIsNull) transferResponse.setData(null);
         } catch (JsonSyntaxException e) {
-            throw new BadResponseException("Invalid response received: Unable to parse json");
+            throw new BadResponseException("Invalid response received: Unable to parse json", e);
         }
 
         if (!transferResponse.isOk() || !response.isSuccessful())
@@ -87,7 +97,7 @@ public class ApiHttpRequest<T> {
         try {
             TransferResponse transferResponse = getTransferResponse(response);
             T result = _responseProcessor.processResponse(response, transferResponse);
-            this.callSuccessCallStack(result);
+            this.callSuccessCallStack(result, response, transferResponse);
         } catch (HttpTransferResponseException | BadResponseException error) {
             processFailure(call, error);
         }

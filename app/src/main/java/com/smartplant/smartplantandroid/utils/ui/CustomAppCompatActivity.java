@@ -3,6 +3,7 @@ package com.smartplant.smartplantandroid.utils.ui;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -20,7 +21,7 @@ public class CustomAppCompatActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    protected void replaceFragment(int fragmentId, Fragment fragment) {
+    protected void replaceFragment(@IdRes int fragmentId, Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(fragmentId, fragment);
@@ -28,7 +29,7 @@ public class CustomAppCompatActivity extends AppCompatActivity {
     }
 
     // With animation
-    protected void replaceFragment(int fragmentId, Fragment fragment, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+    protected void replaceFragment(@IdRes int fragmentId, Fragment fragment, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -39,7 +40,7 @@ public class CustomAppCompatActivity extends AppCompatActivity {
     }
 
     // With animation array
-    protected void replaceFragment(int fragmentId, Fragment fragment, int[] animation) {
+    protected void replaceFragment(@IdRes int fragmentId, Fragment fragment, int[] animation) {
         if (animation == null || animation.length != 4) throw new IllegalArgumentException("Animations array must have exactly 4 elements.");
 
         FragmentManager fragmentManager = getSupportFragmentManager();

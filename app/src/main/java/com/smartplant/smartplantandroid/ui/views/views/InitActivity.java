@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.smartplant.smartplantandroid.R;
 import com.smartplant.smartplantandroid.ui.viewmodels.InitViewModel;
 import com.smartplant.smartplantandroid.ui.views.views.main.MainActivity;
 import com.smartplant.smartplantandroid.utils.AppLogger;
@@ -18,6 +19,8 @@ public class InitActivity extends CustomAppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.init_activity);
+
         viewModel = new ViewModelProvider(this).get(InitViewModel.class);
 
         observerAuthenticated();
@@ -31,7 +34,7 @@ public class InitActivity extends CustomAppCompatActivity {
 
     private void observerAuthenticated() {
         AppLogger.debug("Waiting for user authentication");
-        viewModel.getIsAuthenticated().observe(this, isAuthenticated -> {
+        viewModel.getAuthenticatedLive().observe(this, isAuthenticated -> {
             if (isAuthenticated) {
                 startNewActivity(MainActivity.class);
             } else {

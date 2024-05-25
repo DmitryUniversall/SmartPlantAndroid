@@ -9,32 +9,32 @@ import com.smartplant.smartplantandroid.auth.repository.AuthRepositoryST;
 import com.smartplant.smartplantandroid.utils.AppLogger;
 
 public class InitViewModel extends ViewModel {
-    private final MutableLiveData<Boolean> isAuthenticated = new MutableLiveData<>();
-    private final AuthRepositoryST authRepository;
+    private final MutableLiveData<Boolean> _isAuthenticatedLive = new MutableLiveData<>();
+    private final AuthRepositoryST _authRepository;
 
     public InitViewModel() {
-        this.authRepository = AuthRepositoryST.getInstance();
+        this._authRepository = AuthRepositoryST.getInstance();
     }
 
-    public LiveData<Boolean> getIsAuthenticated() {
-        return isAuthenticated;
+    public LiveData<Boolean> getAuthenticatedLive() {
+        return _isAuthenticatedLive;
     }
 
     public void checkAuthentication() {
-        if (!this.authRepository.hasTokens()) this.isAuthenticated.postValue(false);
+        if (!this._authRepository.hasTokens()) this._isAuthenticatedLive.postValue(false);
 
         try {
-            this.authRepository.fetchMe()
-                    .onSuccess((result -> {
+            this._authRepository.fetchMe()
+                    .onSuccess(((result, response, transferResponse) -> {
                         AppLogger.debug("User authenticated");
-                        this.isAuthenticated.postValue(true);
+                        this._isAuthenticatedLive.postValue(true);
                     }))
                     .onFailure(((call, error) -> {
                         AppLogger.debug("Unable to fetch user");
-                        this.isAuthenticated.postValue(false);
+                        this._isAuthenticatedLive.postValue(false);
                     })).send();
         } catch (UnauthorizedException e) {
-            this.isAuthenticated.postValue(false);
+            this._isAuthenticatedLive.postValue(false);
         }
     }
 }

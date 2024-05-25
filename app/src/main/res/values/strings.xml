@@ -11,4 +11,8 @@
     <string name="username">Имя пользователя</string>
     <string name="password">Пароль</string>
     <string name="passwordConfirmation">Подтверждение пароля</string>
+    <string name="success">Успешно</string>
+    <string name="internalServerError">Неизвестная ошибка сервера</string>
+    <string name="userAlreadyExist">Пользователь с таким именем уже существует</string>
+    <string name="wrongAuthCredentials">Неверное имя пользователя или пароль</string>
 </resources>
