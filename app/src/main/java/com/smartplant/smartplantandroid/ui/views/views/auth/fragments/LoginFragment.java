@@ -10,9 +10,7 @@ import androidx.fragment.app.Fragment;
 import com.smartplant.smartplantandroid.R;
 
 public class LoginFragment extends Fragment {
-    public LoginFragment() {
-        // Required empty public constructor
-    }
+    public LoginFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -13,12 +13,13 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 public class TokenManager {
-    private static final String _PREFERENCES_FILENAME = "authPrefs";
+    private static final String _PREFERENCES_FILENAME = "authData";
     private static final String _KEY_ACCESS_TOKEN = "accessToken";
     private static final String _KEY_REFRESH_TOKEN = "refreshToken";
 
     private final Context _context;
     private final SharedPreferences _preferences;
+    private AuthTokenPair tokenPair;
 
     public TokenManager(Context context) {
         this._context = context;
@@ -40,9 +41,7 @@ public class TokenManager {
     }
 
     public void clear() {
-        SharedPreferences.Editor editor = _preferences.edit();
-        editor.clear();
-        editor.apply();
+        _preferences.edit().clear().apply();
     }
 
     public boolean hasTokens() {
@@ -54,12 +53,18 @@ public class TokenManager {
         editor.putString(_KEY_ACCESS_TOKEN, tokenPair.getAccessToken());
         editor.putString(_KEY_REFRESH_TOKEN, tokenPair.getRefreshToken());
         editor.apply();
+
+        this.tokenPair = tokenPair;
     }
 
     public @Nullable AuthTokenPair getAuthTokenPair() {
-        String accessToken = _preferences.getString(_KEY_ACCESS_TOKEN, null);
-        String refreshToken = _preferences.getString(_KEY_REFRESH_TOKEN, null);
-        return (accessToken != null && refreshToken != null) ? new AuthTokenPair(accessToken, refreshToken) : null;
+        if (this.tokenPair == null) {
+            String accessToken = _preferences.getString(_KEY_ACCESS_TOKEN, null);
+            String refreshToken = _preferences.getString(_KEY_REFRESH_TOKEN, null);
+            this.tokenPair = (accessToken != null && refreshToken != null) ? new AuthTokenPair(accessToken, refreshToken) : null;
+        }
+
+        return this.tokenPair;
     }
 
     public Context getContext() {

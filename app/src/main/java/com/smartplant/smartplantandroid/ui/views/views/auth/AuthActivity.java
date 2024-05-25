@@ -10,14 +10,25 @@ import androidx.fragment.app.Fragment;
 import com.smartplant.smartplantandroid.R;
 import com.smartplant.smartplantandroid.ui.views.views.auth.fragments.LoginFragment;
 import com.smartplant.smartplantandroid.ui.views.views.auth.fragments.RegisterFragment;
+import com.smartplant.smartplantandroid.utils.AppLogger;
 import com.smartplant.smartplantandroid.utils.ui.CustomAppCompatActivity;
 import com.smartplant.smartplantandroid.utils.ui.components.CustomButton;
 
 import java.util.Objects;
 
 public class AuthActivity extends CustomAppCompatActivity {
+    private RegisterFragment registerFragment = new RegisterFragment();
+    private LoginFragment loginFragment = new LoginFragment();
+
     private CustomButton loginButton;
     private CustomButton registerButton;
+    private CustomButton submitButton;
+    private ScreenState currentScreenState;
+
+    private enum ScreenState {
+        LOGIN,
+        REGISTER;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,18 +39,17 @@ public class AuthActivity extends CustomAppCompatActivity {
         String selectedAuthType = intent.getStringExtra("authType");
         if (selectedAuthType == null) selectedAuthType = "login";
 
-        loginButton = findViewById(R.id.buttonLogin);
-        registerButton = findViewById(R.id.buttonRegister);
-
-        loginButton.setOutline(!Objects.equals(selectedAuthType, "login"));
-        registerButton.setOutline(!Objects.equals(selectedAuthType, "register"));
+        loginButton = findViewById(R.id.loginButton);
+        registerButton = findViewById(R.id.registerButton);
+        submitButton = findViewById(R.id.submitButton);
 
         loginButton.setOnClickListener(this::onLoginBtnClick);
         registerButton.setOnClickListener(this::onRegisterBtnClick);
+        submitButton.setOnClickListener(this::onSubmitBtnClick);
 
-        setFragment(Objects.equals(selectedAuthType, "login") ? new LoginFragment() : new RegisterFragment());
+        this.setState(Objects.equals(selectedAuthType, "login") ? ScreenState.LOGIN : ScreenState.REGISTER);
 
-        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {  // TODO: ???
             @Override
             public void handleOnBackPressed() {
                 AuthActivity.super.onBackPressed();
@@ -47,19 +57,34 @@ public class AuthActivity extends CustomAppCompatActivity {
         });
     }
 
-    private void setFragment(Fragment fragment) {
-        replaceFragment(R.id.fragment_container_view, fragment);
-    }
-
     private void onLoginBtnClick(View view) {
-        setFragment(new LoginFragment());
-        loginButton.setOutline(false);
-        registerButton.setOutline(true);
+        this.setState(ScreenState.LOGIN);
     }
 
     private void onRegisterBtnClick(View view) {
-        setFragment(new RegisterFragment());
-        loginButton.setOutline(true);
-        registerButton.setOutline(false);
+        this.setState(ScreenState.REGISTER);
+    }
+
+    private void onSubmitBtnClick(View view) {
+        AppLogger.debug("Submit");
+    }
+
+    private void setState(ScreenState screenState) {
+        this.currentScreenState = screenState;
+
+        loginButton.setOutline(screenState == ScreenState.LOGIN);
+        registerButton.setOutline(screenState == ScreenState.REGISTER);
+        submitButton.setText(screenState == ScreenState.LOGIN ? getString(R.string.loginAction) : getString(R.string.registerAction));
+        setFragment(screenState == ScreenState.LOGIN ? loginFragment : registerFragment);
+    }
+
+    private void setFragment(Fragment fragment) {
+        replaceFragment(R.id.fragmentContainerView, fragment);
+    }
+
+    private void register(String username, String password) {
+    }
+
+    private void login(String username, String password) {
     }
 }

@@ -10,9 +10,7 @@ import androidx.fragment.app.Fragment;
 import com.smartplant.smartplantandroid.R;
 
 public class RegisterFragment extends Fragment {
-    public RegisterFragment() {
-        // Required empty public constructor
-    }
+    public RegisterFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

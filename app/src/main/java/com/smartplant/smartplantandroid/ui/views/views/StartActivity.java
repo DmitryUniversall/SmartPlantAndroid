@@ -15,8 +15,8 @@ public class StartActivity extends CustomAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_activity);
 
-        Button loginButton = findViewById(R.id.buttonLogin);
-        Button registerButton = findViewById(R.id.buttonRegister);
+        Button loginButton = findViewById(R.id.loginButton);
+        Button registerButton = findViewById(R.id.registerButton);
 
         loginButton.setOnClickListener(this::onLoginBtnClick);
         registerButton.setOnClickListener(this::onRegisterBtnClick);

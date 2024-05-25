@@ -4,7 +4,6 @@
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
-        android:padding="16dp"
         android:background="@color/background_primary">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -44,8 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintTextColor="@color/text_primary"
-            app:helperTextTextColor="@color/text_primary"
-            android:layout_marginBottom="10dp">
+            app:helperTextTextColor="@color/text_primary">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edittext_password_confirmation"
@@ -56,12 +54,5 @@
                 android:textColorHint="@color/text_secondary"
                 android:textColor="@color/text_primary"/>
     </com.google.android.material.textfield.TextInputLayout>
-
-    <com.smartplant.smartplantandroid.utils.ui.components.CustomButton
-            android:id="@+id/buttonLogin"
-            android:layout_width="match_parent"
-            android:layout_height="43dp"
-            android:text="@string/registerAction"
-            android:layout_marginEnd="5dp"/>
 
 </LinearLayout>

@@ -14,6 +14,7 @@
             app:flexDirection="column"
             app:alignItems="center">
 
+        <!-- Main block -->
         <com.google.android.flexbox.FlexboxLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -21,6 +22,7 @@
                 app:alignItems="center"
                 android:layout_marginTop="60dp">
 
+            <!-- Title -->
             <com.google.android.flexbox.FlexboxLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -38,7 +40,7 @@
                         android:layout_marginBottom="8dp"
                         android:gravity="center"
                         android:textStyle="bold"
-                        android:fontFamily="sans-serif"/>
+                        android:fontFamily="sans-serif" />
 
                 <TextView
                         android:id="@+id/subtitle"
@@ -47,35 +49,52 @@
                         android:text="@string/welcomeDescription"
                         android:textSize="15sp"
                         android:textColor="@color/text_secondary"
-                        android:gravity="center"/>
+                        android:gravity="center" />
             </com.google.android.flexbox.FlexboxLayout>
 
+            <!-- Data -->
             <com.google.android.flexbox.FlexboxLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:flexDirection="row"
-                    app:justifyContent="center"
+                    app:flexDirection="column"
                     android:padding="15dp">
 
-                <com.smartplant.smartplantandroid.utils.ui.components.CustomButton
-                        android:id="@+id/buttonLogin"
+                <!-- Menu -->
+                <com.google.android.flexbox.FlexboxLayout
                         android:layout_width="match_parent"
-                        android:layout_height="43dp"
-                        android:text="@string/login"
-                        android:layout_marginEnd="5dp" />
+                        android:layout_height="wrap_content"
+                        app:flexDirection="row"
+                        app:justifyContent="center"
+                        android:layout_marginBottom="10dp">
 
+                    <com.smartplant.smartplantandroid.utils.ui.components.CustomButton
+                            android:id="@+id/loginButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="43dp"
+                            android:text="@string/login"
+                            android:layout_marginEnd="5dp" />
+
+                    <com.smartplant.smartplantandroid.utils.ui.components.CustomButton
+                            android:id="@+id/registerButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="43dp"
+                            android:text="@string/register"
+                            android:layout_marginStart="5dp" />
+                </com.google.android.flexbox.FlexboxLayout>
+
+                <!-- Fragment -->
+                <androidx.fragment.app.FragmentContainerView
+                        android:id="@+id/fragmentContainerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                <!-- Submit -->
                 <com.smartplant.smartplantandroid.utils.ui.components.CustomButton
-                        android:id="@+id/buttonRegister"
+                        android:id="@+id/submitButton"
                         android:layout_width="match_parent"
                         android:layout_height="43dp"
-                        android:text="@string/register"
-                        android:layout_marginStart="5dp" />
+                        android:layout_marginTop="15dp"/>
             </com.google.android.flexbox.FlexboxLayout>
-
-            <androidx.fragment.app.FragmentContainerView
-                    android:id="@+id/fragment_container_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
         </com.google.android.flexbox.FlexboxLayout>
     </com.google.android.flexbox.FlexboxLayout>
 
