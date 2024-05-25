@@ -2,27 +2,18 @@ package com.smartplant.smartplantandroid.ui.views.views.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.smartplant.smartplantandroid.R;
-import com.smartplant.smartplantandroid.auth.exceptions.UnauthorizedException;
-import com.smartplant.smartplantandroid.auth.models.AuthTokenPair;
-import com.smartplant.smartplantandroid.auth.models.User;
-import com.smartplant.smartplantandroid.auth.repository.AuthRepositoryST;
 import com.smartplant.smartplantandroid.ui.viewmodels.AuthViewModel;
 import com.smartplant.smartplantandroid.ui.views.views.auth.fragments.LoginFragment;
 import com.smartplant.smartplantandroid.ui.views.views.auth.fragments.RegisterFragment;
 import com.smartplant.smartplantandroid.ui.views.views.main.MainActivity;
 import com.smartplant.smartplantandroid.utils.AppLogger;
-import com.smartplant.smartplantandroid.utils.network.http.api_request.ApiHttpRequest;
 import com.smartplant.smartplantandroid.utils.ui.CustomAppCompatActivity;
 import com.smartplant.smartplantandroid.utils.ui.components.CustomButton;
 
