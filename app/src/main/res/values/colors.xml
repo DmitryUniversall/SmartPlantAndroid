@@ -4,4 +4,9 @@
     <color name="text_primary">#000000</color>
     <color name="background_primary">#FFFFFF</color>
     <color name="btn_primary">#05D55C</color>
+    <color name="accent">#05D55C</color>
+    <style name="LoginTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">#fff</item>
+        <item name="boxStrokeWidth">2dp</item>
+    </style>
 </resources>

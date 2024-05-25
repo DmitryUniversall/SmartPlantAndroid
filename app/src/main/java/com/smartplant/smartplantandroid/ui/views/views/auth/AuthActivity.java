@@ -31,13 +31,13 @@ public class AuthActivity extends CustomAppCompatActivity {
         loginButton = findViewById(R.id.buttonLogin);
         registerButton = findViewById(R.id.buttonRegister);
 
-        loginButton.setOutline(Objects.equals(selectedAuthType, "login"));
-        registerButton.setOutline(Objects.equals(selectedAuthType, "register"));
+        loginButton.setOutline(!Objects.equals(selectedAuthType, "login"));
+        registerButton.setOutline(!Objects.equals(selectedAuthType, "register"));
 
         loginButton.setOnClickListener(this::onLoginBtnClick);
         registerButton.setOnClickListener(this::onRegisterBtnClick);
 
-        setFragment(new LoginFragment());
+        setFragment(Objects.equals(selectedAuthType, "login") ? new LoginFragment() : new RegisterFragment());
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -53,13 +53,13 @@ public class AuthActivity extends CustomAppCompatActivity {
 
     private void onLoginBtnClick(View view) {
         setFragment(new LoginFragment());
-        loginButton.setOutline(true);
-        registerButton.setOutline(false);
+        loginButton.setOutline(false);
+        registerButton.setOutline(true);
     }
 
     private void onRegisterBtnClick(View view) {
         setFragment(new RegisterFragment());
-        loginButton.setOutline(false);
-        registerButton.setOutline(true);
+        loginButton.setOutline(true);
+        registerButton.setOutline(false);
     }
 }

@@ -3,7 +3,12 @@
     <string name="appLogo">Logo</string>
     <string name="welcome">Добро пожаловать в SmartPlant!</string>
     <string name="welcomeDescription">Ваш помощник по уходу за растениями</string>
-    <string name="login">Войти</string>
-    <string name="register">Зарегистрироваться</string>
+    <string name="loginAction">Войти</string>
+    <string name="login">Вход</string>
+    <string name="registerAction">Зарегистрироваться</string>
+    <string name="register">Регистрация</string>
     <string name="auth">Авторизация</string>
+    <string name="username">Имя пользователя</string>
+    <string name="password">Пароль</string>
+    <string name="passwordConfirmation">Подтверждение пароля</string>
 </resources>

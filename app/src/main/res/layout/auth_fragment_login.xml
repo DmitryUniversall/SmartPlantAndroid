@@ -2,38 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:padding="16dp"
         android:background="@color/background_primary">
 
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Логин" />
-
-    <EditText
-            android:id="@+id/edittext_login"
+    <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="User123" />
+            app:hintTextColor="@color/text_primary"
+            app:helperTextTextColor="@color/text_primary"
+            android:layout_marginBottom="10dp">
 
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Пароль" />
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edittext_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/username"
+                android:textColorHint="@color/text_secondary"
+                android:textColor="@color/text_primary"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-            android:id="@+id/edittext_password"
+    <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ваш пароль"
-            android:inputType="textPassword" />
+            app:hintTextColor="@color/text_primary"
+            app:helperTextTextColor="@color/text_primary"
+            android:layout_marginBottom="10dp">
 
-    <Button
-            android:id="@+id/button_login"
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edittext_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:textColorHint="@color/text_secondary"
+                android:textColor="@color/text_primary"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.smartplant.smartplantandroid.utils.ui.components.CustomButton
+            android:id="@+id/buttonLogin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Войти"
-            android:textColor="#FFFFFF" />
+            android:layout_height="43dp"
+            android:text="@string/loginAction"
+            android:layout_marginEnd="5dp"/>
 
 </LinearLayout>
