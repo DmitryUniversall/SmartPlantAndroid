@@ -5,11 +5,11 @@ import androidx.annotation.Nullable;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class TransferDataMessage {
     @SerializedName("created_at")
-    private final Date _createdAt;
+    private final LocalDateTime _createdAt;
 
     @SerializedName("sender_device_id")
     private final String _senderDeviceId;
@@ -17,13 +17,13 @@ public class TransferDataMessage {
     @SerializedName("data")
     private final @Nullable JsonObject _data;
 
-    public TransferDataMessage(Date createdAt, String senderDeviceId, @Nullable JsonObject data) {
+    public TransferDataMessage(LocalDateTime createdAt, String senderDeviceId, @Nullable JsonObject data) {
         this._createdAt = createdAt;
         this._senderDeviceId = senderDeviceId;
         this._data = data;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return _createdAt;
     }
 

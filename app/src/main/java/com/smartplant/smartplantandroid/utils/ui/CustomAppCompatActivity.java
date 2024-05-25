@@ -1,6 +1,7 @@
 package com.smartplant.smartplantandroid.utils.ui;
 
 import android.content.Intent;
+import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -8,8 +9,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 public class CustomAppCompatActivity extends AppCompatActivity {
-    protected void startActivity(Class<?> newActivity) {
+    protected void startNewActivity(Class<?> newActivity) {
         Intent intent = new Intent(this, newActivity);
+        startActivity(intent);
+    }
+
+    protected void startNewActivity(Class<?> newActivity, Bundle extras) {
+        Intent intent = new Intent(this, newActivity);
+        intent.putExtras(extras);
         startActivity(intent);
     }
 

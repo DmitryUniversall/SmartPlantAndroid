@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">SmartPlant</string>
-    <string name="app_logo">Logo</string>
+    <string name="appName">SmartPlant</string>
+    <string name="appLogo">Logo</string>
     <string name="welcome">Добро пожаловать в SmartPlant!</string>
     <string name="welcomeDescription">Ваш помощник по уходу за растениями</string>
-    <string name="signin">Войти</string>
+    <string name="login">Войти</string>
     <string name="register">Зарегистрироваться</string>
+    <string name="auth">Авторизация</string>
 </resources>

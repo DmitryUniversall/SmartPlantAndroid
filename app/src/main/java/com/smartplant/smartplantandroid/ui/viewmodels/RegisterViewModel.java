@@ -1,4 +1,4 @@
 package com.smartplant.smartplantandroid.ui.viewmodels;
 
-public class AuthViewModel {
+public class RegisterViewModel {
 }

@@ -12,6 +12,7 @@ import com.smartplant.smartplantandroid.auth.models.AuthTokenPair;
 import com.smartplant.smartplantandroid.auth.models.User;
 import com.smartplant.smartplantandroid.auth.network.AuthApiService;
 import com.smartplant.smartplantandroid.auth.utils.TokenManager;
+import com.smartplant.smartplantandroid.utils.network.http.api_request.ApiHttpRequest;
 
 public class AuthRepositoryST {
     private static @Nullable AuthRepositoryST _instance;
@@ -41,55 +42,36 @@ public class AuthRepositoryST {
         return tokenManager.hasTokens();
     }
 
-    public boolean isAuthenticated() {
-        if (!hasTokens()) return false;
-        try {
-            fetchMe();
-            return true;
-        } catch (AuthFailedException e) {  // TODO: Thrown if access token is expired?
-            return false;
-        } catch (UnauthorizedException e) {
-            return false;
-        }
-    }
-
     public @Nullable AuthTokenPair getTokenPair() {
         return tokenManager.getAuthTokenPair();
     }
 
     public void logout() {
         tokenManager.clear();
+        currentUser = null;
     }
 
-    public User register(String username, String password) throws AuthFailedException {
-        Pair<User, AuthTokenPair> data = this.authApiService.register(username, password);
-        this.tokenManager.saveTokens(data.second);
-        return data.first;
+    public ApiHttpRequest<Pair<User, AuthTokenPair>> register(String username, String password) throws AuthFailedException {
+        return this.authApiService.register(username, password).onSuccess((result -> tokenManager.saveTokens(result.second)));
     }
 
-    public User login(String username, String password) throws AuthFailedException {
-        Pair<User, AuthTokenPair> data = this.authApiService.login(username, password);
-        this.tokenManager.saveTokens(data.second);
-        return data.first;
+    public ApiHttpRequest<Pair<User, AuthTokenPair>> login(String username, String password) throws AuthFailedException {
+        return this.authApiService.login(username, password).onSuccess((result -> tokenManager.saveTokens(result.second)));
     }
 
-    public void refresh() throws AuthFailedException, UnauthorizedException {
+    public ApiHttpRequest<AuthTokenPair> refresh() throws UnauthorizedException {
         AuthTokenPair currentTokenPair = this.getTokenPair();
         if (currentTokenPair == null)
             throw new UnauthorizedException("Unable to refresh tokens: unauthorized");
-
-        AuthTokenPair newTokenPair = this.authApiService.refresh(currentTokenPair.getRefreshToken());
-        this.tokenManager.saveTokens(newTokenPair);
+        return this.authApiService.refresh(currentTokenPair.getRefreshToken()).onSuccess((tokenManager::saveTokens));
     }
 
     @CanIgnoreReturnValue
-    public User fetchMe() throws AuthFailedException, UnauthorizedException {
-        this.currentUser = this.authApiService.getMe();
-        return this.currentUser;
+    public ApiHttpRequest<User> fetchMe() throws UnauthorizedException {
+        return this.authApiService.getMe().onSuccess((result -> this.currentUser = result));
     }
 
-    public User getMe() throws AuthFailedException, UnauthorizedException {
-        if (this.currentUser == null) return fetchMe();
+    public @Nullable User getMe() {
         return this.currentUser;
     }
 }

@@ -1,44 +1,22 @@
 package com.smartplant.smartplantandroid.utils.network;
 
-import com.google.gson.JsonObject;
-
 import androidx.annotation.Nullable;
 
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
 
-//public static class Builder {
-//    private Boolean ok;
-//    private Integer applicationStatusCode;
-//    private String message;
-//    private JsonObject data;
-//
-//    public void setOk(boolean ok) {
-//        this.ok = ok;
-//    }
-//
-//    public void setApplicationStatusCode(int applicationStatusCode) {
-//        this.applicationStatusCode = applicationStatusCode;
-//    }
-//
-//    public void setMessage(String message) {
-//        this.message = message;
-//    }
-//
-//    public void setData(JsonObject data) {
-//        this.data = data;
-//    }
-//
-//    public TransferResponse build() throws BuildFailedException {
-//        if (ok == null || applicationStatusCode == null || message == null)
-//            throw new BuildFailedException("Some of required fields were not specified");
-//
-//        return new TransferResponse(ok, applicationStatusCode, message, data);
-//    }
-//}
 
 public class TransferResponse {
+    @SerializedName("ok")
     private final boolean _ok;
+
+    @SerializedName("application_status_code")
     private final int _applicationStatusCode;
+
+    @SerializedName("message")
     private final String _message;
+
+    @SerializedName("data")
     private final @Nullable JsonObject _data;
 
     public TransferResponse(boolean ok, int applicationStatusCode, String message, @Nullable JsonObject data) {
