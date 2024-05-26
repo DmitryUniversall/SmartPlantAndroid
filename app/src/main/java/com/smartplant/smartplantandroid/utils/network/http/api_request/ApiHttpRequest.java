@@ -5,15 +5,14 @@ import androidx.annotation.Nullable;
 import androidx.annotation.ReturnThis;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.smartplant.smartplantandroid.auth.exceptions.UnauthorizedException;
 import com.smartplant.smartplantandroid.auth.models.AuthTokenPair;
 import com.smartplant.smartplantandroid.auth.repository.AuthRepositoryST;
 import com.smartplant.smartplantandroid.utils.AppLogger;
+import com.smartplant.smartplantandroid.utils.data.json.JsonUtils;
+import com.smartplant.smartplantandroid.utils.network.ApiHelper;
 import com.smartplant.smartplantandroid.utils.network.TransferResponse;
-import com.smartplant.smartplantandroid.utils.network.http.HTTPApiHelper;
 import com.smartplant.smartplantandroid.utils.network.http.excpetions.BadResponseException;
 import com.smartplant.smartplantandroid.utils.network.http.excpetions.CancelResponseProcess;
 import com.smartplant.smartplantandroid.utils.network.http.excpetions.HttpTransferResponseException;
@@ -29,12 +28,12 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class ApiHttpRequest<T> {
-    private @NonNull Gson _gson;
-    private @NonNull OkHttpClient _client;
-    private @NonNull Request _request;
-    private final @NonNull ApiHttpResponseProcessor<T> _responseProcessor;
-    private final @NonNull ArrayList<ApiHttpSuccessHandler<T>> _successCallbackStack = new ArrayList<>();
-    private final @NonNull ArrayList<ApiHttpFailureHandler> _failureCallbackStack = new ArrayList<>();
+    protected @NonNull Gson _gson;
+    protected @NonNull OkHttpClient _client;
+    protected @NonNull Request _request;
+    protected final @NonNull ApiHttpResponseProcessor<T> _responseProcessor;
+    protected final @NonNull ArrayList<ApiHttpSuccessHandler<T>> _successCallbackStack = new ArrayList<>();
+    protected final @NonNull ArrayList<ApiHttpFailureHandler> _failureCallbackStack = new ArrayList<>();
 
     public ApiHttpRequest(@NonNull Request request, @NonNull ApiHttpResponseProcessor<T> responseProcessor, @Nullable Gson gson, @Nullable OkHttpClient client) {
         this._request = request;
@@ -48,12 +47,7 @@ public class ApiHttpRequest<T> {
     }
 
     protected void resendWithNewToken() {
-        try {
-            this._request = HTTPApiHelper.getAuthorizedRequestBuilder(this._request).build();
-        } catch (UnauthorizedException e) {
-            throw new RuntimeException(e);  // Should never occur
-        }
-
+        this._request = ApiHelper.getAuthorizedRequestBuilder(this._request).build();
         this.resend();
     }
 
@@ -73,7 +67,7 @@ public class ApiHttpRequest<T> {
 
     protected void callSuccessCallStack(@NonNull T result, @NonNull Response response, @NonNull TransferResponse transferResponse) {
         if (_failureCallbackStack.isEmpty()) {
-            AppLogger.warning("Unprocessed request %s", _request.url());
+            AppLogger.warning("Unprocessed request", _request.url());
             return;
         }
 
@@ -82,16 +76,21 @@ public class ApiHttpRequest<T> {
 
     protected void callFailureCallStack(@NonNull Call call, @NonNull Throwable error) {
         if (_failureCallbackStack.isEmpty()) {
-            AppLogger.error("Unprocessed request error %s", error);
+            AppLogger.error("Unprocessed request error", error);
             return;
         }
 
         Throwable currentError = error;
 
-        for (ApiHttpFailureHandler handler : _failureCallbackStack) {
+        int stackSize = _failureCallbackStack.size();
+        for (int index = 0; index < stackSize; index++) {
+            ApiHttpFailureHandler handler = _failureCallbackStack.get(index);
+
             try {
                 handler.onFailure(call, currentError);
             } catch (Throwable e) {
+                // Error occurred in last handler, so it will not be processed and will be lost
+                if (index == stackSize - 1) AppLogger.error("Unprocessed request error", e);
                 currentError = e;
             }
         }
@@ -104,22 +103,16 @@ public class ApiHttpRequest<T> {
         TransferResponse transferResponse;
         try {
             String responseBodyString = body.string();
-            if (responseBodyString.trim().isEmpty()) throw new BadResponseException("Empty response received");
-
-            JsonObject json = JsonParser.parseString(responseBodyString).getAsJsonObject();
-            boolean dataIsNull = json.get("data").isJsonNull();
-            if (dataIsNull) json.add("data", new JsonObject());
-            transferResponse = _gson.fromJson(json, TransferResponse.class);
-            if (dataIsNull) transferResponse.setData(null);
+            if (responseBodyString.trim().isEmpty())
+                throw new BadResponseException("Empty response received");
+            transferResponse = JsonUtils.fromJsonWithNulls(responseBodyString, TransferResponse.class, _gson);
         } catch (JsonSyntaxException e) {
             throw new BadResponseException("Invalid response received: Unable to parse json", e);
         }
 
         int applicationStatusCode = transferResponse.getApplicationStatusCode();
         if (applicationStatusCode == 3002 || applicationStatusCode == 3003) {  // Invalid or expired
-            this.autoRefreshToken().onSuccess(((result, response1, transferResponse1) -> {
-                this.resendWithNewToken();
-            })).send();
+            this.autoRefreshToken().onSuccess(((result, response1, transferResponse1) -> this.resendWithNewToken())).send();
             throw new CancelResponseProcess();
         }
 
@@ -138,7 +131,8 @@ public class ApiHttpRequest<T> {
             TransferResponse transferResponse = getTransferResponse(response);
             T result = _responseProcessor.processResponse(response, transferResponse);
             this.callSuccessCallStack(result, response, transferResponse);
-        } catch (HttpTransferResponseException | BadResponseException | UnauthorizedException error) {
+        } catch (HttpTransferResponseException | BadResponseException |
+                 UnauthorizedException error) {
             processFailure(call, error);
         } catch (CancelResponseProcess e) {
             return;  // Ignore it. Request should be canceled or it will be resend later

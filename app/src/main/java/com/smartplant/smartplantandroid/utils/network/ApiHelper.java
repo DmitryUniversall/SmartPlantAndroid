@@ -1,8 +1,7 @@
-package com.smartplant.smartplantandroid.utils.network.http;
-
-import static com.smartplant.smartplantandroid.utils.data.json.JsonUtils.getGson;
+package com.smartplant.smartplantandroid.utils.network;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.smartplant.smartplantandroid.auth.exceptions.UnauthorizedException;
 import com.smartplant.smartplantandroid.auth.models.AuthTokenPair;
 import com.smartplant.smartplantandroid.auth.repository.AuthRepositoryST;
@@ -13,9 +12,27 @@ import com.smartplant.smartplantandroid.utils.settings.ProjectSettingsST;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
-public class HTTPApiHelper {
-    private static final Gson _gson = getGson();
-    private static final OkHttpClient _client = new OkHttpClient();
+public class ApiHelper {
+    private static final Gson _gson = createGson();
+    private static final OkHttpClient _client = createOkHttpClient();
+
+    private static Gson createGson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+        return gsonBuilder.create();
+    }
+
+    private static OkHttpClient createOkHttpClient() {
+        return new OkHttpClient();
+    }
+
+    public static Gson getGson() {
+        return _gson;
+    }
+
+    public static OkHttpClient getOkHttpClient() {
+        return _client;
+    }
 
     public static Request.Builder getAuthorizedRequestBuilder() throws UnauthorizedException {
         ProjectSettingsST projectSettings = ProjectSettingsST.getInstance();

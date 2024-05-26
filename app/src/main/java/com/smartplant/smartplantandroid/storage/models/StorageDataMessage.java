@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.time.LocalDateTime;
 
-public class TransferDataMessage {
+public class StorageDataMessage {
     @SerializedName("created_at")
     private final LocalDateTime _createdAt;
 
@@ -17,7 +17,7 @@ public class TransferDataMessage {
     @SerializedName("data")
     private final @Nullable JsonObject _data;
 
-    public TransferDataMessage(LocalDateTime createdAt, String senderDeviceId, @Nullable JsonObject data) {
+    public StorageDataMessage(LocalDateTime createdAt, String senderDeviceId, @Nullable JsonObject data) {
         this._createdAt = createdAt;
         this._senderDeviceId = senderDeviceId;
         this._data = data;

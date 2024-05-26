@@ -17,7 +17,7 @@ public class TransferResponse {
     private final String _message;
 
     @SerializedName("data")
-    private @Nullable JsonObject _data;
+    private final @Nullable JsonObject _data;
 
     public TransferResponse(boolean ok, int applicationStatusCode, String message, @Nullable JsonObject data) {
         this._ok = ok;
@@ -41,9 +41,5 @@ public class TransferResponse {
     @Nullable
     public JsonObject getData() {
         return _data;
-    }
-
-    public void setData(@Nullable JsonObject data) {
-        this._data = data;
     }
 }

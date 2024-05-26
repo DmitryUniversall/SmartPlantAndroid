@@ -22,7 +22,7 @@ import java.util.Objects;
 public class AuthActivity extends CustomAppCompatActivity {
     private enum ScreenState {
         LOGIN,
-        REGISTER;
+        REGISTER
     }
 
     private static final int[] loginAnimation = {R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left};
@@ -80,8 +80,8 @@ public class AuthActivity extends CustomAppCompatActivity {
         if (screenState == currentScreenState) return;
         this.currentScreenState = screenState;
 
-        loginButton.setOutline(currentScreenState == ScreenState.LOGIN);
-        registerButton.setOutline(currentScreenState == ScreenState.REGISTER);
+        loginButton.setOutline(!(currentScreenState == ScreenState.LOGIN));
+        registerButton.setOutline(!(currentScreenState == ScreenState.REGISTER));
         submitButton.setText(currentScreenState == ScreenState.LOGIN ? getString(R.string.loginAction) : getString(R.string.registerAction));
         setFragment(
                 currentScreenState == ScreenState.LOGIN ? loginFragment : registerFragment,

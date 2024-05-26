@@ -22,7 +22,7 @@ public class AuthViewModel extends ViewModel {
         map.put(1001, R.string.success);
         map.put(2000, R.string.internalServerError);
         map.put(2001, R.string.userAlreadyExist);  // Register only
-        map.put(4007, R.string.wrongAuthCredentials);  // Login only
+        map.put(3006, R.string.wrongAuthCredentials);  // Login only
 
         APPLICATION_STATUS_CODE_MAPPING = Collections.unmodifiableMap(map);
     }

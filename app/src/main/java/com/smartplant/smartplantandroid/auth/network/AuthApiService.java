@@ -1,6 +1,6 @@
 package com.smartplant.smartplantandroid.auth.network;
 
-import static com.smartplant.smartplantandroid.utils.data.json.JsonUtils.getGson;
+import static com.smartplant.smartplantandroid.utils.network.ApiHelper.getGson;
 
 import android.util.Pair;
 
@@ -11,8 +11,8 @@ import com.smartplant.smartplantandroid.auth.exceptions.UnauthorizedException;
 import com.smartplant.smartplantandroid.auth.models.AuthTokenPair;
 import com.smartplant.smartplantandroid.auth.models.User;
 import com.smartplant.smartplantandroid.utils.AppLogger;
+import com.smartplant.smartplantandroid.utils.network.ApiHelper;
 import com.smartplant.smartplantandroid.utils.network.TransferResponse;
-import com.smartplant.smartplantandroid.utils.network.http.HTTPApiHelper;
 import com.smartplant.smartplantandroid.utils.network.http.api_request.ApiHttpRequest;
 import com.smartplant.smartplantandroid.utils.network.http.api_request.ApiHttpResponseProcessor;
 import com.smartplant.smartplantandroid.utils.network.http.excpetions.BadResponseException;
@@ -28,19 +28,19 @@ import okhttp3.RequestBody;
 
 
 public class AuthApiService {
-    private final Gson _gson = getGson();
+    private static final Gson _gson = getGson();
 
     private final String _apiAuthBase;
     private final String _apiUsersBase;
 
     public AuthApiService() {
         // Initializing here because settings will be loaded only after Application.onCreate performed
-        this._apiAuthBase = HTTPApiHelper.getBaseURL("http") + "auth/";
-        this._apiUsersBase = HTTPApiHelper.getBaseURL("http") + "users/";
+        this._apiAuthBase = ApiHelper.getBaseURL("http") + "auth/";
+        this._apiUsersBase = ApiHelper.getBaseURL("http") + "users/";
     }
 
     private <T> ApiHttpRequest<T> sendRequest(Request request, ApiHttpResponseProcessor<T> responseProcessor) {
-        return HTTPApiHelper.createApiRequest(request, responseProcessor).onFailure((call, error) -> {
+        return ApiHelper.createApiRequest(request, responseProcessor).onFailure((call, error) -> {
             if (error instanceof BadResponseException) {
                 AppLogger.error("Got bad response while sending request", error);
                 throw new AuthFailedException(error);
@@ -117,7 +117,7 @@ public class AuthApiService {
     }
 
     public ApiHttpRequest<User> getMe() throws UnauthorizedException {
-        Request request = HTTPApiHelper.getAuthorizedRequestBuilder().url(_apiUsersBase + "me/").build();
+        Request request = ApiHelper.getAuthorizedRequestBuilder().url(_apiUsersBase + "me/").build();
 
         return this.sendRequest(request, ((response, transferResponse) -> {
             assert transferResponse.getData() != null;
