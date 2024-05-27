@@ -2,11 +2,11 @@ package com.smartplant.smartplantandroid.auth.exceptions;
 
 import androidx.annotation.Nullable;
 
-import com.smartplant.smartplantandroid.utils.network.TransferResponse;
-import com.smartplant.smartplantandroid.utils.network.http.excpetions.HttpTransferResponseException;
+import com.smartplant.smartplantandroid.utils.network.ApplicationResponse;
+import com.smartplant.smartplantandroid.utils.network.http.excpetions.HttpApplicationResponseException;
 
 public class AuthFailedException extends Exception {
-    private @Nullable TransferResponse transferResponse;
+    private @Nullable ApplicationResponse applicationResponse;
 
     public AuthFailedException() {
         super();  // TODO: Default "auth failed" message
@@ -20,9 +20,9 @@ public class AuthFailedException extends Exception {
         super(message, cause);
     }
 
-    public AuthFailedException(HttpTransferResponseException cause) {
+    public AuthFailedException(HttpApplicationResponseException cause) {
         super(cause);
-        this.transferResponse = cause.getTransferResponse();
+        this.applicationResponse = cause.getApplicationResponse();
     }
 
     public AuthFailedException(Throwable cause) {
@@ -30,7 +30,7 @@ public class AuthFailedException extends Exception {
     }
 
     @Nullable
-    public TransferResponse getTransferResponse() {
-        return transferResponse;
+    public ApplicationResponse getTransferResponse() {
+        return applicationResponse;
     }
 }

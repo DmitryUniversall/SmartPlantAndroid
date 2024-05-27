@@ -3,6 +3,7 @@ package com.smartplant.smartplantandroid;
 import android.app.Application;
 
 import com.smartplant.smartplantandroid.auth.repository.AuthRepositoryST;
+import com.smartplant.smartplantandroid.storage.repository.StorageRepositoryST;
 import com.smartplant.smartplantandroid.utils.settings.ProjectSettingsST;
 
 public class SmartPlantApplication extends Application {
@@ -19,5 +20,6 @@ public class SmartPlantApplication extends Application {
 
     private void initializeRepositories() {
         AuthRepositoryST.createInstance(this);
+        StorageRepositoryST.createInstance();
     }
 }

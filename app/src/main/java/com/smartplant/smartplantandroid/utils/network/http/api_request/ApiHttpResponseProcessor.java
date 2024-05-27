@@ -2,11 +2,11 @@ package com.smartplant.smartplantandroid.utils.network.http.api_request;
 
 import androidx.annotation.NonNull;
 
-import com.smartplant.smartplantandroid.utils.network.TransferResponse;
+import com.smartplant.smartplantandroid.utils.network.ApplicationResponse;
 
 import okhttp3.Response;
 
 public interface ApiHttpResponseProcessor<T> {
     @NonNull
-    T processResponse(@NonNull Response response, @NonNull TransferResponse transferResponse);
+    T processResponse(@NonNull Response response, @NonNull ApplicationResponse applicationResponse);
 }

@@ -1,11 +1,12 @@
-package com.smartplant.smartplantandroid.storage.models;
+package com.smartplant.smartplantandroid.utils.network;
 
 import androidx.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
-public class ActionResponse {
+
+public class ApplicationResponse {
     @SerializedName("ok")
     private final boolean _ok;
 
@@ -18,7 +19,7 @@ public class ActionResponse {
     @SerializedName("data")
     private final @Nullable JsonObject _data;
 
-    public ActionResponse(boolean ok, int applicationStatusCode, String message, @Nullable JsonObject data) {
+    public ApplicationResponse(boolean ok, int applicationStatusCode, String message, @Nullable JsonObject data) {
         this._ok = ok;
         this._applicationStatusCode = applicationStatusCode;
         this._message = message;

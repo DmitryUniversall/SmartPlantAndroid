@@ -7,7 +7,7 @@ import com.smartplant.smartplantandroid.R;
 import com.smartplant.smartplantandroid.auth.exceptions.AuthFailedException;
 import com.smartplant.smartplantandroid.auth.repository.AuthRepositoryST;
 import com.smartplant.smartplantandroid.utils.AppLogger;
-import com.smartplant.smartplantandroid.utils.network.TransferResponse;
+import com.smartplant.smartplantandroid.utils.network.ApplicationResponse;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -43,8 +43,8 @@ public class AuthViewModel extends ViewModel {
         this._authRepository = AuthRepositoryST.getInstance();
     }
 
-    private void handleAuthSuccess(TransferResponse transferResponse, MediatorLiveData<AuthResult> authResult) {
-        int applicationStatusCode = transferResponse.getApplicationStatusCode();
+    private void handleAuthSuccess(ApplicationResponse applicationResponse, MediatorLiveData<AuthResult> authResult) {
+        int applicationStatusCode = applicationResponse.getApplicationStatusCode();
 
         Integer message = APPLICATION_STATUS_CODE_MAPPING.getOrDefault(applicationStatusCode, R.string.success);
         assert message != null;
@@ -53,9 +53,9 @@ public class AuthViewModel extends ViewModel {
     }
 
     private void handleAuthFailure(Throwable error, MediatorLiveData<AuthResult> authResult) {
-        TransferResponse transferResponse;
-        if (error instanceof AuthFailedException && (transferResponse = ((AuthFailedException) error).getTransferResponse()) != null) {
-            int applicationStatusCode = transferResponse.getApplicationStatusCode();
+        ApplicationResponse applicationResponse;
+        if (error instanceof AuthFailedException && (applicationResponse = ((AuthFailedException) error).getTransferResponse()) != null) {
+            int applicationStatusCode = applicationResponse.getApplicationStatusCode();
 
             Integer message = APPLICATION_STATUS_CODE_MAPPING.get(applicationStatusCode);
             assert message != null;
@@ -73,9 +73,9 @@ public class AuthViewModel extends ViewModel {
         MediatorLiveData<AuthResult> registerAuthResult = new MediatorLiveData<>();
 
         this._authRepository.register(username, password)
-                .onSuccess(((result, response, transferResponse) -> {
+                .onSuccess(((result, response, applicationResponse) -> {
                     AppLogger.debug("Register successful");
-                    this.handleAuthSuccess(transferResponse, registerAuthResult);
+                    this.handleAuthSuccess(applicationResponse, registerAuthResult);
                 }))
                 .onFailure(((call, error) -> {
                     AppLogger.error("Register unsuccessful", error);
@@ -90,9 +90,9 @@ public class AuthViewModel extends ViewModel {
         MediatorLiveData<AuthResult> loginAuthResult = new MediatorLiveData<>();
 
         this._authRepository.login(username, password)
-                .onSuccess(((result, response, transferResponse) -> {
+                .onSuccess(((result, response, applicationResponse) -> {
                     AppLogger.debug("Login successful");
-                    this.handleAuthSuccess(transferResponse, loginAuthResult);
+                    this.handleAuthSuccess(applicationResponse, loginAuthResult);
                 }))
                 .onFailure(((call, error) -> {
                     AppLogger.error("Login unsuccessful", error);

@@ -12,11 +12,11 @@ import com.smartplant.smartplantandroid.auth.models.AuthTokenPair;
 import com.smartplant.smartplantandroid.auth.models.User;
 import com.smartplant.smartplantandroid.utils.AppLogger;
 import com.smartplant.smartplantandroid.utils.network.ApiHelper;
-import com.smartplant.smartplantandroid.utils.network.TransferResponse;
+import com.smartplant.smartplantandroid.utils.network.ApplicationResponse;
 import com.smartplant.smartplantandroid.utils.network.http.api_request.ApiHttpRequest;
 import com.smartplant.smartplantandroid.utils.network.http.api_request.ApiHttpResponseProcessor;
 import com.smartplant.smartplantandroid.utils.network.http.excpetions.BadResponseException;
-import com.smartplant.smartplantandroid.utils.network.http.excpetions.HttpTransferResponseException;
+import com.smartplant.smartplantandroid.utils.network.http.excpetions.HttpApplicationResponseException;
 
 import org.json.JSONObject;
 
@@ -44,10 +44,10 @@ public class AuthApiService {
             if (error instanceof BadResponseException) {
                 AppLogger.error("Got bad response while sending request", error);
                 throw new AuthFailedException(error);
-            } else if (error instanceof HttpTransferResponseException) {
-                TransferResponse transferResponse = ((HttpTransferResponseException) error).getTransferResponse();
-                AppLogger.error(error, "Received request fail (%d): %s", transferResponse.getApplicationStatusCode(), transferResponse.getMessage());
-                throw new AuthFailedException((HttpTransferResponseException) error);
+            } else if (error instanceof HttpApplicationResponseException) {
+                ApplicationResponse applicationResponse = ((HttpApplicationResponseException) error).getApplicationResponse();
+                AppLogger.error(error, "Received request fail (%d): %s", applicationResponse.getApplicationStatusCode(), applicationResponse.getMessage());
+                throw new AuthFailedException((HttpApplicationResponseException) error);
             } else if (error instanceof IOException) {
                 AppLogger.error("Got unknown IO error while sending request", error);
                 throw new AuthFailedException(error);
@@ -68,10 +68,10 @@ public class AuthApiService {
         RequestBody body = RequestBody.create(json.toString(), MediaType.get("application/json; charset=utf-8"));
         Request request = new Request.Builder().url(_apiAuthBase + "register/").post(body).build();
 
-        return this.sendRequest(request, ((response, transferResponse) -> {
-            assert transferResponse.getData() != null;
-            JsonObject userJson = transferResponse.getData().getAsJsonObject("user");
-            JsonObject tokensJson = transferResponse.getData().getAsJsonObject("tokens");
+        return this.sendRequest(request, ((response, applicationResponse) -> {
+            assert applicationResponse.getData() != null;
+            JsonObject userJson = applicationResponse.getData().getAsJsonObject("user");
+            JsonObject tokensJson = applicationResponse.getData().getAsJsonObject("tokens");
             return new Pair<>(_gson.fromJson(userJson, User.class), _gson.fromJson(tokensJson, AuthTokenPair.class));
         }));
     }
@@ -89,10 +89,10 @@ public class AuthApiService {
         RequestBody body = RequestBody.create(json.toString(), MediaType.get("application/json; charset=utf-8"));
         Request request = new Request.Builder().url(_apiAuthBase + "login/").post(body).build();
 
-        return this.sendRequest(request, ((response, transferResponse) -> {
-            assert transferResponse.getData() != null;
-            JsonObject userJson = transferResponse.getData().getAsJsonObject("user");
-            JsonObject tokensJson = transferResponse.getData().getAsJsonObject("tokens");
+        return this.sendRequest(request, ((response, applicationResponse) -> {
+            assert applicationResponse.getData() != null;
+            JsonObject userJson = applicationResponse.getData().getAsJsonObject("user");
+            JsonObject tokensJson = applicationResponse.getData().getAsJsonObject("tokens");
             return new Pair<>(_gson.fromJson(userJson, User.class), _gson.fromJson(tokensJson, AuthTokenPair.class));
         }));
     }
@@ -109,9 +109,9 @@ public class AuthApiService {
         RequestBody body = RequestBody.create(json.toString(), MediaType.get("application/json; charset=utf-8"));
         Request request = new Request.Builder().url(_apiAuthBase + "refresh/").post(body).build();
 
-        return this.sendRequest(request, ((response, transferResponse) -> {
-            assert transferResponse.getData() != null;
-            JsonObject tokensJson = transferResponse.getData().getAsJsonObject("tokens");
+        return this.sendRequest(request, ((response, applicationResponse) -> {
+            assert applicationResponse.getData() != null;
+            JsonObject tokensJson = applicationResponse.getData().getAsJsonObject("tokens");
             return _gson.fromJson(tokensJson, AuthTokenPair.class);
         }));
     }
@@ -119,9 +119,9 @@ public class AuthApiService {
     public ApiHttpRequest<User> getMe() throws UnauthorizedException {
         Request request = ApiHelper.getAuthorizedRequestBuilder().url(_apiUsersBase + "me/").build();
 
-        return this.sendRequest(request, ((response, transferResponse) -> {
-            assert transferResponse.getData() != null;
-            JsonObject userJson = transferResponse.getData().getAsJsonObject("user");
+        return this.sendRequest(request, ((response, applicationResponse) -> {
+            assert applicationResponse.getData() != null;
+            JsonObject userJson = applicationResponse.getData().getAsJsonObject("user");
             return _gson.fromJson(userJson, User.class);
         }));
     }

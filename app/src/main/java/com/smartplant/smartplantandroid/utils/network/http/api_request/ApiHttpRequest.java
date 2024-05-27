@@ -12,10 +12,10 @@ import com.smartplant.smartplantandroid.auth.repository.AuthRepositoryST;
 import com.smartplant.smartplantandroid.utils.AppLogger;
 import com.smartplant.smartplantandroid.utils.data.json.JsonUtils;
 import com.smartplant.smartplantandroid.utils.network.ApiHelper;
-import com.smartplant.smartplantandroid.utils.network.TransferResponse;
+import com.smartplant.smartplantandroid.utils.network.ApplicationResponse;
 import com.smartplant.smartplantandroid.utils.network.http.excpetions.BadResponseException;
 import com.smartplant.smartplantandroid.utils.network.http.excpetions.CancelResponseProcess;
-import com.smartplant.smartplantandroid.utils.network.http.excpetions.HttpTransferResponseException;
+import com.smartplant.smartplantandroid.utils.network.http.excpetions.HttpApplicationResponseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class ApiHttpRequest<T> {
     protected ApiHttpRequest<AuthTokenPair> autoRefreshToken() throws UnauthorizedException {
         AuthRepositoryST authRepository = AuthRepositoryST.getInstance();
         return authRepository.refresh()
-                .onSuccess(((result, response, transferResponse) -> {
+                .onSuccess(((result, response, applicationResponse) -> {
                     AppLogger.info("Tokens refreshed");
                     resendWithNewToken();
                 }))
@@ -65,13 +65,13 @@ public class ApiHttpRequest<T> {
     }
 
 
-    protected void callSuccessCallStack(@NonNull T result, @NonNull Response response, @NonNull TransferResponse transferResponse) {
+    protected void callSuccessCallStack(@NonNull T result, @NonNull Response response, @NonNull ApplicationResponse applicationResponse) {
         if (_failureCallbackStack.isEmpty()) {
             AppLogger.warning("Unprocessed request", _request.url());
             return;
         }
 
-        _successCallbackStack.forEach((handler) -> handler.onSuccess(result, response, transferResponse));
+        _successCallbackStack.forEach((handler) -> handler.onSuccess(result, response, applicationResponse));
     }
 
     protected void callFailureCallStack(@NonNull Call call, @NonNull Throwable error) {
@@ -96,30 +96,30 @@ public class ApiHttpRequest<T> {
         }
     }
 
-    protected TransferResponse getTransferResponse(@NonNull Response response) throws IOException, UnauthorizedException, HttpTransferResponseException, BadResponseException, CancelResponseProcess {
+    protected ApplicationResponse getTransferResponse(@NonNull Response response) throws IOException, UnauthorizedException, HttpApplicationResponseException, BadResponseException, CancelResponseProcess {
         ResponseBody body = response.body();
         if (body == null) throw new BadResponseException("Invalid response received");
 
-        TransferResponse transferResponse;
+        ApplicationResponse applicationResponse;
         try {
             String responseBodyString = body.string();
             if (responseBodyString.trim().isEmpty())
                 throw new BadResponseException("Empty response received");
-            transferResponse = JsonUtils.fromJsonWithNulls(responseBodyString, TransferResponse.class, _gson);
+            applicationResponse = JsonUtils.fromJsonWithNulls(responseBodyString, ApplicationResponse.class, _gson);
         } catch (JsonSyntaxException e) {
             throw new BadResponseException("Invalid response received: Unable to parse json", e);
         }
 
-        int applicationStatusCode = transferResponse.getApplicationStatusCode();
+        int applicationStatusCode = applicationResponse.getApplicationStatusCode();
         if (applicationStatusCode == 3002 || applicationStatusCode == 3003) {  // Invalid or expired
-            this.autoRefreshToken().onSuccess(((result, response1, transferResponse1) -> this.resendWithNewToken())).send();
+            this.autoRefreshToken().onSuccess(((result, response1, applicationResponse1) -> this.resendWithNewToken())).send();
             throw new CancelResponseProcess();
         }
 
-        if (!transferResponse.isOk() || !response.isSuccessful())
-            throw new HttpTransferResponseException(response, transferResponse);
+        if (!applicationResponse.isOk() || !response.isSuccessful())
+            throw new HttpApplicationResponseException(response, applicationResponse);
 
-        return transferResponse;
+        return applicationResponse;
     }
 
     protected void processFailure(@NonNull Call call, @NonNull Throwable error) {
@@ -128,10 +128,10 @@ public class ApiHttpRequest<T> {
 
     protected void processResponse(@NonNull Call call, @NonNull Response response) throws IOException {
         try {
-            TransferResponse transferResponse = getTransferResponse(response);
-            T result = _responseProcessor.processResponse(response, transferResponse);
-            this.callSuccessCallStack(result, response, transferResponse);
-        } catch (HttpTransferResponseException | BadResponseException |
+            ApplicationResponse applicationResponse = getTransferResponse(response);
+            T result = _responseProcessor.processResponse(response, applicationResponse);
+            this.callSuccessCallStack(result, response, applicationResponse);
+        } catch (HttpApplicationResponseException | BadResponseException |
                  UnauthorizedException error) {
             processFailure(call, error);
         } catch (CancelResponseProcess e) {

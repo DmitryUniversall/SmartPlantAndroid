@@ -51,23 +51,23 @@ public class AuthRepositoryST {
     }
 
     public ApiHttpRequest<Pair<User, AuthTokenPair>> register(String username, String password) {
-        return this._authApiService.register(username, password).onSuccess(((result, response, transferResponse) -> _tokenManager.saveTokens(result.second)));
+        return this._authApiService.register(username, password).onSuccess(((result, response, applicationResponse) -> _tokenManager.saveTokens(result.second)));
     }
 
     public ApiHttpRequest<Pair<User, AuthTokenPair>> login(String username, String password) {
-        return this._authApiService.login(username, password).onSuccess(((result, response, transferResponse) -> _tokenManager.saveTokens(result.second)));
+        return this._authApiService.login(username, password).onSuccess(((result, response, applicationResponse) -> _tokenManager.saveTokens(result.second)));
     }
 
     public ApiHttpRequest<AuthTokenPair> refresh() throws UnauthorizedException {
         AuthTokenPair currentTokenPair = this.getTokenPair();
         if (currentTokenPair == null)
             throw new UnauthorizedException("Unable to refresh tokens: unauthorized");
-        return this._authApiService.refresh(currentTokenPair.getRefreshToken()).onSuccess((result, response, transferResponse) -> _tokenManager.saveTokens(result));
+        return this._authApiService.refresh(currentTokenPair.getRefreshToken()).onSuccess((result, response, applicationResponse) -> _tokenManager.saveTokens(result));
     }
 
     @CanIgnoreReturnValue
     public ApiHttpRequest<User> fetchMe() throws UnauthorizedException {
-        return this._authApiService.getMe().onSuccess(((result, response, transferResponse) -> this._currentUser = result));
+        return this._authApiService.getMe().onSuccess(((result, response, applicationResponse) -> this._currentUser = result));
     }
 
     public @Nullable User getMe() {

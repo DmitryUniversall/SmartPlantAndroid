@@ -25,7 +25,7 @@ public class InitViewModel extends ViewModel {
 
         try {
             this._authRepository.fetchMe()
-                    .onSuccess(((result, response, transferResponse) -> {
+                    .onSuccess(((result, response, applicationResponse) -> {
                         AppLogger.debug("User authenticated");
                         this._isAuthenticatedLive.postValue(true);
                     }))
