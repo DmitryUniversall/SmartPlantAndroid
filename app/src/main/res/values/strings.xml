@@ -15,4 +15,12 @@
     <string name="internalServerError">Неизвестная ошибка сервера</string>
     <string name="userAlreadyExist">Пользователь с таким именем уже существует</string>
     <string name="wrongAuthCredentials">Неверное имя пользователя или пароль</string>
+    <string name="MyDevices">Мои устройства</string>
+    <string name="Settings">Настройки</string>
+    <string name="Notifications">Уведомления</string>
+    <string name="AddDevice">Добавить устройство</string>
+    <string name="DeviceON">Включён</string>
+    <string name="DeviceOFF">Выключен</string>
+    <string name="DeviceTitle">Название устройства</string>
+    <string name="DeviceDescription">Описание устройства</string>
 </resources>

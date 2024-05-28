@@ -48,7 +48,7 @@ public class CustomButton extends AppCompatButton {
         if (_isOutline) {
             Drawable background = getBackgroundDrawable(getContext(), R.drawable.btn_outline_background);
             setBackground(background);
-            setTextColor(ContextCompat.getColor(getContext(), R.color.btn_primary));
+            setTextColor(ContextCompat.getColor(getContext(), R.color.primary));
         } else {
             Drawable background = getBackgroundDrawable(getContext(), R.drawable.btn_background);
             setBackground(background);

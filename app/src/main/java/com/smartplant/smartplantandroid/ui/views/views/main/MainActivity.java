@@ -1,46 +1,73 @@
 package com.smartplant.smartplantandroid.ui.views.views.main;
 
 import android.os.Bundle;
-import android.widget.Button;
+import androidx.appcompat.widget.Toolbar;
 
-import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.smartplant.smartplantandroid.R;
-import com.smartplant.smartplantandroid.storage.models.StorageAction;
-import com.smartplant.smartplantandroid.storage.network.actions.ActionProcessor;
-import com.smartplant.smartplantandroid.storage.repository.StorageRepositoryST;
-import com.smartplant.smartplantandroid.ui.viewmodels.main.MainViewModel;
-import com.smartplant.smartplantandroid.utils.AppLogger;
 import com.smartplant.smartplantandroid.utils.ui.CustomAppCompatActivity;
 
 public class MainActivity extends CustomAppCompatActivity {
-    private MainViewModel viewModel;
-    Button test;
-
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        test = findViewById(R.id.testbtn);
 
-        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        // Set up the toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        StorageRepositoryST storageRepository = StorageRepositoryST.getInstance();
-        ActionProcessor actionProcessor = storageRepository.connect()
-                .onServerApplicationResponse(response -> {
-                    AppLogger.info("Got server application response");
-                })
-                .onDeviceApplicationResponse((dataMessage, response) -> {
-                    AppLogger.info("Got device application response");
-                });
+        // Set up the BottomNavigationView
+        BottomNavigationView navView = findViewById(R.id.bottom_navigation);
 
-        test.setOnClickListener(v -> {
-            actionProcessor.createActionRequest(new StorageAction(1, null), "smartplant").onSuccess(((response, dataMessage) -> {
-                AppLogger.info("ACTION REQUEST SUCCESS");
-            })).onFailure((error -> {
-                AppLogger.info("ACTION REQUEST FAIL");
-            })).send();
-        });
+        // Find the NavHostFragment and retrieve the NavController
+        NavHostFragment navHostFragment =
+                (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        if (navHostFragment != null) {
+            NavController navController = navHostFragment.getNavController();
+            // Pass the NavController to NavigationUI to link the BottomNavigationView
+            AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                    R.id.nav_devices, R.id.nav_settings, R.id.nav_notifications
+            ).build();
+            NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+            NavigationUI.setupWithNavController(navView, navController);
+        } else {
+            throw new IllegalStateException("NavHostFragment is null");
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController =
+                Navigation.findNavController(this, R.id.nav_host_fragment);
+        return navController.navigateUp() || super.onSupportNavigateUp();
     }
 }
+
+//        setContentView(R.layout.main_activity);
+//        test = findViewById(R.id.testbtn);
+//
+//        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+//
+//        StorageRepositoryST storageRepository = StorageRepositoryST.getInstance();
+//        ActionProcessor actionProcessor = storageRepository.connect()
+//                .onServerApplicationResponse(response -> {
+//                    AppLogger.info("Got server application response");
+//                })
+//                .onDeviceApplicationResponse((dataMessage, response) -> {
+//                    AppLogger.info("Got device application response");
+//                });
+//
+//        test.setOnClickListener(v -> {
+//            actionProcessor.createActionRequest(new StorageAction(1, null), "smartplant").onSuccess(((response, dataMessage) -> {
+//                AppLogger.info("ACTION REQUEST SUCCESS");
+//            })).onFailure((error -> {
+//                AppLogger.info("ACTION REQUEST FAIL");
+//            })).send();
+//        });

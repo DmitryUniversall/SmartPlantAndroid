@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="text_secondary">#5C5C5C</color>
-    <color name="text_primary">#000000</color>
     <color name="background_primary">#FFFFFF</color>
-    <color name="btn_primary">#05D55C</color>
-    <color name="accent">#05D55C</color>
-    <style name="LoginTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-        <item name="boxStrokeColor">#fff</item>
-        <item name="boxStrokeWidth">2dp</item>
-    </style>
+    <color name="primary">#08D85F</color>
+
+    <color name="text_primary">#000000</color>
+    <color name="text_primary_inverted">#FFFFFF</color>
+    <color name="text_secondary">#5C5C5C</color>
+    <color name="text_secondary_inverted">#DDDDDD</color>
+
+    <color name="bottom_nav_item_color">#045302</color>
+    <color name="bottom_nav_item_color_selected">@color/text_primary_inverted</color>
+    <color name="bottom_nav_background">@color/primary</color>
+
+    <color name="device_off">#C31111</color>
 </resources>
