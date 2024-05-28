@@ -27,11 +27,9 @@ public class MainActivity extends CustomAppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.bottom_navigation);
 
         // Find the NavHostFragment and retrieve the NavController
-        NavHostFragment navHostFragment =
-                (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         if (navHostFragment != null) {
             NavController navController = navHostFragment.getNavController();
-            // Pass the NavController to NavigationUI to link the BottomNavigationView
             AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                     R.id.nav_devices, R.id.nav_settings, R.id.nav_notifications
             ).build();

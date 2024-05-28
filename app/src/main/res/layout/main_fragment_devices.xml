@@ -42,12 +42,14 @@
                     android:padding="10dp">
 
                 <androidx.cardview.widget.CardView
+                        android:id="@+id/deviceCard1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="12dp"
                         app:cardElevation="5dp"
                         android:layout_marginHorizontal="5dp"
-                        android:layout_marginTop="5dp">
+                        android:layout_marginTop="5dp"
+                        android:backgroundTint="@color/background_primary">
 
                     <com.smartplant.smartplantandroid.ui.views.views.main.fragments.devices.components.DeviceItemComponent
                             android:layout_width="match_parent"

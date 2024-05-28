@@ -23,4 +23,7 @@
     <string name="DeviceOFF">Выключен</string>
     <string name="DeviceTitle">Название устройства</string>
     <string name="DeviceDescription">Описание устройства</string>
+    <string name="DeviceManagement">Управление устройством</string>
+    <string name="plantimage">PlantImage</string>
+    <string name="Detail">Устройство</string>
 </resources>

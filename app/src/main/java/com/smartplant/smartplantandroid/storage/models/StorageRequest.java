@@ -9,8 +9,8 @@ import java.util.UUID;
 
 public class StorageRequest {
     public enum StorageRequestType {
-        ENQUEUE_REQUEST(1),
-        ENQUEUE_RESPONSE(2);
+        ENQUEUE_REQUEST(3),
+        ENQUEUE_RESPONSE(4);
 
         private final int value;
 
