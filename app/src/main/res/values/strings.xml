@@ -20,7 +20,9 @@
     <string name="Notifications">Уведомления</string>
     <string name="AddDevice">Добавить устройство</string>
     <string name="DeviceON">Включён</string>
+    <string name="DeviceONAction">Включить</string>
     <string name="DeviceOFF">Выключен</string>
+    <string name="DeviceOFFAction">Выключить</string>
     <string name="DeviceTitle">Название устройства</string>
     <string name="DeviceDescription">Описание устройства</string>
     <string name="DeviceManagement">Управление устройством</string>

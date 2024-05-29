@@ -7,15 +7,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.smartplant.smartplantandroid.R;
-import com.smartplant.smartplantandroid.ui.viewmodels.main.DevicesViewModel;
+import com.smartplant.smartplantandroid.ui.viewmodels.main.devices.DevicesViewModel;
 import com.smartplant.smartplantandroid.utils.ui.CustomFragment;
 
 public class DevicesFragment extends CustomFragment {

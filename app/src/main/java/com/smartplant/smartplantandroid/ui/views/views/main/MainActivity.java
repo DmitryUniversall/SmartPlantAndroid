@@ -3,6 +3,7 @@ package com.smartplant.smartplantandroid.ui.views.views.main;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -11,14 +12,27 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.smartplant.smartplantandroid.R;
+import com.smartplant.smartplantandroid.ui.viewmodels.main.MainViewModel;
 import com.smartplant.smartplantandroid.utils.ui.CustomAppCompatActivity;
 
 public class MainActivity extends CustomAppCompatActivity {
+    private MainViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        setupNavigation();
 
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        connectStorageWS();
+    }
+
+    private void connectStorageWS() {
+        this.viewModel.connectStorageWS();
+    }
+
+    private void setupNavigation() {
         // Set up the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -48,9 +62,6 @@ public class MainActivity extends CustomAppCompatActivity {
     }
 }
 
-//        setContentView(R.layout.main_activity);
-//        test = findViewById(R.id.testbtn);
-//
 //        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
 //
 //        StorageRepositoryST storageRepository = StorageRepositoryST.getInstance();

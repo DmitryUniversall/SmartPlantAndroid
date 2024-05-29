@@ -54,8 +54,8 @@
                     <com.smartplant.smartplantandroid.ui.views.views.main.fragments.devices.components.DeviceItemComponent
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:title="SmartPlant Кухня"
-                            app:description="SmartPlant устройство на кухне"
+                            app:title="SmartPlant"
+                            app:description="Первое устройство SmartPlant"
                             app:icon="@drawable/icon_house"
                             app:progress="70"
                             app:status="true"/>

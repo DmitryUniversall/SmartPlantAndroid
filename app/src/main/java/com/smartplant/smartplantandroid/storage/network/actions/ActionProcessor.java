@@ -5,6 +5,7 @@ import static com.smartplant.smartplantandroid.utils.network.ApiHelper.getGson;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.ReturnThis;
+import androidx.core.util.Pair;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.gson.Gson;
@@ -27,7 +28,7 @@ public class ActionProcessor extends StorageWSProcessor {
     protected static final @NonNull Gson _gson = getGson();
 
     private final @NonNull ArrayList<ApplicationResponseHandler> _SARCallbackStack = new ArrayList<>();  // Server Application Response Callback Stack
-    private final @NonNull ArrayList<StorageActionHandler> _actionCallbackStack = new ArrayList<>();
+    private final @NonNull ArrayList<Pair<Integer, StorageActionHandler>> _actionCallbackStack = new ArrayList<>();
     private final @NonNull ArrayList<StorageDARHandler> _DARCallbackStack = new ArrayList<>();  // Device Application Response Callback Stack
 
     public ActionProcessor(@NonNull Request initialRequest) {
@@ -66,8 +67,9 @@ public class ActionProcessor extends StorageWSProcessor {
             return;
         }
 
-        for (StorageActionHandler handler : this._actionCallbackStack) {
-            handler.onAction(dataMessage, action);
+        for (Pair<Integer, StorageActionHandler> handler : this._actionCallbackStack) {
+            if (handler.first != action.getAction()) continue;
+            handler.second.onAction(dataMessage, action);
         }
     }
 
@@ -89,14 +91,16 @@ public class ActionProcessor extends StorageWSProcessor {
 
     @ReturnThis
     @CanIgnoreReturnValue
-    public ActionProcessor onAction(@NonNull StorageActionHandler handler) {
-        this._actionCallbackStack.add(handler);
+    public ActionProcessor onAction(int action, @NonNull StorageActionHandler handler) {
+        AppLogger.info("Registering handler for action %d", action);
+        this._actionCallbackStack.add(new Pair<>(action, handler));
         return this;
     }
 
     @ReturnThis
     @CanIgnoreReturnValue
     public ActionProcessor onServerApplicationResponse(@NonNull ApplicationResponseHandler handler) {
+        AppLogger.info("Registering handler for SAR");
         this._SARCallbackStack.add(handler);
         return this;
     }
@@ -104,6 +108,7 @@ public class ActionProcessor extends StorageWSProcessor {
     @ReturnThis
     @CanIgnoreReturnValue
     public ActionProcessor onDeviceApplicationResponse(@NonNull StorageDARHandler handler) {
+        AppLogger.info("Registering handler for DAR");
         this._DARCallbackStack.add(handler);
         return this;
     }

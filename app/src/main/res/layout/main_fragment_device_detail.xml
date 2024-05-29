@@ -66,7 +66,7 @@
                             android:id="@+id/deviceName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Название устройства"
+                            android:text="SmartPlant"
                             android:textColor="@color/text_primary"
                             android:textSize="25sp"
                             android:textAlignment="textStart"
@@ -94,7 +94,7 @@
                             android:id="@+id/deviceDescription"
                             android:layout_height="wrap_content"
                             android:layout_width="330dp"
-                            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore ma"
+                            android:text="Первое устройство SmartPlant"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -402,10 +402,10 @@
                             flexbox:alignItems="center">
 
                         <com.smartplant.smartplantandroid.utils.ui.components.CustomButton
-                                android:id="@+id/pompToggleButton"
+                                android:id="@+id/waterButton"
                                 android:layout_width="100dp"
                                 android:layout_height="40dp"
-                                android:text="Включить"
+                                android:text="Полить"
                                 android:layout_marginEnd="10dp" />
 
                         <com.smartplant.smartplantandroid.utils.ui.components.CustomButton

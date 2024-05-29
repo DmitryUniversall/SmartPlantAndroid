@@ -29,6 +29,7 @@ public class ActionRequest {
     private final @NonNull StorageAction _action;
     private final @NonNull String _targetDeviceId;
     private final @NonNull String _messageID;
+    private boolean _done = false;
 
     public ActionRequest(@NonNull ActionProcessor processor, @NonNull StorageAction action, @NonNull String targetDeviceId) {
         this._processor = processor;
@@ -70,7 +71,10 @@ public class ActionRequest {
     }
 
     private void _processEnqueued(@NonNull ApplicationResponse response) throws ApplicationResponseException {
+        if (_done) return;
+
         if (response.isOk()) {  // TODO: Make timeout
+            // TODO: Check if it is needed request
             AppLogger.debug("ActionRequest %s enqueued", _messageID);
         } else {
             throw new ApplicationResponseException(response);
@@ -82,6 +86,7 @@ public class ActionRequest {
 
         if (response.isOk()) {
             AppLogger.debug("ActionRequest %s responded with success", _messageID);
+            _done = true;  // TODO: Temp hack
             this._callSuccessCallStack(response, dataMessage);
         } else {
             throw new ApplicationResponseException(response);
@@ -97,6 +102,7 @@ public class ActionRequest {
     }
 
     private void onDeviceApplicationResponse(@NonNull StorageDataMessage dataMessage, @NonNull ApplicationResponse response) {
+
         try {
             _processResponded(dataMessage, response);
         } catch (ApplicationResponseException error) {

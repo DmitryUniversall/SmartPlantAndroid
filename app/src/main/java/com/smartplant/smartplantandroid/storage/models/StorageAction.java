@@ -26,7 +26,8 @@ public class StorageAction {
     }
 
     public enum DeviceActionType {  // Can be sent by device (ESP32)
-        PING(1);
+        PING(1),
+        SENSORS_DATA_UPDATE(2);
 
         private final int _value;
 

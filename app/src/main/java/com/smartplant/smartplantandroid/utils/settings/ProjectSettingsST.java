@@ -18,7 +18,7 @@ public class ProjectSettingsST {  // TODO: Make SettingsBase class for other set
     protected static final String KEY_TS_AUTH_TOKEN_TYPE = "auth_token_type";
 
     // Defaults
-    protected static final String DEFAULT_TS_HOST = "172.27.11.5";
+    protected static final String DEFAULT_TS_HOST = "185.250.46.64";
     protected static final int DEFAULT_TS_PORT = 8000;
     protected static final String DEFAULT_TS_APP_DEVICE_ID = "SmartPlantAndroid";
     protected static final String DEFAULT_TS_API_BASE_URL = "/api/";
