@@ -1,0 +1,41 @@
+<resources>
+    <!-- Generics -->
+    <string name="appLogo">SmartPlant Логотип</string>
+    <string name="appName">SmartPlant</string>
+    <string name="internalServerError">Неизвестная ошибка сервера</string>
+    <string name="ON">Включён</string>
+    <string name="ONAction">Включить</string>
+    <string name="OFF">Выключен</string>
+    <string name="OFFAction">Выключить</string>
+
+    <!-- NavBar -->
+    <string name="MyDevices">Мои устройства</string>
+    <string name="Settings">Настройки</string>
+    <string name="Notifications">Уведомления</string>
+
+    <!-- Start screen -->
+    <string name="welcome">Добро пожаловать в SmartPlant</string>
+    <string name="welcomeDescription">Ваш помощник по уходу за растениями</string>
+
+    <!-- Auth screen -->
+    <string name="loginAction">Войти</string>
+    <string name="login">Вход</string>
+    <string name="registerAction">Зарегистрироваться</string>
+    <string name="register">Регистрация</string>
+    <string name="auth">Авторизация</string>
+    <string name="username">Имя пользователя</string>
+    <string name="password">Пароль</string>
+    <string name="passwordConfirmation">Подтверждение пароля</string>
+    <string name="success">Успешно</string>
+    <string name="userAlreadyExist">Пользователь с таким именем уже существует</string>
+    <string name="wrongAuthCredentials">Неверное имя пользователя или пароль</string>
+
+    <!-- Devices screen -->
+    <string name="AddDevice">Добавить устройство</string>
+
+    <!-- Device detail screen -->
+    <string name="DeviceManagement">Управление устройством</string>
+    <string name="DeviceTitle">Название устройства</string>
+    <string name="DeviceDescription">Описание устройства</string>
+    <string name="plantImage">Растение</string>
+</resources>

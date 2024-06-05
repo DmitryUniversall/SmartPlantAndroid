@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:flexbox="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <!-- Your fragment content here -->
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+        <!-- View title -->
+        <TextView
+                android:id="@+id/device_management_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/DeviceManagement"
+                android:textStyle="bold"
+                android:textSize="30sp"
+                android:textColor="@color/text_primary"
+                android:textAlignment="center" />
+
+        <!-- Device Image -->
+        <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                flexbox:justifyContent="center"
+                android:layout_marginBottom="20dp">
+
+            <ImageView
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:contentDescription="@string/plantImage"
+                    android:src="@drawable/plant" />
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <!-- Device Management -->
+        <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                flexbox:flexDirection="column">
+
+            <!-- Device Texts -->
+            <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    flexbox:flexDirection="column"
+                    flexbox:justifyContent="flex_start"
+                    android:layout_marginBottom="20dp">
+
+                <com.google.android.flexbox.FlexboxLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        flexbox:flexDirection="row"
+                        flexbox:justifyContent="space_between"
+                        flexbox:alignItems="center"
+                        android:layout_marginBottom="10dp">
+
+                    <!-- Name -->
+                    <TextView
+                            android:id="@+id/deviceName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SmartPlant"
+                            android:textColor="@color/text_primary"
+                            android:textSize="25sp"
+                            android:textAlignment="textStart"
+                            android:textStyle="bold" />
+
+                    <!-- Edit name icon -->
+                    <ImageView
+                            android:id="@+id/iconEditName"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="EditDeviceNameIcon"
+                            android:src="@drawable/icon_pen" />
+                </com.google.android.flexbox.FlexboxLayout>
+
+                <!-- Device Description -->
+                <com.google.android.flexbox.FlexboxLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        flexbox:flexDirection="row"
+                        flexbox:justifyContent="space_between"
+                        flexbox:alignItems="center">
+
+                    <!-- Description -->
+                    <TextView
+                            android:id="@+id/deviceDescription"
+                            android:layout_height="wrap_content"
+                            android:layout_width="330dp"
+                            android:text="Первое устройство SmartPlant"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                    <!-- Edit description icon -->
+                    <ImageView
+                            android:id="@+id/iconEditDescription"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="EditDeviceDescriptionIcon"
+                            android:src="@drawable/icon_pen" />
+                </com.google.android.flexbox.FlexboxLayout>
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <View
+                    android:layout_height="2dp"
+                    android:layout_width="match_parent"
+                    android:background="#BEBEBE"
+                    android:layout_marginBottom="20dp" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    flexbox:flexDirection="column"
+                    android:layout_marginBottom="20dp">
+
+                <com.google.android.flexbox.FlexboxLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="110dp"
+                        flexbox:flexDirection="row"
+                        flexbox:justifyContent="space_between">
+                    <!-- Stat card -->
+                    <com.google.android.flexbox.FlexboxLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            flexbox:flexDirection="column"
+                            flexbox:justifyContent="space_between"
+                            flexbox:alignItems="center"
+                            android:layout_marginEnd="5dp">
+                        <!-- Icon -->
+                        <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:contentDescription="EditDeviceDescriptionIcon"
+                                android:src="@drawable/icon_temperature"/>
+
+                        <!-- Stat title -->
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                flexbox:flexDirection="row"
+                                android:text="Температура"
+                                android:textAlignment="center"
+                                android:textColor="@color/text_primary"
+                                android:textStyle="bold"
+                                android:textSize="14sp"/>
+
+                        <!-- Stat value -->
+                        <TextView
+                                android:id="@+id/temperatureValueView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                flexbox:flexDirection="row"
+                                android:text="10 °C"
+                                android:textSize="20sp"
+                                android:textColor="@color/text_primary"
+                                android:textStyle="bold" />
+                    </com.google.android.flexbox.FlexboxLayout>
+
+                    <!-- Stat card -->
+                    <com.google.android.flexbox.FlexboxLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            flexbox:flexDirection="column"
+                            flexbox:justifyContent="space_between"
+                            flexbox:alignItems="center"
+                            android:layout_marginEnd="5dp">
+                        <!-- Icon -->
+                        <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:contentDescription="EditDeviceDescriptionIcon"
+                                android:src="@drawable/icon_glass"/>
+
+                        <!-- Stat title -->
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                flexbox:flexDirection="row"
+                                android:text="Влажность почвы"
+                                android:textColor="@color/text_primary"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
+                                android:textAlignment="center"/>
+
+                        <!-- Stat value -->
+                        <TextView
+                                android:id="@+id/soilMoistureValueView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                flexbox:flexDirection="row"
+                                android:text="70%"
+                                android:textSize="20sp"
+                                android:textColor="@color/text_primary"
+                                android:textStyle="bold" />
+                    </com.google.android.flexbox.FlexboxLayout>
+                    <!-- Stat card -->
+                    <com.google.android.flexbox.FlexboxLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            flexbox:flexDirection="column"
+                            flexbox:justifyContent="space_between"
+                            flexbox:alignItems="center"
+                            android:layout_marginEnd="5dp">
+                        <!-- Icon -->
+                        <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:contentDescription="EditDeviceDescriptionIcon"
+                                android:src="@drawable/icon_wind"/>
+
+                        <!-- Stat title -->
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                flexbox:flexDirection="row"
+                                android:text="Влажность воздуха"
+                                android:textAlignment="center"
+                                android:textColor="@color/text_primary"
+                                android:textStyle="bold"
+                                android:textSize="14sp"/>
+
+                        <!-- Stat value -->
+                        <TextView
+                                android:id="@+id/airHumidityValueView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                flexbox:flexDirection="row"
+                                android:text="30%"
+                                android:textSize="20sp"
+                                android:textColor="@color/text_primary"
+                                android:textStyle="bold" />
+                    </com.google.android.flexbox.FlexboxLayout>
+                    <!-- Stat card -->
+                    <com.google.android.flexbox.FlexboxLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            flexbox:flexDirection="column"
+                            flexbox:justifyContent="space_between"
+                            flexbox:alignItems="center">
+                        <!-- Icon -->
+                        <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:contentDescription="EditDeviceDescriptionIcon"
+                                android:src="@drawable/icon_sun"/>
+
+                        <!-- Stat title -->
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                flexbox:flexDirection="row"
+                                android:text="Освещение"
+                                android:textAlignment="center"
+                                android:textColor="@color/text_primary"
+                                android:textStyle="bold"
+                                android:textSize="14sp"/>
+
+                        <!-- Stat value -->
+                        <TextView
+                                android:id="@+id/illuminationValueView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                flexbox:flexDirection="row"
+                                android:text="95%"
+                                android:textSize="20sp"
+                                android:textColor="@color/text_primary"
+                                android:textStyle="bold" />
+                    </com.google.android.flexbox.FlexboxLayout>
+                </com.google.android.flexbox.FlexboxLayout>
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <View
+                    android:layout_height="2dp"
+                    android:layout_width="match_parent"
+                    android:background="#BEBEBE"
+                    android:layout_marginBottom="20dp" />
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Уровень воды"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="0.2" />
+
+                <ProgressBar
+                        android:id="@+id/progress_bar"
+                        style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:progressTint="#A6D5FA"
+                        android:backgroundTint="#D9D9D9"
+                        android:progress="70"
+                        android:layout_weight="0.8" />
+            </LinearLayout>
+
+            <View
+                    android:layout_height="2dp"
+                    android:layout_width="match_parent"
+                    android:background="#BEBEBE"
+                    android:layout_marginBottom="20dp" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    flexbox:flexDirection="column"
+                    android:layout_marginBottom="20dp">
+
+                <!-- Control Block -->
+                <com.google.android.flexbox.FlexboxLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        flexbox:flexDirection="row"
+                        flexbox:justifyContent="space_between"
+                        flexbox:alignItems="center"
+                        android:layout_marginBottom="10dp">
+                    <!-- Control Title -->
+                    <com.google.android.flexbox.FlexboxLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            flexbox:flexDirection="row"
+                            flexbox:justifyContent="center"
+                            flexbox:alignItems="center">
+                        <!-- Title -->
+                        <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                flexbox:flexDirection="row"
+                                android:text="Освещение"
+                                android:textSize="20sp"
+                                android:textColor="@color/text_primary"
+                                android:textStyle="bold" />
+                    </com.google.android.flexbox.FlexboxLayout>
+
+                    <!-- Control Actions -->
+                    <com.google.android.flexbox.FlexboxLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            flexbox:flexDirection="row"
+                            flexbox:justifyContent="center"
+                            flexbox:alignItems="center">
+
+                        <com.smartplant.smartplantandroid.utils.ui.components.CustomButton
+                                android:id="@+id/lampToggleButton"
+                                android:layout_width="100dp"
+                                android:layout_height="40dp"
+                                android:text="Включить"
+                                android:layout_marginEnd="10dp" />
+
+                        <com.smartplant.smartplantandroid.utils.ui.components.CustomButton
+                                android:id="@+id/lampSettingsButton"
+                                android:layout_width="100dp"
+                                android:layout_height="40dp"
+                                android:text="Настроить" />
+                    </com.google.android.flexbox.FlexboxLayout>
+                </com.google.android.flexbox.FlexboxLayout>
+
+                <!-- Control Block -->
+                <com.google.android.flexbox.FlexboxLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        flexbox:flexDirection="row"
+                        flexbox:justifyContent="space_between"
+                        flexbox:alignItems="center">
+                    <!-- Control Title -->
+                    <com.google.android.flexbox.FlexboxLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            flexbox:flexDirection="row"
+                            flexbox:justifyContent="center"
+                            flexbox:alignItems="center">
+                        <!-- Title -->
+                        <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                flexbox:flexDirection="row"
+                                android:text="Полив"
+                                android:textSize="20sp"
+                                android:textColor="@color/text_primary"
+                                android:textStyle="bold" />
+                    </com.google.android.flexbox.FlexboxLayout>
+
+                    <!-- Control Actions -->
+                    <com.google.android.flexbox.FlexboxLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            flexbox:flexDirection="row"
+                            flexbox:justifyContent="center"
+                            flexbox:alignItems="center">
+
+                        <com.smartplant.smartplantandroid.utils.ui.components.CustomButton
+                                android:id="@+id/waterButton"
+                                android:layout_width="100dp"
+                                android:layout_height="40dp"
+                                android:text="Полить"
+                                android:layout_marginEnd="10dp" />
+
+                        <com.smartplant.smartplantandroid.utils.ui.components.CustomButton
+                                android:id="@+id/pompSettingsButton"
+                                android:layout_width="100dp"
+                                android:layout_height="40dp"
+                                android:text="Настроить" />
+                    </com.google.android.flexbox.FlexboxLayout>
+                </com.google.android.flexbox.FlexboxLayout>
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <View
+                    android:layout_height="2dp"
+                    android:layout_width="match_parent"
+                    android:background="#BEBEBE"
+                    android:layout_marginBottom="20dp" />
+
+            <com.smartplant.smartplantandroid.utils.ui.components.CustomButton
+                    android:id="@+id/advancedSettingsButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:text="Дополнительные настройки" />
+        </com.google.android.flexbox.FlexboxLayout>
+    </LinearLayout>
+</ScrollView>

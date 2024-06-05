@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.views.views.main.MainActivity"
+        android:background="@color/background_primary"
+        android:orientation="vertical">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/L1_Primary"
+                app:titleTextAppearance="@style/CustomToolbarTitleText"
+                app:subtitleTextAppearance="@style/CustomToolbarSubtitleText"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/nav_host_fragment"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/nav_graph" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_navigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:itemTextColor="@color/nav_item_color"
+                app:itemIconTint="@color/nav_item_color"
+                app:labelVisibilityMode="labeled"
+                app:menu="@menu/bottom_nav_menu"
+                app:itemIconSize="24dp"
+                app:backgroundTint="@color/L1_BottomNavBackground"
+                style="@style/CustomBottomNavigationView" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

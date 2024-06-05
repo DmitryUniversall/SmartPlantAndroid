@@ -1,0 +1,103 @@
+
+
+    <com.google.android.flexbox.FlexboxLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            app:flexDirection="column"
+            android:elevation="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp">
+
+        <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:flexDirection="row"
+                app:justifyContent="space_between">
+
+            <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:flexDirection="column"
+                    android:layout_marginEnd="10dp">
+
+                <TextView
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/DeviceTitle"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textColor="@android:color/black" />
+
+                <TextView
+                        android:id="@+id/description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/DeviceDescription"
+                        android:textSize="14sp"
+                        android:textColor="@color/L1_TextSecondary" />
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    app:flexDirection="column"
+                    app:justifyContent="center"
+                    app:alignItems="center">
+
+                <ImageView
+                        android:id="@+id/icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/icon_house" />
+            </com.google.android.flexbox.FlexboxLayout>
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:flexDirection="row"
+                app:justifyContent="flex_start"
+                app:alignItems="center">
+
+            <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp">
+
+                <ProgressBar
+                        android:id="@+id/progress_bar"
+                        style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:progressTint="#A6D5FA"
+                        android:backgroundTint="#D9D9D9"
+                        android:progress="70" />
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="170dp"
+                    android:layout_height="match_parent"
+                    app:flexDirection="row"
+                    app:justifyContent="flex_end"
+                    app:alignItems="center">
+
+                <TextView
+                        android:id="@+id/status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/L1_Primary"
+                        android:text="@string/DeviceOFF"
+                        android:textStyle="bold" />
+
+                <View
+                        android:id="@+id/status_indicator"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:background="@drawable/icon_device_active"
+                        android:layout_marginStart="4dp"
+                        android:layout_gravity="center_vertical" />
+            </com.google.android.flexbox.FlexboxLayout>
+        </com.google.android.flexbox.FlexboxLayout>
+    </com.google.android.flexbox.FlexboxLayout>
