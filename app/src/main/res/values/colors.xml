@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="background_primary">#FFFFFF</color>
-    <color name="primary">#08D85F</color>
+    <color name="primary">#60BB50</color>
 
     <color name="text_primary">#000000</color>
     <color name="text_primary_inverted">#FFFFFF</color>

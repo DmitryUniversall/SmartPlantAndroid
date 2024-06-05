@@ -87,7 +87,7 @@
 
                 <!-- Fragment -->
                 <androidx.fragment.app.FragmentContainerView
-                        android:id="@+id/fragmentContainerView"
+                        android:id="@+id/authFragmentContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
             </com.google.android.flexbox.FlexboxLayout>

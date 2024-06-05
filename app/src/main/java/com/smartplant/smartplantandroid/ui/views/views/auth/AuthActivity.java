@@ -90,7 +90,7 @@ public class AuthActivity extends CustomAppCompatActivity {
     }
 
     void setFragment(Fragment fragment, int[] animation) {
-        replaceFragment(R.id.fragmentContainerView, fragment, animation);
+        replaceFragment(R.id.authFragmentContainer, fragment, animation);
     }
 
     private void register() {
