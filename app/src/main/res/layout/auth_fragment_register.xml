@@ -4,13 +4,13 @@
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
-        android:background="@color/background_primary">
+        android:background="@color/L1_background_primary">
 
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintTextColor="@color/text_primary"
-            app:helperTextTextColor="@color/text_primary"
+            app:hintTextColor="@color/L1_text_primary"
+            app:helperTextTextColor="@color/L1_text_primary"
             android:layout_marginBottom="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -18,15 +18,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/username"
-                android:textColorHint="@color/L1_TextSecondary"
-                android:textColor="@color/text_primary"/>
+                android:textColorHint="@color/L1_text_secondary"
+                android:textColor="@color/L1_text_primary"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintTextColor="@color/text_primary"
-            app:helperTextTextColor="@color/text_primary"
+            app:hintTextColor="@color/L1_text_primary"
+            app:helperTextTextColor="@color/L1_text_primary"
             android:layout_marginBottom="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -35,24 +35,24 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
                 android:inputType="textPassword"
-                android:textColorHint="@color/L1_TextSecondary"
-                android:textColor="@color/text_primary"/>
+                android:textColorHint="@color/L1_text_secondary"
+                android:textColor="@color/L1_text_primary"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintTextColor="@color/text_primary"
-            app:helperTextTextColor="@color/text_primary">
+            app:hintTextColor="@color/L1_text_primary"
+            app:helperTextTextColor="@color/L1_text_primary">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwordConfirmationEdittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/passwordConfirmation"
+                android:hint="@string/password_confirmation"
                 android:inputType="textPassword"
-                android:textColorHint="@color/L1_TextSecondary"
-                android:textColor="@color/text_primary"/>
+                android:textColorHint="@color/L1_text_secondary"
+                android:textColor="@color/L1_text_primary"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

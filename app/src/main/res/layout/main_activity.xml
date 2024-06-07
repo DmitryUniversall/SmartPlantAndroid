@@ -5,8 +5,8 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.views.views.main.MainActivity"
-        android:background="@color/background_primary"
+        tools:context=".main.ui.views.main.MainActivity"
+        android:background="@color/L1_background_primary"
         android:orientation="vertical">
 
     <LinearLayout
@@ -18,7 +18,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/L1_Primary"
+                android:background="@color/L1_primary"
                 app:titleTextAppearance="@style/CustomToolbarTitleText"
                 app:subtitleTextAppearance="@style/CustomToolbarSubtitleText"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
@@ -41,7 +41,7 @@
                 app:labelVisibilityMode="labeled"
                 app:menu="@menu/bottom_nav_menu"
                 app:itemIconSize="24dp"
-                app:backgroundTint="@color/L1_BottomNavBackground"
+                app:backgroundTint="@color/L1_bottom_nav_background"
                 style="@style/CustomBottomNavigationView" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

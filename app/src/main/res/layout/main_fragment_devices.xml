@@ -22,10 +22,10 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/MyDevices"
+                    android:text="@string/my_devices"
                     android:textStyle="bold"
                     android:textSize="38sp"
-                    android:textColor="@color/text_primary" />
+                    android:textColor="@color/L1_text_primary" />
         </com.google.android.flexbox.FlexboxLayout>
 
         <com.google.android.flexbox.FlexboxLayout
@@ -49,9 +49,9 @@
                         app:cardElevation="5dp"
                         android:layout_marginHorizontal="5dp"
                         android:layout_marginTop="5dp"
-                        android:backgroundTint="@color/background_primary">
+                        android:backgroundTint="@color/L1_background_primary">
 
-                    <com.smartplant.smartplantandroid.ui.views.views.main.fragments.devices.components.DeviceItemComponent
+                    <com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.devices_list.items.DeviceCardItem
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:title="SmartPlant"
@@ -61,10 +61,10 @@
                             app:status="true"/>
                 </androidx.cardview.widget.CardView>
 
-                <com.smartplant.smartplantandroid.utils.ui.components.CustomButton
+                <com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.devices_list.items.DeviceCardItem
                         android:id="@+id/addDeviceButton"
                         android:layout_width="match_parent"
-                        android:text="@string/AddDevice"
+                        android:text="@string/add_device"
                         android:layout_height="43dp" />
             </com.google.android.flexbox.FlexboxLayout>
 

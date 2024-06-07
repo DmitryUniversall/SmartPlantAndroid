@@ -5,18 +5,18 @@
     <color name="white">#FFFFFFFF</color>
 
     <!-- Global -->
-    <color name="deviceOFF">#C31111</color>
-    <color name="deviceON">#0ED300</color>
+    <color name="device_off">#C31111</color>
+    <color name="device_on">#0ED300</color>
 
     <!-- Light theme 1 -->
-    <color name="L1_Primary">#60BB50</color>
-    <color name="L1_Accent">@color/white</color>
-    <color name="L1_BackgroundPrimary">@color/white</color>
+    <color name="L1_primary">#60BB50</color>
+    <color name="L1_accent">@color/white</color>
+    <color name="L1_background_primary">@color/white</color>
 
-    <color name="L1_TextPrimary">@color/black</color>
-    <color name="L1_TextSecondary">#5C5C5C</color>
+    <color name="L1_text_primary">@color/black</color>
+    <color name="L1_text_secondary">#5C5C5C</color>
 
-    <color name="L1_BottomNavItemInactive">#045302</color>
-    <color name="L1_BottomNavItemColorSelected">@color/L1_Accent</color>
-    <color name="L1_BottomNavBackground">@color/L1_Primary</color>
+    <color name="L1_bottom_nav_item_inactive">#045302</color>
+    <color name="L1_bottom_nav_item_selected">@color/L1_accent</color>
+    <color name="L1_bottom_nav_background">@color/L1_primary</color>
 </resources>

@@ -1,11 +1,11 @@
 <resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.SmartPlantAndroid" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/L1_Primary</item>
-        <item name="colorPrimaryDark">@color/L1_Primary</item> <!-- Status bar color -->
-        <item name="colorAccent">@color/L1_Accent</item>
-        <item name="android:textColorPrimary">@color/L1_TextPrimary</item>
-        <item name="android:statusBarColor">@color/L1_Primary</item> <!-- Status bar color -->
+        <item name="colorPrimary">@color/L1_primary</item>
+        <item name="colorPrimaryDark">@color/L1_primary</item> <!-- Status bar color -->
+        <item name="colorAccent">@color/L1_accent</item>
+        <item name="android:textColorPrimary">@color/L1_text_primary</item>
+        <item name="android:statusBarColor">@color/L1_primary</item> <!-- Status bar color -->
     </style>
 
     <style name="Theme.SmartPlantAndroid" parent="Base.Theme.SmartPlantAndroid" />

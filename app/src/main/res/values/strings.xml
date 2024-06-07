@@ -1,41 +1,75 @@
 <resources>
     <!-- Generics -->
-    <string name="appLogo">SmartPlant Логотип</string>
-    <string name="appName">SmartPlant</string>
-    <string name="internalServerError">Неизвестная ошибка сервера</string>
-    <string name="ON">Включён</string>
-    <string name="ONAction">Включить</string>
-    <string name="OFF">Выключен</string>
-    <string name="OFFAction">Выключить</string>
+    <string name="app_logo">SmartPlant Логотип</string>
+    <string name="app_name">SmartPlant</string>
+    <string name="on">Включён</string>
+    <string name="on_action">Включить</string>
+    <string name="off">Выключен</string>
+    <string name="off_action">Выключить</string>
+
+    <!-- Application status codes-->
+    <string name="auth_failed">Ошибка авторизации</string>
+    <string name="internal_server_error">Неизвестная ошибка сервера</string>
+
+    <string name="code_not_specified">@string/internal_server_error</string>
+    <string name="code_success">Успех</string>
+    <string name="code_created">Создано</string>
+    <string name="code_updated">Обновлено</string>
+
+    <string name="code_internal_server_error">@string/internal_server_error</string>
+    <string name="code_already_exists">Уже существует</string>
+    <string name="code_not_found">Не найдено</string>
+    <string name="code_unprocessable_entity">@string/internal_server_error</string>
+    <string name="code_time_out">Время ожидания истекло</string>
+    <string name="code_bad_request">@string/internal_server_error</string>
+    <string name="code_forbidden">Доступ запрещён</string>
+
+    <string name="code_authorization_not_specified">@string/auth_failed</string>
+    <string name="code_authorization_invalid">@string/auth_failed</string>
+    <string name="code_authorization_type_unknown">@string/auth_failed</string>
+    <string name="code_token_not_specified">@string/auth_failed</string>
+    <string name="code_token_expired">@string/auth_failed</string>
+    <string name="code_token_invalid">@string/auth_failed</string>
+    <string name="code_token_validation_failed">@string/auth_failed</string>
+    <string name="code_unknown_user">Ошибка авторизации: пользователь не найден</string>
+    <string name="code_wrong_auth_credentials">Неверные учетные данные</string>
+
+    <string name="code_invalid_user_or_device">Неверный пользователь или устройство</string>
+    <string name="code_already_has_owner">У этого устройства уже есть владелец</string>
+    <string name="code_cross_network_request">@string/internal_server_error</string>
+    <string name="code_pair_request_accepted">Запрос на подключение принят</string>
+    <string name="code_pair_request_rejected">Запрос на подключение отклонен</string>
+
+    <string name="code_invalid_storage_request">@string/internal_server_error</string>
+    <string name="code_invalid_response_data_message">@string/internal_server_error</string>
 
     <!-- NavBar -->
-    <string name="MyDevices">Мои устройства</string>
-    <string name="Settings">Настройки</string>
-    <string name="Notifications">Уведомления</string>
+    <string name="my_devices">Мои устройства</string>
+    <string name="settings">Настройки</string>
+    <string name="notifications">Уведомления</string>
 
     <!-- Start screen -->
     <string name="welcome">Добро пожаловать в SmartPlant</string>
-    <string name="welcomeDescription">Ваш помощник по уходу за растениями</string>
+    <string name="welcome_description">Ваш помощник по уходу за растениями</string>
 
     <!-- Auth screen -->
-    <string name="loginAction">Войти</string>
+    <string name="login_action">Войти</string>
     <string name="login">Вход</string>
-    <string name="registerAction">Зарегистрироваться</string>
+    <string name="register_action">Зарегистрироваться</string>
     <string name="register">Регистрация</string>
     <string name="auth">Авторизация</string>
     <string name="username">Имя пользователя</string>
     <string name="password">Пароль</string>
-    <string name="passwordConfirmation">Подтверждение пароля</string>
-    <string name="success">Успешно</string>
-    <string name="userAlreadyExist">Пользователь с таким именем уже существует</string>
-    <string name="wrongAuthCredentials">Неверное имя пользователя или пароль</string>
+    <string name="password_confirmation">Подтверждение пароля</string>
+    <string name="user_already_exist">Пользователь с таким именем уже существует</string>
+    <string name="wrong_auth_credentials">Неверное имя пользователя или пароль</string>
 
     <!-- Devices screen -->
-    <string name="AddDevice">Добавить устройство</string>
+    <string name="add_device">Добавить устройство</string>
 
     <!-- Device detail screen -->
-    <string name="DeviceManagement">Управление устройством</string>
-    <string name="DeviceTitle">Название устройства</string>
-    <string name="DeviceDescription">Описание устройства</string>
-    <string name="plantImage">Растение</string>
+    <string name="device_management">Управление устройством</string>
+    <string name="device_title">Название устройства</string>
+    <string name="device_description">Описание устройства</string>
+    <string name="plant_image">Растение</string>
 </resources>
