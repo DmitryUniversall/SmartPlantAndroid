@@ -72,4 +72,6 @@
     <string name="device_title">Название устройства</string>
     <string name="device_description">Описание устройства</string>
     <string name="plant_image">Растение</string>
+    <string name="default_device_description">Устройство SmartPlant</string>
+    <string name="loading_with_dots">Загрузка...</string>
 </resources>

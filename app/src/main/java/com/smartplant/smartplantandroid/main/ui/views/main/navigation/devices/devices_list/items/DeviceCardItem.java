@@ -1,7 +1,8 @@
 package com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.devices_list.items;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.TypedArray;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,83 +12,125 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.smartplant.smartplantandroid.R;
+import com.smartplant.smartplantandroid.main.components.auth.models.User;
+import com.smartplant.smartplantandroid.main.components.devices.utils.DevicesLocalDataManagerST;
+import com.smartplant.smartplantandroid.main.ui.views.main.MainActivity;
+import com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.device_detail.DeviceDetailViewModel;
 
+@SuppressLint("ViewConstructor")
 public class DeviceCardItem extends LinearLayout {
-    private TextView titleTextView;
-    private TextView descriptionTextView;
-    private ImageView iconImageView;
-    private ProgressBar progressBar;
-    private TextView statusTextView;
-    private View statusIndicatorView;
+    private TextView _titleTextView;
+    private TextView _descriptionTextView;
+    private ImageView _iconImageView;
+    private ProgressBar _progressBar;
+    private TextView _statusTextView;
+    private View _statusIndicatorView;
 
-    public DeviceCardItem(Context context) {
-        this(context, null);
-    }
+    private User _device;
+    private int _progress = 0;
+    private boolean _status = false;
+
+    private DevicesLocalDataManagerST _devicesLocalDataManager;
+    private DeviceDetailViewModel _deviceDetailViewModel;
 
     public DeviceCardItem(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        init(context);
     }
 
-    public DeviceCardItem(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init(context, attrs);
+    public DeviceCardItem(Context context) {
+        super(context);
+        init(context);
     }
 
-    private void init(Context context, AttributeSet attrs) {
-        LayoutInflater.from(context).inflate(R.layout.main_item_device_card, this, true);
+    private void init(Context context) {
+        View root = LayoutInflater.from(context).inflate(R.layout.main_item_device_card, this, true);
+        root.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
-        titleTextView = findViewById(R.id.title);
-        descriptionTextView = findViewById(R.id.description);
-        iconImageView = findViewById(R.id.icon);
-        progressBar = findViewById(R.id.progress_bar);
-        statusTextView = findViewById(R.id.status);
-        statusIndicatorView = findViewById(R.id.status_indicator);
+        _titleTextView = findViewById(R.id.title);
+        _descriptionTextView = findViewById(R.id.description);
+        _iconImageView = findViewById(R.id.icon);
+        _progressBar = findViewById(R.id.progress_bar);
+        _statusTextView = findViewById(R.id.status);
+        _statusIndicatorView = findViewById(R.id.status_indicator);
 
-        if (attrs != null) {
-            TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DeviceCardItem, 0, 0);
-            String title = typedArray.getString(R.styleable.DeviceCardItem_title);
-            String description = typedArray.getString(R.styleable.DeviceCardItem_description);
-            int progress = typedArray.getInt(R.styleable.DeviceCardItem_progress, 0);
-            boolean status = typedArray.getBoolean(R.styleable.DeviceCardItem_status, false);
-            int iconResId = typedArray.getResourceId(R.styleable.DeviceCardItem_icon, R.drawable.icon_house);
+        _devicesLocalDataManager = DevicesLocalDataManagerST.getInstance();
+        _deviceDetailViewModel = new ViewModelProvider((MainActivity) context).get(DeviceDetailViewModel.class);
+    }
 
-            setTitle(title);
-            setDescription(description);
-            setProgress(progress);
-            setStatus(status);
-            setIcon(iconResId);
+    public void bind(User device) {
+        this._device = device;
+        _initializeCard(getContext());
+        this._requestForState(getContext());  // TODO: Cache, do not request each time it is re-rendered
+    }
 
-            typedArray.recycle();
-        }
+    private void _requestForState(Context context) {  // TODO: Make gray filter for card when request is processing
+        this._deviceDetailViewModel.requestSensorsData(this._device.getId(), 5).observe((MainActivity) context, result -> {
+            if (result.success) {
+                assert result.result != null;
+
+                this._status = true;
+                this._progress = result.result.getWaterLevel();
+            } else {
+                this._status = false;
+            }
+
+            this._setInitializedData(context);
+        });
+    }
+
+    private void _initializeCard(Context context) {
+        String title = this._devicesLocalDataManager.getDeviceName(this._device.getId());
+        String description = this._devicesLocalDataManager.getDeviceDescription(this._device.getId());
+        Integer iconId = this._devicesLocalDataManager.getDeviceIconId(this._device.getId());
+
+        this.setTitle(title != null ? title : this._device.getUsername());
+        this.setDescription(description != null ? description : context.getString(R.string.default_device_description));
+        this.setIcon(iconId != null ? iconId : R.drawable.icon_house);
+    }
+
+    private void _setInitializedData(Context context) {
+        this.setProgress(this._progress);
+        this.setStatus(this._status);
+
+        this.setOnClickListener(this::_onCardClick);
+    }
+
+    private void _onCardClick(View view) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("deviceId", this._device.getId());
+        Navigation.findNavController(view).navigate(R.id.action_nav_devices_to_nav_device_detail, bundle);
     }
 
     public void setTitle(String title) {
-        titleTextView.setText(title);
+        _titleTextView.setText(title);
     }
 
     public void setDescription(String description) {
-        descriptionTextView.setText(description);
+        _descriptionTextView.setText(description);
     }
 
     public void setIcon(int resId) {
-        iconImageView.setImageResource(resId);
+        _iconImageView.setImageResource(resId);
     }
 
     public void setProgress(int progress) {
-        progressBar.setProgress(progress);
+        _progressBar.setProgress(progress);
     }
 
     public void setStatus(boolean status) {
         if (status) {
-            statusTextView.setText(R.string.on);
-            statusTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.device_on));
-            statusIndicatorView.setBackgroundResource(R.drawable.icon_device_active);
+            _statusTextView.setText(R.string.on);
+            _statusTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.device_on));
+            _statusIndicatorView.setBackgroundResource(R.drawable.icon_device_active);
         } else {
-            statusTextView.setText(R.string.off);
-            statusTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.device_off));
-            statusIndicatorView.setBackgroundResource(R.drawable.icon_device_inactive);
+            _statusTextView.setText(R.string.off);
+            _statusTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.device_off));
+            _statusIndicatorView.setBackgroundResource(R.drawable.icon_device_inactive);
         }
     }
 }

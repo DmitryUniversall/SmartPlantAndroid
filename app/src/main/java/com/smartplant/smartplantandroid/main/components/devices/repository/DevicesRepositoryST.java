@@ -6,6 +6,9 @@ import androidx.annotation.Nullable;
 import com.smartplant.smartplantandroid.core.network.http.http_api_request.HTTPApiRequest;
 import com.smartplant.smartplantandroid.main.components.auth.models.User;
 import com.smartplant.smartplantandroid.main.components.devices.internal_utils.DevicesApiService;
+import com.smartplant.smartplantandroid.main.components.devices.internal_utils.DevicesStorageService;
+import com.smartplant.smartplantandroid.main.components.sensors_data.models.SensorsData;
+import com.smartplant.smartplantandroid.main.components.storage.internal_utils.storage_request.StorageRequest;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +19,8 @@ public class DevicesRepositoryST {
     private static @Nullable DevicesRepositoryST _instance;
 
     // Utils
-    private final @NonNull DevicesApiService _service;
+    private final @NonNull DevicesApiService _apiService;
+    private final @NonNull DevicesStorageService _storageService;
 
     // Cache
     private boolean _isLoaded = false;
@@ -35,7 +39,8 @@ public class DevicesRepositoryST {
     }
 
     private DevicesRepositoryST() {
-        this._service = new DevicesApiService();
+        this._apiService = new DevicesApiService();
+        this._storageService = new DevicesStorageService();
     }
 
     public boolean isLoaded() {
@@ -48,11 +53,11 @@ public class DevicesRepositoryST {
 
     public HTTPApiRequest<Map<Integer, User>> fetchMyDevices() {
         this._isLoaded = true;
-        return this._service.fetchMyDevices().onSuccess((result, response, applicationResponse) -> this._myDevices.putAll(result));
+        return this._apiService.fetchMyDevices().onSuccess((result, response, applicationResponse) -> this._myDevices.putAll(result));
     }
 
     public HTTPApiRequest<Optional<User>> pairDevice(String deviceUsername) {
-        return this._service.pairDevice(deviceUsername).onSuccess((result, response, applicationResponse) -> {
+        return this._apiService.pairDevice(deviceUsername).onSuccess((result, response, applicationResponse) -> {
             if (!result.isPresent()) return;
             User deviceUser = result.get();
             this._myDevices.put(deviceUser.getId(), deviceUser);
@@ -60,6 +65,10 @@ public class DevicesRepositoryST {
     }
 
     public HTTPApiRequest<Object> unpairDevice(int deviceId) {
-        return this._service.unpairDevice(deviceId).onSuccess((result, response, applicationResponse) -> this._myDevices.remove(deviceId));
+        return this._apiService.unpairDevice(deviceId).onSuccess((result, response, applicationResponse) -> this._myDevices.remove(deviceId));
+    }
+
+    public StorageRequest<SensorsData> requestSensorsData(int deviceId, int timeout) {
+        return this._storageService.requestSensorsData(deviceId, timeout);
     }
 }

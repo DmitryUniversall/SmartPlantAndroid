@@ -20,6 +20,14 @@ public class DevicesListViewModel extends ViewModel {
         this._devicesLiveData.setValue(_devicesRepository.getMyDevices());
     }
 
+    public boolean isLoaded() {
+        return this._devicesRepository.isLoaded();
+    }
+
+    public Map<Integer, User> getDevices() {
+        return this._devicesRepository.getMyDevices();
+    }
+
     public MutableLiveData<Map<Integer, User>> getDevicesLiveData() {
         return _devicesLiveData;
     }

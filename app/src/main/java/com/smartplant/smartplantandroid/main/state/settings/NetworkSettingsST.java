@@ -9,7 +9,7 @@ public class NetworkSettingsST {
 
     // Preferences
     protected static SharedPreferences _sharedPreferences;
-    protected static final String _PREFERENCES_FILE_NAME = "SmartPlantPreferences";
+    protected static final String _PREFERENCES_FILE_NAME = "SmartPlantPreferencesNetwork";
 
     // Keys
     protected static final String _KEY_FIRST_LOAD = "is_first_load";

@@ -72,7 +72,6 @@ public class AuthRepositoryST {
         return this._authApiService.register(username, password).onSuccess(((result, response, applicationResponse) -> {
             this.setCurrentUser(result.first);
             _tokenManager.saveTokens(result.second);
-
         }));
     }
 

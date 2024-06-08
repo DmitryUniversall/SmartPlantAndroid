@@ -26,7 +26,7 @@ public class DevicesApiService {
     }
 
     public HTTPApiRequest<Map<Integer, User>> fetchMyDevices() {
-        Request request = ApiUtils.getAuthorizedRequestBuilder().url(_devicesApiBase + "/").build();
+        Request request = ApiUtils.getAuthorizedRequestBuilder().url(_devicesApiBase).build();
 
         return ApiUtils.createApiRequest(request, ((response, applicationResponse) -> {
             assert applicationResponse.getData() != null;
