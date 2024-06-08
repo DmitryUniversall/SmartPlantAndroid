@@ -158,21 +158,23 @@ public class StorageRequest<T> {
 
     private void _cancelAfterTimeout() {
         if (this._timeout == 0) return;
-        this.loopHandler.postDelayed(this::_cancel, this._timeout * 1000L);
+        this.loopHandler.postDelayed(() -> this._cancel(new TimeOutException("Request timeout exceeded")), this._timeout * 1000L);
     }
 
-    private synchronized void _cancel() {
+    private synchronized void _cancel(@NonNull Throwable error) {
         if (this._done) return;
 
+        AppLogger.info("StorageRequest %s canceled (with exception %s)", this._messageId, error.getClass().getSimpleName());
+
         this._done = true;
-        this._callFailureCallbacks(new TimeOutException("Request timeout exceeded"));
+        this._callFailureCallbacks(error);
     }
 
     private synchronized void _processEnqueued(@NonNull ApplicationResponse response) throws ApplicationResponseException {
         if (this._done) return;
         if (!response.isOk()) throw new ApplicationResponseException(response);
 
-        AppLogger.debug("ActionRequest %s enqueued", this._messageId);
+        AppLogger.info("ActionRequest %s enqueued", this._messageId);
     }
 
     private synchronized void _processResponded(@NonNull StorageDataMessage dataMessage, @NonNull ApplicationResponse response) throws ApplicationResponseException {

@@ -40,7 +40,7 @@ public class AuthApiService {
             } else if (error instanceof HttpApplicationResponseException) {
                 ApplicationResponse applicationResponse = ((HttpApplicationResponseException) error).getApplicationResponse();
                 AppLogger.error(error, "Auth request fail (%d): %s", applicationResponse.getApplicationStatusCode(), applicationResponse.getMessage());
-                throw new AuthFailedException(error);  // (HttpApplicationResponseException) error
+                throw new AuthFailedException("Auth request fail", (HttpApplicationResponseException) error);
             } else if (error instanceof IOException) {
                 AppLogger.error("Got unknown IO error while sending request", error);
                 throw new AuthFailedException(error);

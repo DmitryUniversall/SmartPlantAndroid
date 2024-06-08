@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.smartplant.smartplantandroid.R;
 import com.smartplant.smartplantandroid.core.logs.AppLogger;
+import com.smartplant.smartplantandroid.core.network.ApplicationStatusCodes;
 import com.smartplant.smartplantandroid.core.ui.CustomAppCompactActivity;
 import com.smartplant.smartplantandroid.main.ui.items.button.CustomButton;
 import com.smartplant.smartplantandroid.main.ui.views.auth.fragments.AuthLoginFragment;
@@ -133,7 +134,7 @@ public class AuthActivity extends CustomAppCompactActivity {
             String translatedText = authResult.statusCode.getTranslatedMessage();  // TODO: Custom message
             Toast.makeText(this, translatedText, Toast.LENGTH_LONG).show();
 
-            if (authResult.statusCode.getCode() == 3006) {  // Wrong auth credentials
+            if (authResult.statusCode.equals(ApplicationStatusCodes.AUTH.WRONG_AUTH_CREDENTIALS)) {  // Wrong auth credentials
                 loginFragment.setErrorFor(R.id.usernameEdittext, translatedText);
                 loginFragment.setErrorFor(R.id.passwordEdittext, translatedText);
             }

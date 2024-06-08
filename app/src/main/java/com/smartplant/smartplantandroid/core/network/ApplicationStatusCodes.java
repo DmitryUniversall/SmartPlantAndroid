@@ -39,6 +39,11 @@ public class ApplicationStatusCodes {
             this._translatedMessage = translatedMessage;
         }
 
+        @Override
+        public boolean equals(@Nullable Object obj) {
+            return obj instanceof StatusCode && this._code == ((StatusCode) obj).getCode();
+        }
+
         public int getCode() {
             return _code;
         }
