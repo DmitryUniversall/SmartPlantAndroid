@@ -10,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.smartplant.smartplantandroid.R;
-import com.smartplant.smartplantandroid.core.exceptions.ApplicationResponseException;
-import com.smartplant.smartplantandroid.core.logs.AppLogger;
 import com.smartplant.smartplantandroid.core.ui.CustomFragment;
 import com.smartplant.smartplantandroid.main.ui.items.button.CustomButton;
 

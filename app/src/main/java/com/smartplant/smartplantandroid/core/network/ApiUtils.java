@@ -59,8 +59,12 @@ public class ApiUtils {
         return request.newBuilder().header("Authorization", projectSettings.getAuthTokenType() + " " + tokenPair.getAccessToken());
     }
 
-    public static RequestBody createRequestBody(JsonObject json) {
-        return RequestBody.create(json.toString(), MediaType.get("application/json; charset=utf-8"));
+    public static RequestBody createJsonRequestBody(String json) {
+        return RequestBody.create(json, MediaType.get("application/json; charset=utf-8"));
+    }
+
+    public static RequestBody createJsonRequestBody(JsonObject json) {
+        return createJsonRequestBody(json.toString());
     }
 
     public static <T> HTTPApiRequest<T> createApiRequest(Request request, HTTPApiResponseProcessor<T> responseProcessor) {

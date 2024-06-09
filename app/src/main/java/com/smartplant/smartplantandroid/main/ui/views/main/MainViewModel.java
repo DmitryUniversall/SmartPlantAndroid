@@ -13,8 +13,6 @@ public class MainViewModel extends ViewModel {
     }
 
     public void connectStorageWS() {
-        storageRepository.connect()
-                .onSAR("MainViewModel", response -> AppLogger.info("Got server application response"))
-                .onDAR("MainViewModel", (dataMessage, response) -> AppLogger.info("Got device application response"));
+        storageRepository.connect().onDAR("MainViewModel", (dataMessage, response) -> AppLogger.info("Got device application response (%s; code %d)", response.isOk() ? "OK" : "ERROR", response.getApplicationStatusCode()));
     }
 }

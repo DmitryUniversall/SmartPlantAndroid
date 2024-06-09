@@ -14,10 +14,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.smartplant.smartplantandroid.core.data.json.JsonUtils;
 import com.smartplant.smartplantandroid.core.logs.AppLogger;
-import com.smartplant.smartplantandroid.core.models.ApplicationResponse;
-import com.smartplant.smartplantandroid.core.network.http.ApplicationResponseHandler;
 import com.smartplant.smartplantandroid.main.components.storage.models.StorageDataMessage;
-import com.smartplant.smartplantandroid.main.components.storage.models.StorageRequestPayload;
 import com.smartplant.smartplantandroid.main.components.storage.models.StorageWSMessage;
 
 import java.util.LinkedList;
@@ -42,7 +39,6 @@ public class StorageWSConnection extends WebSocketListener {
 
     // Reusable handlers
     protected final @NonNull ConcurrentHashMap<String, StorageDataMessageHandler> _dataMessageHandlers = new ConcurrentHashMap<>();
-    protected final @NonNull ConcurrentHashMap<String, ApplicationResponseHandler> _SARHandlers = new ConcurrentHashMap<>();  // Server Application Response Callback Stack
 
     // Other
     protected boolean _connected = false;
@@ -70,7 +66,7 @@ public class StorageWSConnection extends WebSocketListener {
             } catch (Throwable e) {
                 // Error occurred in last handler, so it will not be processed and will be lost
                 if (this._failureCallbacks.isEmpty())
-                    AppLogger.error("Unprocessed request error", e);
+                    AppLogger.error("Unprocessed storage ws connection error", e);
                 currentError = e;
             }
         }
@@ -88,17 +84,9 @@ public class StorageWSConnection extends WebSocketListener {
         this._disconnectCallbacks.clear();
     }
 
-    protected void _callSARHandlers(@NonNull ApplicationResponse response) {
-        if (this._SARHandlers.isEmpty()) return;
-
-        for (ApplicationResponseHandler handler : this._SARHandlers.values()) {
-            handler.onApplicationResponse(response);
-        }
-    }
-
     protected void _callDataMessageHandlers(@NonNull StorageDataMessage dataMessage) {
         if (this._dataMessageHandlers.isEmpty()) {
-            AppLogger.warning("Unprocessed data message: %s", dataMessage.getMessageId());
+            AppLogger.warning("Unprocessed data message (type: %d; from: %d)", dataMessage.getDataType(), dataMessage.getSenderId());
             return;
         }
 
@@ -118,14 +106,6 @@ public class StorageWSConnection extends WebSocketListener {
 
     public boolean isConnected() {
         return this._webSocket != null && _connected;
-    }
-
-    public void sendStorageRequestPayload(StorageRequestPayload request) {
-        if (!this.isConnected())
-            throw new IllegalStateException("Unable to send storage request because websocket is no connected");
-
-        assert this._webSocket != null;
-        this._webSocket.send(_gson.toJson(request));
     }
 
     @ReturnThis
@@ -151,22 +131,8 @@ public class StorageWSConnection extends WebSocketListener {
 
     @ReturnThis
     @CanIgnoreReturnValue
-    public StorageWSConnection SARHandler(@NonNull String name, @NonNull ApplicationResponseHandler handler) {
-        this._SARHandlers.put(name, handler);
-        return this;
-    }
-
-    @ReturnThis
-    @CanIgnoreReturnValue
     public StorageWSConnection dataMessageHandler(@NonNull String name, @NonNull StorageDataMessageHandler handler) {
         this._dataMessageHandlers.put(name, handler);
-        return this;
-    }
-
-    @ReturnThis
-    @CanIgnoreReturnValue
-    public StorageWSConnection removeSARHandler(@NonNull String name) {
-        this._SARHandlers.remove(name);
         return this;
     }
 
@@ -223,16 +189,13 @@ public class StorageWSConnection extends WebSocketListener {
 
         JsonObject data = json.get("data").getAsJsonObject();
         int msgType = json.get("msg_type").getAsInt();
-
-        if (msgType == StorageWSMessage.MSGType.APPLICATION_RESPONSE.getValue()) {
-            ApplicationResponse applicationResponse = JsonUtils.fromJsonWithNulls(data, ApplicationResponse.class, _gson);
-            this._callSARHandlers(applicationResponse);
-        } else if (msgType == StorageWSMessage.MSGType.DATA_MESSAGE.getValue()) {
-            StorageDataMessage dataMessage = JsonUtils.fromJsonWithNulls(data, StorageDataMessage.class, _gson);
-            this._callDataMessageHandlers(dataMessage);
-        } else {
+        if (msgType != StorageWSMessage.MSGType.DATA_MESSAGE.getValue()) {
             AppLogger.warning("Ignoring unknown msg_type: %d", msgType);
+            return;
         }
+
+        StorageDataMessage dataMessage = JsonUtils.fromJsonWithNulls(data, StorageDataMessage.class, _gson);
+        this._callDataMessageHandlers(dataMessage);
     }
 
     public void close(int code, String reason) {

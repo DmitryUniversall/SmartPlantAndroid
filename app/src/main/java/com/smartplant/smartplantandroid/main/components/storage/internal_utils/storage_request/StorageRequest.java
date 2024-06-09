@@ -7,14 +7,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.ReturnThis;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.smartplant.smartplantandroid.core.data.json.JsonUtils;
 import com.smartplant.smartplantandroid.core.exceptions.ApplicationResponseException;
 import com.smartplant.smartplantandroid.core.exceptions.TimeOutException;
 import com.smartplant.smartplantandroid.core.logs.AppLogger;
 import com.smartplant.smartplantandroid.core.models.ApplicationResponse;
 import com.smartplant.smartplantandroid.main.components.storage.internal_utils.processors.StorageWSProcessor;
 import com.smartplant.smartplantandroid.main.components.storage.models.StorageDataMessage;
-import com.smartplant.smartplantandroid.main.components.storage.models.StorageRequestPayload;
+import com.smartplant.smartplantandroid.main.components.storage.models.write.StorageRequestPayload;
+import com.smartplant.smartplantandroid.main.components.storage.repository.StorageRepositoryST;
 
 import java.util.LinkedList;
 import java.util.Objects;
@@ -22,21 +25,16 @@ import java.util.Queue;
 import java.util.UUID;
 
 public class StorageRequest<T> {
-    // Disposable callbacks
-    private final @NonNull Queue<StorageRequestSuccessCallback<T>> _successCallbacks = new LinkedList<>();
-    private final @NonNull Queue<StorageRequestFailureCallback> _failureCallbacks = new LinkedList<>();
-
-    // Handler names
-    private final @NonNull String _SARHandlerName = String.format("StorageRequest_%s", this._messageId);
-    private final @NonNull String _DARHandlerName = String.format("StorageRequest_%s", this._messageId);
-
     // Utils
-    protected final Handler loopHandler = new Handler(Looper.getMainLooper());
+    protected static final Handler _loopHandler = new Handler(Looper.getMainLooper());
+    protected static final Gson _gson = JsonUtils.getGson();
 
-    // Payload data
-    protected final @NonNull String _messageId = UUID.randomUUID().toString();
-    protected final @Nullable JsonObject _payloadData;
-    protected final int _targetId;
+    // Disposable callbacks
+    protected final @NonNull Queue<StorageRequestSuccessCallback<T>> _successCallbacks = new LinkedList<>();
+    protected final @NonNull Queue<StorageRequestFailureCallback> _failureCallbacks = new LinkedList<>();
+
+    // Handler name
+    protected final @NonNull String _DARHandlerName = String.format("StorageRequest_%s", this._id);
 
     // State
     protected boolean _done = false;
@@ -44,13 +42,18 @@ public class StorageRequest<T> {
     // Options
     protected final int _timeout;
 
-    // Other
+    // Payload data
+    protected final int _targetId;
+    protected final @Nullable JsonObject _data;
+
+    protected final @NonNull StorageRepositoryST _storageRepository;
     protected final @NonNull StorageWSProcessor _WSProcessor;
     protected final @NonNull StorageResponseProcessor<T> _responseProcessor;
+    protected final @NonNull String _id = UUID.randomUUID().toString();
+    protected @Nullable String _requestUUID;
 
     public static class Builder<T> {
         // Payload data
-        private final @NonNull String _messageId = UUID.randomUUID().toString();
         private JsonObject _payloadData;
         private int _targetId;
 
@@ -58,15 +61,13 @@ public class StorageRequest<T> {
         private int _timeout = 30;
 
         // Other
-        private StorageWSProcessor _WSProcessor;
         private StorageResponseProcessor<T> _responseProcessor;
 
         public StorageRequest<T> build() {
             assert this._targetId != 0;
-            assert this._WSProcessor != null;
             assert this._responseProcessor != null;
 
-            return new StorageRequest<>(this._targetId, this._payloadData, this._timeout, this._WSProcessor, this._responseProcessor);
+            return new StorageRequest<>(this._targetId, this._payloadData, this._timeout, this._responseProcessor);
         }
 
         @ReturnThis
@@ -77,12 +78,6 @@ public class StorageRequest<T> {
 
         public Builder<T> setTargetId(int targetId) {
             this._targetId = targetId;
-            return this;
-        }
-
-        @ReturnThis
-        public Builder<T> setProcessor(StorageWSProcessor processor) {
-            this._WSProcessor = processor;
             return this;
         }
 
@@ -103,40 +98,36 @@ public class StorageRequest<T> {
             int targetId,
             @Nullable JsonObject payloadData,
             int _timeout,
-            @NonNull StorageWSProcessor WSProcessor,
             @NonNull StorageResponseProcessor<T> responseProcessor
     ) {
+        this._storageRepository = StorageRepositoryST.getInstance();
+        this._WSProcessor = this._storageRepository.getProcessor();
         this._responseProcessor = responseProcessor;
         this._targetId = targetId;
-        this._payloadData = payloadData;
-        this._WSProcessor = WSProcessor;
+        this._data = payloadData;
         this._timeout = _timeout;
 
         this._selfRegister();
     }
 
-    private void _selfRegister() {
-        this._WSProcessor.onSAR(_SARHandlerName, this::_onSAR);
+    protected void _selfRegister() {
         this._WSProcessor.onDAR(_DARHandlerName, this::_onDAR);
     }
 
-    protected StorageRequestPayload _generatePayload() {
-        return new StorageRequestPayload(
-                StorageRequestPayload.RequestType.ENQUEUE_REQUEST.getValue(),
-                this._targetId,
-                this._messageId,
-                this._payloadData
-        );
-    }
+    protected synchronized void _callSuccessCallbacks(@NonNull T result, @NonNull StorageDataMessage dataMessage, @NonNull ApplicationResponse response) {
+        if (this._done) return;
+        this._done = true;
 
-    private void _callSuccessCallbacks(@NonNull T result, @NonNull ApplicationResponse response, @NonNull StorageDataMessage dataMessage) {
-        _successCallbacks.forEach((handler) -> handler.onSuccess(result, response, dataMessage));
+        _successCallbacks.forEach((handler) -> handler.onSuccess(result, dataMessage, response));
         _successCallbacks.clear();
     }
 
-    private void _callFailureCallbacks(@NonNull Throwable error) {
+    protected synchronized void _callFailureCallbacks(@NonNull Throwable error) {
+        if (this._done) return;
+        this._done = true;
+
         if (this._failureCallbacks.isEmpty()) {
-            AppLogger.error("Unprocessed storage ws connection error", error);
+            AppLogger.error("Unprocessed storage request", error);
             return;
         }
 
@@ -150,65 +141,72 @@ public class StorageRequest<T> {
             } catch (Throwable e) {
                 // Error occurred in last handler, so it will not be processed and will be lost
                 if (this._failureCallbacks.isEmpty())
-                    AppLogger.error("Unprocessed request error", e);
+                    AppLogger.error("Unprocessed storage request", e);
                 currentError = e;
             }
         }
     }
 
-    private void _cancelAfterTimeout() {
-        if (this._timeout == 0) return;
-        this.loopHandler.postDelayed(() -> this._cancel(new TimeOutException("Request timeout exceeded")), this._timeout * 1000L);
+    protected void cleanup() {
+        this._WSProcessor.removeDARHandler(_DARHandlerName);
     }
 
-    private synchronized void _cancel(@NonNull Throwable error) {
+    protected StorageRequestPayload _generatePayload() {
+        return new StorageRequestPayload(
+                this._targetId,
+                this._data
+        );
+    }
+
+    protected void _cancel(@NonNull Throwable error) {
         if (this._done) return;
 
-        AppLogger.info("StorageRequest %s canceled (with exception %s)", this._messageId, error.getClass().getSimpleName());
-
-        this._done = true;
+        AppLogger.info("StorageRequest %s (RequestUUID %s) canceled with exception %s", this._id, this._requestUUID, error.getClass().getSimpleName());
         this._callFailureCallbacks(error);
+        this.cleanup();
     }
 
-    private synchronized void _processEnqueued(@NonNull ApplicationResponse response) throws ApplicationResponseException {
+
+    protected void _cancelAfterTimeout() {
+        if (this._timeout == 0) return;
+        _loopHandler.postDelayed(() -> this._cancel(new TimeOutException("Request timeout exceeded")), this._timeout * 1000L);
+    }
+
+    protected void _processEnqueued() {
+        if (this._done) return;
+        AppLogger.info("StorageRequest %s (RequestUUID %s) successfully enqueued", this._id, this._requestUUID);
+    }
+
+    protected void _processResponded(@NonNull StorageDataMessage dataMessage, @NonNull ApplicationResponse response) throws ApplicationResponseException {
         if (this._done) return;
         if (!response.isOk()) throw new ApplicationResponseException(response);
 
-        AppLogger.info("ActionRequest %s enqueued", this._messageId);
+        AppLogger.info("StorageRequest %s (RequestUUID %s) responded with success", this._id, this._requestUUID);
+        T result = _responseProcessor.processResponse(dataMessage, response);
+        this._callSuccessCallbacks(result, dataMessage, response);
     }
 
-    private synchronized void _processResponded(@NonNull StorageDataMessage dataMessage, @NonNull ApplicationResponse response) throws ApplicationResponseException {
-        if (this._done) return;
-
-        if (!response.isOk()) throw new ApplicationResponseException(response);
-
-        AppLogger.debug("ActionRequest %s responded with success", _messageId);
-        T result = _responseProcessor.processResponse(response, dataMessage);
-        this._callSuccessCallbacks(result, response, dataMessage);
-    }
-
-    private void _onSAR(@NonNull ApplicationResponse response) {
-        try {
-            _processEnqueued(response);
-        } catch (ApplicationResponseException error) {
-            this._done = true;
-            _callFailureCallbacks(error);
-        } finally {  // FIXME: Concurrent modification as it deletes handler during forEach
-            this._WSProcessor.removeSARHandler(_SARHandlerName);
-        }
-    }
-
-    private void _onDAR(@NonNull StorageDataMessage dataMessage, @NonNull ApplicationResponse response) {
-        if (!Objects.equals(dataMessage.getMessageId(), this._messageId)) return;
+    protected void _onDAR(@NonNull StorageDataMessage dataMessage, @NonNull ApplicationResponse response) {
+        if (this._requestUUID == null) return;
+        if (!Objects.equals(dataMessage.getRequestUUID(), this._requestUUID)) return;
 
         try {
             _processResponded(dataMessage, response);
-        } catch (ApplicationResponseException error) {
+        } catch (Exception error) {
             _callFailureCallbacks(error);
         } finally {
-            this._done = true;
-            this._WSProcessor.removeDARHandler(_DARHandlerName);
+            this.cleanup();
         }
+    }
+
+    protected void _sendWriteRequest(@NonNull StorageRequestPayload payload) {
+        this._storageRepository.writeRequest(payload)
+                .onSuccess(((result, response, applicationResponse) -> {
+                    this._requestUUID = result;
+                    this._processEnqueued();
+                }))
+                .onFailure(this::_cancel)
+                .send();
     }
 
     @ReturnThis
@@ -225,7 +223,7 @@ public class StorageRequest<T> {
 
     public void send() {
         StorageRequestPayload payload = this._generatePayload();
-        this._WSProcessor.sendStorageRequestPayload(payload);
+        this._sendWriteRequest(payload);
         this._cancelAfterTimeout();
     }
 }

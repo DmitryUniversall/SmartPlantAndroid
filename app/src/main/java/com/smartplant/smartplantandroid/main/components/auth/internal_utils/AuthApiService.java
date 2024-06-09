@@ -33,7 +33,7 @@ public class AuthApiService {
     }
 
     private <T> HTTPApiRequest<T> sendAuthRequest(Request request, HTTPApiResponseProcessor<T> responseProcessor) {
-        return ApiUtils.createApiRequest(request, responseProcessor).onFailure((call, error) -> {
+        return ApiUtils.createApiRequest(request, responseProcessor).onFailure(error -> {
             if (error instanceof BadResponseException) {
                 AppLogger.error("Got bad response while sending request", error);
                 throw new AuthFailedException(error);
@@ -53,7 +53,7 @@ public class AuthApiService {
         json.addProperty("username", username);
         json.addProperty("password", password);
 
-        RequestBody body = ApiUtils.createRequestBody(json);
+        RequestBody body = ApiUtils.createJsonRequestBody(json);
         Request request = new Request.Builder().url(_authApiBase + "register/").post(body).build();
 
         return this.sendAuthRequest(request, ((response, applicationResponse) -> {
@@ -69,7 +69,7 @@ public class AuthApiService {
         json.addProperty("username", username);
         json.addProperty("password", password);
 
-        RequestBody body = ApiUtils.createRequestBody(json);
+        RequestBody body = ApiUtils.createJsonRequestBody(json);
         Request request = new Request.Builder().url(_authApiBase + "login/").post(body).build();
 
         return this.sendAuthRequest(request, ((response, applicationResponse) -> {
@@ -84,7 +84,7 @@ public class AuthApiService {
         JsonObject json = new JsonObject();
         json.addProperty("refresh_token", refreshToken);
 
-        RequestBody body = ApiUtils.createRequestBody(json);
+        RequestBody body = ApiUtils.createJsonRequestBody(json);
         Request request = new Request.Builder().url(_authApiBase + "refresh/").post(body).build();
 
         return this.sendAuthRequest(request, ((response, applicationResponse) -> {

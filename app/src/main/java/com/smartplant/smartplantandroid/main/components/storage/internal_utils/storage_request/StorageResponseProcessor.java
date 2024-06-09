@@ -7,5 +7,5 @@ import com.smartplant.smartplantandroid.main.components.storage.models.StorageDa
 
 public interface StorageResponseProcessor<T> {
     @NonNull
-    T processResponse(@NonNull ApplicationResponse applicationResponse, @NonNull StorageDataMessage dataMessage);
+    T processResponse(@NonNull StorageDataMessage dataMessage, @NonNull ApplicationResponse applicationResponse);
 }

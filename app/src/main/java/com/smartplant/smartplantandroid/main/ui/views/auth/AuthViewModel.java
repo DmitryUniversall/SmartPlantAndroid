@@ -50,7 +50,7 @@ public class AuthViewModel extends ViewModel {
                     AppLogger.debug("Register successful");
                     this.handleAuthSuccess(applicationResponse, registerAuthResult);
                 }))
-                .onFailure(((call, error) -> {
+                .onFailure((error -> {
                     AppLogger.error("Register unsuccessful", error);
 
                     this.handleAuthFailure(error, registerAuthResult);
@@ -67,7 +67,7 @@ public class AuthViewModel extends ViewModel {
                     AppLogger.debug("Login successful");
                     this.handleAuthSuccess(applicationResponse, loginAuthResult);
                 }))
-                .onFailure(((call, error) -> {
+                .onFailure((error -> {
                     AppLogger.error("Login unsuccessful", error);
 
                     this.handleAuthFailure(error, loginAuthResult);

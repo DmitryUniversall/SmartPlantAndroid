@@ -6,5 +6,5 @@ import com.smartplant.smartplantandroid.core.models.ApplicationResponse;
 import com.smartplant.smartplantandroid.main.components.storage.models.StorageDataMessage;
 
 public interface StorageRequestSuccessCallback<T> {
-    void onSuccess(@NonNull T result, @NonNull ApplicationResponse response, @NonNull StorageDataMessage dataMessage);
+    void onSuccess(@NonNull T result, @NonNull StorageDataMessage dataMessage, @NonNull ApplicationResponse response);
 }

@@ -15,23 +15,23 @@
                 app:flexDirection="column"
                 app:alignItems="center">
 
-            <com.google.android.flexbox.FlexboxLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    app:flexDirection="row"
-                    app:justifyContent="center"
-                    app:alignItems="center"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="20dp">
+<!--            <com.google.android.flexbox.FlexboxLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="150dp"-->
+<!--                    app:flexDirection="row"-->
+<!--                    app:justifyContent="center"-->
+<!--                    app:alignItems="center"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:layout_marginBottom="20dp">-->
 
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/my_devices"
-                        android:textStyle="bold"
-                        android:textSize="38sp"
-                        android:textColor="@color/L1_text_primary" />
-            </com.google.android.flexbox.FlexboxLayout>
+<!--                <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/my_devices"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textSize="38sp"-->
+<!--                        android:textColor="@color/L1_text_primary" />-->
+<!--            </com.google.android.flexbox.FlexboxLayout>-->
 
             <com.google.android.flexbox.FlexboxLayout
                     android:layout_width="match_parent"

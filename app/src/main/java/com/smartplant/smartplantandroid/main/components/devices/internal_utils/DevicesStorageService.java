@@ -22,23 +22,15 @@ public class DevicesStorageService {
         this._storageRepository = StorageRepositoryST.getInstance();
     }
 
-    private StorageWSActionProcessor _getProcessor() {
-        StorageWSActionProcessor actionProcessor = _storageRepository.getProcessor();
-        if (actionProcessor == null)
-            throw new IllegalStateException("Unable to set lamp state: not connected");
-
-        return actionProcessor;
-    }
-
     public StorageRequest<SensorsData> requestSensorsData(int deviceId, int timeout) {
-        StorageWSActionProcessor processor = _getProcessor();
+        StorageWSActionProcessor processor = this._storageRepository.getProcessor();
         StorageAction action = new StorageAction(StorageAction.ApplicationActionType.REQUEST_SENSORS_DATA.getValue(), null);
 
         return processor.<SensorsData>getStorageRequestBuilder()
                 .setTargetId(deviceId)
                 .setPayloadData(_gson.toJsonTree(action).getAsJsonObject())
                 .setTimeout(timeout)
-                .setResponseProcessor((applicationResponse, dataMessage) -> {
+                .setResponseProcessor((dataMessage, applicationResponse) -> {
                     if (applicationResponse.getData() == null) throw new HasNoDataException();
                     return JsonUtils.fromJsonWithNulls(applicationResponse.getData(), SensorsData.class);
                 })

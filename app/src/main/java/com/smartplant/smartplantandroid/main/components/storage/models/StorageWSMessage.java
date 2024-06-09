@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class StorageWSMessage {
     public enum MSGType {
-        APPLICATION_RESPONSE(1),
+        APPLICATION_RESPONSE(1),  // Deprecated
         DATA_MESSAGE(2);
 
         private final int value;

@@ -18,7 +18,7 @@ public class DeviceItemAdapter extends RecyclerView.Adapter<DeviceItemAdapter.De
     private List<User> _deviceList;
 
     public static class DeviceViewHolder extends RecyclerView.ViewHolder {
-        DeviceCardItem deviceCardItem;
+        private final DeviceCardItem deviceCardItem;
 
         public DeviceViewHolder(@NonNull DeviceCardItem itemView) {
             super(itemView);

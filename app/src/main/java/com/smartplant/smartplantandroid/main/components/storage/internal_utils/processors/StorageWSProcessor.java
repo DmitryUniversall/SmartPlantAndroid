@@ -3,23 +3,18 @@ package com.smartplant.smartplantandroid.main.components.storage.internal_utils.
 import static com.smartplant.smartplantandroid.core.data.json.JsonUtils.getGson;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.ReturnThis;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.smartplant.smartplantandroid.core.data.json.JsonUtils;
-import com.smartplant.smartplantandroid.core.logs.AppLogger;
 import com.smartplant.smartplantandroid.core.models.ApplicationResponse;
-import com.smartplant.smartplantandroid.core.network.http.ApplicationResponseHandler;
 import com.smartplant.smartplantandroid.main.components.storage.internal_utils.connection.StorageConnectCallback;
 import com.smartplant.smartplantandroid.main.components.storage.internal_utils.connection.StorageDisconnectCallback;
 import com.smartplant.smartplantandroid.main.components.storage.internal_utils.connection.StorageFailureCallback;
 import com.smartplant.smartplantandroid.main.components.storage.internal_utils.connection.StorageWSConnection;
 import com.smartplant.smartplantandroid.main.components.storage.internal_utils.storage_request.StorageRequest;
 import com.smartplant.smartplantandroid.main.components.storage.models.StorageDataMessage;
-import com.smartplant.smartplantandroid.main.components.storage.models.StorageRequestPayload;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -43,7 +38,6 @@ public class StorageWSProcessor {
 
     protected StorageWSConnection _connect(@NonNull Request initialRequest) {
         StorageWSConnection connection = new StorageWSConnection(initialRequest);
-        connection.SARHandler(String.format("WSProcessor_%s", _id), this::_processSAR);
         connection.dataMessageHandler(String.format("WSProcessor_%s", _id), this::_processDataMessage);
         connection.connect();
         return connection;
@@ -61,13 +55,7 @@ public class StorageWSProcessor {
         _callDARHandlers(dataMessage, response);
     }
 
-    protected void _processSAR(@NonNull ApplicationResponse response) {
-        AppLogger.debug("Got application response");
-    }
-
     protected void _processDataMessage(@NonNull StorageDataMessage dataMessage) {
-        AppLogger.debug("Got storage data message");
-
         int dataType = dataMessage.getDataType();
         if (dataType == StorageDataMessage.DataType.RESPONSE.getValue()) {
             ApplicationResponse response = JsonUtils.fromJsonWithNulls(dataMessage.getData(), ApplicationResponse.class, _gson);
@@ -106,22 +94,8 @@ public class StorageWSProcessor {
 
     @ReturnThis
     @CanIgnoreReturnValue
-    public StorageWSProcessor onSAR(@NonNull String name, @NonNull ApplicationResponseHandler handler) {
-        this._connection.SARHandler(name, handler);
-        return this;
-    }
-
-    @ReturnThis
-    @CanIgnoreReturnValue
     public StorageWSProcessor onDAR(@NonNull String name, @NonNull StorageDARHandler handler) {
         this._DARHandlers.put(name, handler);
-        return this;
-    }
-
-    @ReturnThis
-    @CanIgnoreReturnValue
-    public StorageWSProcessor removeSARHandler(@NonNull String name) {
-        this._connection.removeSARHandler(name);
         return this;
     }
 
@@ -136,21 +110,7 @@ public class StorageWSProcessor {
         this.getConnection().close(code, reason);
     }
 
-    public void sendStorageRequestPayload(@NonNull StorageRequestPayload request) {
-        this._connection.sendStorageRequestPayload(request);
-    }
-
-    public void sendApplicationResponse(int targetId, @Nullable String messageId, @NonNull ApplicationResponse response) {
-        JsonObject data = _gson.toJsonTree(response).getAsJsonObject();
-        this.sendStorageRequestPayload(new StorageRequestPayload(
-                StorageRequestPayload.RequestType.ENQUEUE_RESPONSE.getValue(),
-                targetId,
-                messageId,
-                data
-        ));
-    }
-
     public <T> StorageRequest.Builder<T> getStorageRequestBuilder() {
-        return new StorageRequest.Builder<T>().setProcessor(this);
+        return new StorageRequest.Builder<>();
     }
 }

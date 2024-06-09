@@ -13,7 +13,7 @@ public class DeviceDetailViewModel extends ViewModel {
     private final DevicesRepositoryST _devicesRepository;
     private final SensorsDataDBManagerST _sensorsDataDBManager;
 
-    private final MutableLiveData<SensorsData> _sensorsData = new MutableLiveData<>();
+    private final MutableLiveData<SensorsData> _sensorsLiveData = new MutableLiveData<>();
 
     public DeviceDetailViewModel() {
         this._devicesRepository = DevicesRepositoryST.getInstance();
@@ -24,8 +24,8 @@ public class DeviceDetailViewModel extends ViewModel {
         MutableLiveData<StorageRequestResult<SensorsData>> requestResult = new MediatorLiveData<>();
 
         this._devicesRepository.requestSensorsData(deviceId, timeout)
-                .onSuccess((result, response, dataMessage) -> {
-                    _sensorsDataDBManager.insertSensorsData(result);  // Save latest data to db
+                .onSuccess((result, dataMessage, response) -> {
+//                    _sensorsDataDBManager.insertSensorsData(result);  // Save latest data to db
                     requestResult.postValue(new StorageRequestResult<>(true, result, response, dataMessage, null));
                 })
                 .onFailure(error -> requestResult.postValue(new StorageRequestResult<>(false, null, null, null, error)))
@@ -49,7 +49,7 @@ public class DeviceDetailViewModel extends ViewModel {
 //                .setResponseProcessor((applicationResponse, dataMessage) -> new Object())
 //                .build();
 //
-//        request.onSuccess((result, response, dataMessage) -> requestResult.postValue(new StorageRequestResult<>(true, result, response, dataMessage, null)))
+//        request.onSuccess((result, dataMessage, response) -> requestResult.postValue(new StorageRequestResult<>(true, result, response, dataMessage, null)))
 //                .onFailure(error -> requestResult.postValue(new StorageRequestResult<>(false, null, null, null, error)))
 //                .send();
 //

@@ -10,6 +10,7 @@ import androidx.annotation.ReturnThis;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.smartplant.smartplantandroid.core.callbacks.FailureCallback;
 import com.smartplant.smartplantandroid.core.data.json.JsonUtils;
 import com.smartplant.smartplantandroid.core.exceptions.CancelException;
 import com.smartplant.smartplantandroid.core.exceptions.http.BadResponseException;
@@ -39,7 +40,8 @@ public class HTTPApiRequest<T> {
 
     // Disposable callbacks
     protected final @NonNull Queue<HTTPApiSuccessCallback<T>> _successCallbacks = new LinkedList<>();
-    protected final @NonNull Queue<HTTPApiFailureCallback> _failureCallbacks = new LinkedList<>();
+    protected final @NonNull Queue<FailureCallback> _failureCallbacks = new LinkedList<>();
+    protected final @NonNull Queue<Runnable> _afterCallbacks = new LinkedList<>();
 
     // Other
     protected final @NonNull HTTPApiResponseProcessor<T> _responseProcessor;
@@ -52,14 +54,14 @@ public class HTTPApiRequest<T> {
         this._client = client == null ? getOkHttpClient() : client;
     }
 
-    protected HTTPApiRequest<AuthTokenPair> _refreshToken() {
+    protected HTTPApiRequest<AuthTokenPair> _createRefreshTokenRequest() {
         AuthRepositoryST authRepository = AuthRepositoryST.getInstance();
         return authRepository.refresh()
                 .onSuccess(((result, response, applicationResponse) -> AppLogger.info("Tokens refreshed")))
-                .onFailure(((call, error) -> {
+                .onFailure(error -> {
                     AppLogger.error("Failed to refresh tokens", error);
-                    authRepository.logout();  // TODO: Handle it and show error message
-                }));
+                    _callFailureCallbacks(new UnauthorizedException("Failed refresh auth tokens", error));
+                });
     }
 
     protected void _resend() {
@@ -72,7 +74,13 @@ public class HTTPApiRequest<T> {
     }
 
     protected void _refreshTokenAndResend() {
-        this._refreshToken().onSuccess(((result, response1, applicationResponse1) -> this._resendWithNewToken())).send();
+        this._createRefreshTokenRequest().onSuccess(((result, response1, applicationResponse1) -> this._resendWithNewToken())).send();
+    }
+
+    protected void _callAfterCallbacks() {
+        if (this._afterCallbacks.isEmpty()) return;
+        this._afterCallbacks.forEach(Runnable::run);
+        this._afterCallbacks.clear();
     }
 
     protected void _callSuccessCallbacks(@NonNull T result, @NonNull Response response, @NonNull ApplicationResponse applicationResponse) {
@@ -81,11 +89,11 @@ public class HTTPApiRequest<T> {
             return;
         }
 
-        this._successCallbacks.forEach((handler) -> handler.onSuccess(result, response, applicationResponse));
+        this._successCallbacks.forEach((callback) -> callback.onSuccess(result, response, applicationResponse));
         this._successCallbacks.clear();
     }
 
-    protected void _callFailureCallbacks(@NonNull Call call, @NonNull Throwable error) {  // TODO: Make it as global util
+    protected void _callFailureCallbacks(@NonNull Throwable error) {  // TODO: Make it as global util
         if (this._failureCallbacks.isEmpty()) {
             AppLogger.error("Unprocessed request error", error);
             return;
@@ -93,13 +101,13 @@ public class HTTPApiRequest<T> {
 
         Throwable currentError = error;
         while (!this._failureCallbacks.isEmpty()) {
-            HTTPApiFailureCallback handler = this._failureCallbacks.poll();
-            assert handler != null;
+            FailureCallback callback = this._failureCallbacks.poll();
+            assert callback != null;
 
             try {
-                handler.onFailure(call, currentError);
+                callback.onFailure(currentError);
             } catch (Throwable e) {
-                // Error occurred in last handler, so it will not be processed and will be lost
+                // Error occurred in last callback, so it will not be processed and will be lost
                 if (this._failureCallbacks.isEmpty())
                     AppLogger.error("Unprocessed request error", e);
                 currentError = e;
@@ -136,20 +144,19 @@ public class HTTPApiRequest<T> {
     }
 
 
-    protected void _processFailure(@NonNull Call call, @NonNull Throwable error) {
-        this._callFailureCallbacks(call, error);
+    protected void _processFailure(@NonNull Throwable error) {
+        this._callFailureCallbacks(error);
     }
 
-    protected void _processResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+    protected void _processResponse(@NonNull Response response) {
         try {
             ApplicationResponse applicationResponse = _getApplicationResponse(response);
             T result = _responseProcessor.processResponse(response, applicationResponse);
             this._callSuccessCallbacks(result, response, applicationResponse);
-        } catch (HttpApplicationResponseException | BadResponseException |
-                 UnauthorizedException error) {
-            _processFailure(call, error);
         } catch (CancelException e) {
             // Ignore it. Request processing should be canceled
+        } catch (Exception error) {
+            _processFailure(error);
         }
     }
 
@@ -157,12 +164,14 @@ public class HTTPApiRequest<T> {
         _client.newCall(this._request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                _processFailure(call, e);
+                _processFailure(e);
+                _callAfterCallbacks();
             }
 
             @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                _processResponse(call, response);
+            public void onResponse(@NonNull Call call, @NonNull Response response) {
+                _processResponse(response);
+                _callAfterCallbacks();
             }
         });
     }
@@ -174,8 +183,14 @@ public class HTTPApiRequest<T> {
     }
 
     @ReturnThis
-    public HTTPApiRequest<T> onFailure(HTTPApiFailureCallback callback) {
+    public HTTPApiRequest<T> onFailure(FailureCallback callback) {
         _failureCallbacks.add(callback);
+        return this;
+    }
+
+    @ReturnThis
+    public HTTPApiRequest<T> after(Runnable callback) {
+        this._afterCallbacks.add(callback);
         return this;
     }
 }

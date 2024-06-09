@@ -29,9 +29,10 @@ public class InitViewModel extends ViewModel {
                         AppLogger.debug("User authenticated");
                         this._isAuthenticatedLive.postValue(true);
                     }))
-                    .onFailure(((call, error) -> {
+                    .onFailure((error -> {
                         AppLogger.debug("Unable to fetch user");
                         this._isAuthenticatedLive.postValue(false);
+                        if (error instanceof UnauthorizedException) _authRepository.logout();
                     })).send();
         } catch (UnauthorizedException e) {
             this._isAuthenticatedLive.postValue(false);

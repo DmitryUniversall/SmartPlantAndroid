@@ -19,4 +19,7 @@
     <color name="L1_bottom_nav_item_inactive">#045302</color>
     <color name="L1_bottom_nav_item_selected">@color/L1_accent</color>
     <color name="L1_bottom_nav_background">@color/L1_primary</color>
+
+    <color name="L1_device_card_background_active">@color/L1_background_primary</color>
+    <color name="L1_device_card_background_inactive">#777777</color>
 </resources>
