@@ -66,13 +66,7 @@ public class DeviceDetailFragment extends CustomFragment {
     private void observeSensorsData() {}
 
     private void onLampClick(View v) {
-//        this.viewModel.setLampState(true, 30).observe(this, result -> {
-//            if (result.success) {
-//                AppLogger.debug("Success lamp state changed");
-//            } else {
-//                AppLogger.error("Lamp stage change failed", result.error);
-//            }
-//        });
+
     }
 
     private void onWaterClick(View v) {}

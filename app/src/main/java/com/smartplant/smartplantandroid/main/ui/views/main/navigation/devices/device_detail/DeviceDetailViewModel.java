@@ -27,26 +27,4 @@ public class DeviceDetailViewModel extends ViewModel {
 
         return requestResult;
     }
-
-//    public MutableLiveData<StorageRequestResult<Object>> setLampState(boolean newState, int timeout) {
-//        MutableLiveData<StorageRequestResult<Object>> requestResult = new MediatorLiveData<>();
-//
-//        StorageWSActionProcessor processor = getProcessor();
-//        JsonObject data = new JsonObject();
-//        data.addProperty("mode", newState ? 1 : 0);
-//        StorageAction action = new StorageAction(StorageAction.ApplicationActionType.COMMAND_LAMP.getValue(), data);
-//
-//        StorageRequest<Object> request = processor.getStorageRequestBuilder()
-//                .setTargetId(2)
-//                .setPayloadData(_gson.toJsonTree(action).getAsJsonObject())
-//                .setTimeout(timeout)
-//                .setResponseProcessor((applicationResponse, dataMessage) -> new Object())
-//                .build();
-//
-//        request.onSuccess((result, dataMessage, response) -> requestResult.postValue(new StorageRequestResult<>(true, result, response, dataMessage, null)))
-//                .onFailure(error -> requestResult.postValue(new StorageRequestResult<>(false, null, null, null, error)))
-//                .send();
-//
-//        return requestResult;
-//    }
 }

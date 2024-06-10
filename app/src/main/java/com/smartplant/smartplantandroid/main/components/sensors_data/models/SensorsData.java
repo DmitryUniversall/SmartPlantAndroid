@@ -13,19 +13,19 @@ public class SensorsData {
     private @Nullable Long _id;
 
     @SerializedName("water_level")
-    private final int _waterLevel;
+    private int _waterLevel;
 
     @SerializedName("illumination")
-    private final int _illumination;
+    private int _illumination;
 
     @SerializedName("soil_moisture")
-    private final int _soilMoisture;
+    private int _soilMoisture;
 
     @SerializedName("temperature")
-    private final double _temperature;
+    private double _temperature;
 
     @SerializedName("humidity")
-    private final double _humidity;
+    private double _humidity;
 
     @SerializedName("created_at")
     private Date _createdAt;
@@ -67,20 +67,40 @@ public class SensorsData {
         return _illumination;
     }
 
+    public void setIllumination(int illumination) {
+        this._illumination = illumination;
+    }
+
     public int getSoilMoisture() {
         return _soilMoisture;
+    }
+
+    public void setSoilMoisture(int soilMoisture) {
+        this._soilMoisture = soilMoisture;
     }
 
     public double getTemperature() {
         return _temperature;
     }
 
+    public void setTemperature(double temperature) {
+        this._temperature = temperature;
+    }
+
     public double getHumidity() {
         return _humidity;
     }
 
+    public void setHumidity(double humidity) {
+        this._humidity = humidity;
+    }
+
     public int getWaterLevel() {
         return _waterLevel;
+    }
+
+    public void setWaterLevel(int waterLevel) {
+        this._waterLevel = waterLevel;
     }
 
     public Date getCreatedAt() {

@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class SensorsDataDbHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "sensorsData.db";
+    private static final String DATABASE_NAME = "AppData.db";
     private static final int DATABASE_VERSION = 2;
 
     public static final String TABLE_NAME = "sensors_data";

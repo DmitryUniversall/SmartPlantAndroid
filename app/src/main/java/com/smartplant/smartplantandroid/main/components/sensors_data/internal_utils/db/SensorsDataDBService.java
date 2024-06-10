@@ -28,6 +28,26 @@ public class SensorsDataDBService {  // TODO: Throw exceptions on interaction er
         _db = _dbHelper.getWritableDatabase();
     }
 
+    @SuppressLint("Range")
+    private SensorsData cursorToSensorsData(Cursor cursor) {
+        long id = cursor.getLong(cursor.getColumnIndex(SensorsDataDbHelper.COLUMN_ID));
+        int illumination = cursor.getInt(cursor.getColumnIndex(SensorsDataDbHelper.COLUMN_ILLUMINATION));
+        int soilMoisture = cursor.getInt(cursor.getColumnIndex(SensorsDataDbHelper.COLUMN_SOIL_MOISTURE));
+        int waterLevel = cursor.getInt(cursor.getColumnIndex(SensorsDataDbHelper.COLUMN_WATER_LEVEL));
+        float temperature = cursor.getFloat(cursor.getColumnIndex(SensorsDataDbHelper.COLUMN_TEMPERATURE));
+        float humidity = cursor.getFloat(cursor.getColumnIndex(SensorsDataDbHelper.COLUMN_HUMIDITY));
+        String createdAtString = cursor.getString(cursor.getColumnIndex(SensorsDataDbHelper.COLUMN_CREATED_AT));
+        Date createdAt = null;
+
+        try {
+            createdAt = new SimpleDateFormat(ProjectSettings.DATE_FORMAT, Locale.getDefault()).parse(createdAtString);
+        } catch (Exception e) {
+            AppLogger.error("Unknown error during fetching sensors data", e);
+        }
+
+        return new SensorsData(id, waterLevel, illumination, soilMoisture, temperature, humidity, createdAt);
+    }
+
     public BackgroundTask<Void> insertSensorsData(int deviceId, SensorsData sensorsData) {
         return new BackgroundTask<>(() -> {
             ContentValues values = new ContentValues();
@@ -100,26 +120,6 @@ public class SensorsDataDBService {  // TODO: Throw exceptions on interaction er
 
             return sensorsDataList;
         });
-    }
-
-    @SuppressLint("Range")
-    private SensorsData cursorToSensorsData(Cursor cursor) {
-        long id = cursor.getLong(cursor.getColumnIndex(SensorsDataDbHelper.COLUMN_ID));
-        int illumination = cursor.getInt(cursor.getColumnIndex(SensorsDataDbHelper.COLUMN_ILLUMINATION));
-        int soilMoisture = cursor.getInt(cursor.getColumnIndex(SensorsDataDbHelper.COLUMN_SOIL_MOISTURE));
-        int waterLevel = cursor.getInt(cursor.getColumnIndex(SensorsDataDbHelper.COLUMN_WATER_LEVEL));
-        float temperature = cursor.getFloat(cursor.getColumnIndex(SensorsDataDbHelper.COLUMN_TEMPERATURE));
-        float humidity = cursor.getFloat(cursor.getColumnIndex(SensorsDataDbHelper.COLUMN_HUMIDITY));
-        String createdAtString = cursor.getString(cursor.getColumnIndex(SensorsDataDbHelper.COLUMN_CREATED_AT));
-        Date createdAt = null;
-
-        try {
-            createdAt = new SimpleDateFormat(ProjectSettings.DATE_FORMAT, Locale.getDefault()).parse(createdAtString);
-        } catch (Exception e) {
-            AppLogger.error("Unknown error during fetching sensors data", e);
-        }
-
-        return new SensorsData(id, waterLevel, illumination, soilMoisture, temperature, humidity, createdAt);
     }
 
     public void close() {
