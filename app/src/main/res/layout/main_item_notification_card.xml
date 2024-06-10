@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/item_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/L1_background_primary"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp"
+        >
+    <!-- Card content -->
+    <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:flexDirection="row"
+            app:alignItems="center"
+            android:padding="5dp">
+
+        <!-- Card image -->
+        <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                app:flexDirection="column"
+                app:justifyContent="center"
+                app:alignItems="center">
+
+            <ImageView
+                    android:id="@+id/notification_icon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/icon_temperature"
+                    android:contentDescription="@string/temperature_icon_description"
+                    android:layout_gravity="center_horizontal" />
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <!-- Card Text -->
+        <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:flexDirection="column"
+                android:padding="5dp">
+
+            <TextView
+                    android:id="@+id/notification_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SmartPlant2: Слишком высокая температура"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_gravity="center_horizontal" />
+
+            <TextView
+                    android:id="@+id/notification_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Устройство засекло слишком высокую температуру. Растению может быть не комфортно в таких условиях"
+                    android:layout_marginTop="4dp"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal" />
+            <LinearLayout
+                    android:id="@+id/notification_actions_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"/>
+        </com.google.android.flexbox.FlexboxLayout>
+    </com.google.android.flexbox.FlexboxLayout>
+</androidx.cardview.widget.CardView>

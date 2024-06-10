@@ -3,12 +3,14 @@ package com.smartplant.smartplantandroid.main.components.devices.repository;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.smartplant.smartplantandroid.core.logs.AppLogger;
 import com.smartplant.smartplantandroid.core.network.http.http_api_request.HTTPApiRequest;
 import com.smartplant.smartplantandroid.main.components.auth.models.User;
 import com.smartplant.smartplantandroid.main.components.devices.internal_utils.DevicesApiService;
 import com.smartplant.smartplantandroid.main.components.devices.internal_utils.DevicesStorageService;
 import com.smartplant.smartplantandroid.main.components.sensors_data.models.SensorsData;
-import com.smartplant.smartplantandroid.main.components.storage.internal_utils.storage_request.StorageRequest;
+import com.smartplant.smartplantandroid.main.components.sensors_data.repository.SensorsDataRepositoryST;
+import com.smartplant.smartplantandroid.main.components.storage.utils.storage_request.StorageRequest;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +23,7 @@ public class DevicesRepositoryST {
     // Utils
     private final @NonNull DevicesApiService _apiService;
     private final @NonNull DevicesStorageService _storageService;
+    private final SensorsDataRepositoryST _sensorsDataRepository;
 
     // Cache
     private boolean _isLoaded = false;
@@ -41,6 +44,7 @@ public class DevicesRepositoryST {
     private DevicesRepositoryST() {
         this._apiService = new DevicesApiService();
         this._storageService = new DevicesStorageService();
+        this._sensorsDataRepository = SensorsDataRepositoryST.getInstance();
     }
 
     public boolean isLoaded() {
@@ -64,11 +68,17 @@ public class DevicesRepositoryST {
         });
     }
 
-    public HTTPApiRequest<Object> unpairDevice(int deviceId) {
+    public HTTPApiRequest<Void> unpairDevice(int deviceId) {
         return this._apiService.unpairDevice(deviceId).onSuccess((result, response, applicationResponse) -> this._myDevices.remove(deviceId));
     }
 
     public StorageRequest<SensorsData> requestSensorsData(int deviceId, int timeout) {
-        return this._storageService.requestSensorsData(deviceId, timeout);
+        return this._storageService.requestSensorsData(deviceId, timeout).onSuccess(
+                (result, dataMessage, response) ->
+                        _sensorsDataRepository.insertSensorsData(deviceId, result)  // Save latest data to db
+                                .onSuccess(v -> AppLogger.info("SensorsData for device %d successfully saved", deviceId))
+                                .onFailure(error -> AppLogger.error(error, "Failed to save sensors data for %d", deviceId))
+                                .execute()
+        );
     }
 }

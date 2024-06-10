@@ -7,6 +7,5 @@ import com.smartplant.smartplantandroid.core.models.ApplicationResponse;
 import okhttp3.Response;
 
 public interface HTTPApiResponseProcessor<T> {
-    @NonNull
     T processResponse(@NonNull Response response, @NonNull ApplicationResponse applicationResponse);
 }

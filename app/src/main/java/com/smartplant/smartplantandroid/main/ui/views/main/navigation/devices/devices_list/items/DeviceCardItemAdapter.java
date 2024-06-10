@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class DeviceItemAdapter extends RecyclerView.Adapter<DeviceItemAdapter.DeviceViewHolder> {
+public class DeviceCardItemAdapter extends RecyclerView.Adapter<DeviceCardItemAdapter.DeviceViewHolder> {
     private final Context _context;
-    private List<User> _deviceList;
+    private List<User> _deviceList = new ArrayList<>();
 
     public static class DeviceViewHolder extends RecyclerView.ViewHolder {
         private final DeviceCardItem deviceCardItem;
@@ -26,9 +26,8 @@ public class DeviceItemAdapter extends RecyclerView.Adapter<DeviceItemAdapter.De
         }
     }
 
-    public DeviceItemAdapter(Context context) {
+    public DeviceCardItemAdapter(Context context) {
         this._context = context;
-        this._deviceList = new ArrayList<>();
     }
 
     @SuppressLint("NotifyDataSetChanged")

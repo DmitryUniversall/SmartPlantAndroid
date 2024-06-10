@@ -10,6 +10,8 @@ import androidx.annotation.ReturnThis;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.smartplant.smartplantandroid.core.async.ExecutedInBackground;
+import com.smartplant.smartplantandroid.core.callbacks.CallbackUtils;
 import com.smartplant.smartplantandroid.core.callbacks.FailureCallback;
 import com.smartplant.smartplantandroid.core.data.json.JsonUtils;
 import com.smartplant.smartplantandroid.core.exceptions.CancelException;
@@ -33,7 +35,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
-public class HTTPApiRequest<T> {
+public class HTTPApiRequest<T> implements ExecutedInBackground<HTTPApiSuccessCallback<T>, FailureCallback> {
     // Utils
     protected final @NonNull Gson _gson;
     protected final @NonNull OkHttpClient _client;
@@ -77,42 +79,24 @@ public class HTTPApiRequest<T> {
         this._createRefreshTokenRequest().onSuccess(((result, response1, applicationResponse1) -> this._resendWithNewToken())).send();
     }
 
-    protected void _callAfterCallbacks() {
+    protected synchronized void _callAfterCallbacks() {
         if (this._afterCallbacks.isEmpty()) return;
-        this._afterCallbacks.forEach(Runnable::run);
+        CallbackUtils.callRunnableCallbacks(this._afterCallbacks);
         this._afterCallbacks.clear();
     }
 
-    protected void _callSuccessCallbacks(@NonNull T result, @NonNull Response response, @NonNull ApplicationResponse applicationResponse) {
-        if (this._successCallbacks.isEmpty()) {
-            AppLogger.warning("Unprocessed request", this._request.url());
-            return;
-        }
-
+    protected synchronized void _callSuccessCallbacks(@NonNull T result, @NonNull Response response, @NonNull ApplicationResponse applicationResponse) {
         this._successCallbacks.forEach((callback) -> callback.onSuccess(result, response, applicationResponse));
         this._successCallbacks.clear();
     }
 
-    protected void _callFailureCallbacks(@NonNull Throwable error) {  // TODO: Make it as global util
+    protected synchronized void _callFailureCallbacks(@NonNull Throwable error) {
         if (this._failureCallbacks.isEmpty()) {
             AppLogger.error("Unprocessed request error", error);
             return;
         }
 
-        Throwable currentError = error;
-        while (!this._failureCallbacks.isEmpty()) {
-            FailureCallback callback = this._failureCallbacks.poll();
-            assert callback != null;
-
-            try {
-                callback.onFailure(currentError);
-            } catch (Throwable e) {
-                // Error occurred in last callback, so it will not be processed and will be lost
-                if (this._failureCallbacks.isEmpty())
-                    AppLogger.error("Unprocessed request error", e);
-                currentError = e;
-            }
-        }
+        CallbackUtils.callFailureCallbackQueue(error, this._failureCallbacks);
     }
 
     protected ApplicationResponse _getApplicationResponse(@NonNull Response response) throws IOException, UnauthorizedException, HttpApplicationResponseException, BadResponseException, CancelException {
@@ -142,7 +126,6 @@ public class HTTPApiRequest<T> {
 
         return applicationResponse;
     }
-
 
     protected void _processFailure(@NonNull Throwable error) {
         this._callFailureCallbacks(error);

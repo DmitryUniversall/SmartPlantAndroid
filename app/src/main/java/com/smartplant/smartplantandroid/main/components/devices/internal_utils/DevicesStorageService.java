@@ -9,7 +9,7 @@ import com.smartplant.smartplantandroid.core.data.json.JsonUtils;
 import com.smartplant.smartplantandroid.core.exceptions.HasNoDataException;
 import com.smartplant.smartplantandroid.main.components.sensors_data.models.SensorsData;
 import com.smartplant.smartplantandroid.main.components.storage.internal_utils.processors.actions.StorageWSActionProcessor;
-import com.smartplant.smartplantandroid.main.components.storage.internal_utils.storage_request.StorageRequest;
+import com.smartplant.smartplantandroid.main.components.storage.utils.storage_request.StorageRequest;
 import com.smartplant.smartplantandroid.main.components.storage.models.StorageAction;
 import com.smartplant.smartplantandroid.main.components.storage.repository.StorageRepositoryST;
 
@@ -32,7 +32,9 @@ public class DevicesStorageService {
                 .setTimeout(timeout)
                 .setResponseProcessor((dataMessage, applicationResponse) -> {
                     if (applicationResponse.getData() == null) throw new HasNoDataException();
-                    return JsonUtils.fromJsonWithNulls(applicationResponse.getData(), SensorsData.class);
+                    SensorsData sensorsData = JsonUtils.fromJsonWithNulls(applicationResponse.getData(), SensorsData.class);
+                    sensorsData.setCreatedAt(dataMessage.getCreatedAt());  // TODO: Refactor it
+                    return sensorsData;
                 })
                 .build();
     }

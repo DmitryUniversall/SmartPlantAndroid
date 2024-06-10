@@ -35,10 +35,10 @@ public class StorageApiService {
         }));
     }
 
-    public HTTPApiRequest<Object> writeResponse(@NonNull StorageResponsePayload payload) {
+    public HTTPApiRequest<Void> writeResponse(@NonNull StorageResponsePayload payload) {
         RequestBody body = ApiUtils.createJsonRequestBody(_gson.toJson(payload));
         Request request = ApiUtils.getAuthorizedRequestBuilder().url(_storageApiBase + "write/response/").post(body).build();
 
-        return ApiUtils.createApiRequest(request, (response, applicationResponse) -> new Object());
+        return ApiUtils.createApiRequest(request, (response, applicationResponse) -> null);
     }
 }

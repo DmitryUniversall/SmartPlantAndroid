@@ -35,7 +35,7 @@ public class StorageWSConnection extends WebSocketListener {
     // Disposable callbacks
     protected final @NonNull Queue<StorageConnectCallback> _connectCallbacks = new LinkedList<>();
     protected final @NonNull Queue<StorageDisconnectCallback> _disconnectCallbacks = new LinkedList<>();
-    protected final @NonNull Queue<StorageFailureCallback> _failureCallbacks = new LinkedList<>();
+    protected final @NonNull Queue<StorageConnectFailureCallback> _failureCallbacks = new LinkedList<>();
 
     // Reusable handlers
     protected final @NonNull ConcurrentHashMap<String, StorageDataMessageHandler> _dataMessageHandlers = new ConcurrentHashMap<>();
@@ -58,7 +58,7 @@ public class StorageWSConnection extends WebSocketListener {
 
         Throwable currentError = error;
         while (!this._failureCallbacks.isEmpty()) {
-            StorageFailureCallback handler = this._failureCallbacks.poll();
+            StorageConnectFailureCallback handler = this._failureCallbacks.poll();
             assert handler != null;
 
             try {
@@ -124,7 +124,7 @@ public class StorageWSConnection extends WebSocketListener {
 
     @ReturnThis
     @CanIgnoreReturnValue
-    public StorageWSConnection failureCallback(@NonNull StorageFailureCallback callback) {
+    public StorageWSConnection failureCallback(@NonNull StorageConnectFailureCallback callback) {
         _failureCallbacks.add(callback);
         return this;
     }

@@ -55,9 +55,8 @@ public class DevicesApiService {
         }));
     }
 
-    public HTTPApiRequest<Object> unpairDevice(int deviceId) {
+    public HTTPApiRequest<Void> unpairDevice(int deviceId) {
         Request request = ApiUtils.getAuthorizedRequestBuilder().url(_devicesApiBase + "/device/" + deviceId + "/unpair/").build();
-
-        return ApiUtils.createApiRequest(request, ((response, applicationResponse) -> new Object()));
+        return ApiUtils.createApiRequest(request, ((response, applicationResponse) -> null));
     }
 }

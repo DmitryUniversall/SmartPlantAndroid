@@ -5,29 +5,23 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.smartplant.smartplantandroid.main.components.devices.repository.DevicesRepositoryST;
-import com.smartplant.smartplantandroid.main.components.sensors_data.internal_utils.db.SensorsDataDBManagerST;
 import com.smartplant.smartplantandroid.main.components.sensors_data.models.SensorsData;
 import com.smartplant.smartplantandroid.main.components.storage.utils.StorageRequestResult;
 
 public class DeviceDetailViewModel extends ViewModel {
     private final DevicesRepositoryST _devicesRepository;
-    private final SensorsDataDBManagerST _sensorsDataDBManager;
 
     private final MutableLiveData<SensorsData> _sensorsLiveData = new MutableLiveData<>();
 
     public DeviceDetailViewModel() {
         this._devicesRepository = DevicesRepositoryST.getInstance();
-        this._sensorsDataDBManager = SensorsDataDBManagerST.getInstance();
     }
 
     public MutableLiveData<StorageRequestResult<SensorsData>> requestSensorsData(int deviceId, int timeout) {
         MutableLiveData<StorageRequestResult<SensorsData>> requestResult = new MediatorLiveData<>();
 
-        this._devicesRepository.requestSensorsData(deviceId, timeout)
-                .onSuccess((result, dataMessage, response) -> {
-//                    _sensorsDataDBManager.insertSensorsData(result);  // Save latest data to db
-                    requestResult.postValue(new StorageRequestResult<>(true, result, response, dataMessage, null));
-                })
+        this._devicesRepository.requestSensorsData(deviceId, timeout)  // TODO: Update _sensorsLiveData
+                .onSuccess((result, dataMessage, response) -> requestResult.postValue(new StorageRequestResult<>(true, result, response, dataMessage, null)))
                 .onFailure(error -> requestResult.postValue(new StorageRequestResult<>(false, null, null, null, error)))
                 .send();
 

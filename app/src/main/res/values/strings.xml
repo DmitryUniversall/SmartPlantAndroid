@@ -7,6 +7,9 @@
     <string name="off">Выключен</string>
     <string name="off_action">Выключить</string>
 
+    <!-- Icon descriptions -->
+    <string name="temperature_icon_description">Температура</string>
+
     <!-- Application status codes-->
     <string name="auth_failed">Ошибка авторизации</string>
     <string name="internal_server_error">Неизвестная ошибка сервера</string>

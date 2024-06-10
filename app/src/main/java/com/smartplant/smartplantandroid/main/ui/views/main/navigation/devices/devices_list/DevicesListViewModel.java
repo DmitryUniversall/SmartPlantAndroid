@@ -40,7 +40,7 @@ public class DevicesListViewModel extends ViewModel {
         return this._devicesRepository.pairDevice(deviceUsername).onSuccess((result, response, applicationResponse) -> this._devicesLiveData.postValue(this._devicesRepository.getMyDevices()));
     }
 
-    public HTTPApiRequest<Object> unpairDevice(int deviceId) {
+    public HTTPApiRequest<Void> unpairDevice(int deviceId) {
         return this._devicesRepository.unpairDevice(deviceId).onSuccess((result, response, applicationResponse) -> this._devicesLiveData.postValue(this._devicesRepository.getMyDevices()));
     }
 }

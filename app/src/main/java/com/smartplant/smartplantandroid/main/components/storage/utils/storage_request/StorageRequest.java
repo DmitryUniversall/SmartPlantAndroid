@@ -1,4 +1,4 @@
-package com.smartplant.smartplantandroid.main.components.storage.internal_utils.storage_request;
+package com.smartplant.smartplantandroid.main.components.storage.utils.storage_request;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -9,6 +9,9 @@ import androidx.annotation.ReturnThis;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.smartplant.smartplantandroid.core.async.ExecutedInBackground;
+import com.smartplant.smartplantandroid.core.callbacks.CallbackUtils;
+import com.smartplant.smartplantandroid.core.callbacks.FailureCallback;
 import com.smartplant.smartplantandroid.core.data.json.JsonUtils;
 import com.smartplant.smartplantandroid.core.exceptions.ApplicationResponseException;
 import com.smartplant.smartplantandroid.core.exceptions.TimeOutException;
@@ -24,14 +27,15 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.UUID;
 
-public class StorageRequest<T> {
+public class StorageRequest<T> implements ExecutedInBackground<StorageRequestSuccessCallback<T>, FailureCallback> {
     // Utils
     protected static final Handler _loopHandler = new Handler(Looper.getMainLooper());
     protected static final Gson _gson = JsonUtils.getGson();
 
     // Disposable callbacks
     protected final @NonNull Queue<StorageRequestSuccessCallback<T>> _successCallbacks = new LinkedList<>();
-    protected final @NonNull Queue<StorageRequestFailureCallback> _failureCallbacks = new LinkedList<>();
+    protected final @NonNull Queue<FailureCallback> _failureCallbacks = new LinkedList<>();
+    protected final @NonNull Queue<Runnable> _afterCallbacks = new LinkedList<>();
 
     // Handler name
     protected final @NonNull String _DARHandlerName = String.format("StorageRequest_%s", this._id);
@@ -120,6 +124,7 @@ public class StorageRequest<T> {
 
         _successCallbacks.forEach((handler) -> handler.onSuccess(result, dataMessage, response));
         _successCallbacks.clear();
+        this._callAfterCallbacks();
     }
 
     protected synchronized void _callFailureCallbacks(@NonNull Throwable error) {
@@ -127,24 +132,17 @@ public class StorageRequest<T> {
         this._done = true;
 
         if (this._failureCallbacks.isEmpty()) {
-            AppLogger.error("Unprocessed storage request", error);
+            AppLogger.error("Unprocessed storage request error", error);
             return;
         }
 
-        Throwable currentError = error;
-        while (!this._failureCallbacks.isEmpty()) {
-            StorageRequestFailureCallback handler = this._failureCallbacks.poll();
-            assert handler != null;
+        CallbackUtils.callFailureCallbackQueue(error, this._failureCallbacks);
+        this._callAfterCallbacks();
+    }
 
-            try {
-                handler.onFailure(currentError);
-            } catch (Throwable e) {
-                // Error occurred in last handler, so it will not be processed and will be lost
-                if (this._failureCallbacks.isEmpty())
-                    AppLogger.error("Unprocessed storage request", e);
-                currentError = e;
-            }
-        }
+    protected synchronized void _callAfterCallbacks() {
+        CallbackUtils.callRunnableCallbacks(this._afterCallbacks);
+        this._afterCallbacks.clear();
     }
 
     protected void cleanup() {
@@ -165,7 +163,6 @@ public class StorageRequest<T> {
         this._callFailureCallbacks(error);
         this.cleanup();
     }
-
 
     protected void _cancelAfterTimeout() {
         if (this._timeout == 0) return;
@@ -209,6 +206,12 @@ public class StorageRequest<T> {
                 .send();
     }
 
+    public void send() {
+        StorageRequestPayload payload = this._generatePayload();
+        this._sendWriteRequest(payload);
+        this._cancelAfterTimeout();
+    }
+
     @ReturnThis
     public StorageRequest<T> onSuccess(StorageRequestSuccessCallback<T> callback) {
         this._successCallbacks.add(callback);
@@ -216,14 +219,14 @@ public class StorageRequest<T> {
     }
 
     @ReturnThis
-    public StorageRequest<T> onFailure(StorageRequestFailureCallback callback) {
+    public StorageRequest<T> onFailure(FailureCallback callback) {
         this._failureCallbacks.add(callback);
         return this;
     }
 
-    public void send() {
-        StorageRequestPayload payload = this._generatePayload();
-        this._sendWriteRequest(payload);
-        this._cancelAfterTimeout();
+    @ReturnThis
+    public StorageRequest<T> after(Runnable callback) {
+        this._afterCallbacks.add(callback);
+        return this;
     }
 }

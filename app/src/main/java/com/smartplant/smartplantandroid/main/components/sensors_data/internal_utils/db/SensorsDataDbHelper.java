@@ -6,10 +6,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class SensorsDataDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "sensorsData.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public static final String TABLE_NAME = "sensors_data";
     public static final String COLUMN_ID = "id";
+    public static final String COLUMN_DEVICE_ID = "device_id";
     public static final String COLUMN_ILLUMINATION = "illumination";
     public static final String COLUMN_SOIL_MOISTURE = "soil_moisture";
     public static final String COLUMN_TEMPERATURE = "temperature";
@@ -20,6 +21,7 @@ public class SensorsDataDbHelper extends SQLiteOpenHelper {
     private static final String TABLE_CREATE =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_DEVICE_ID + "INTEGER, " +
                     COLUMN_ILLUMINATION + " INTEGER, " +
                     COLUMN_SOIL_MOISTURE + " INTEGER, " +
                     COLUMN_TEMPERATURE + " REAL, " +
@@ -38,7 +40,8 @@ public class SensorsDataDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        onCreate(db);
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COLUMN_DEVICE_ID + " INTEGER");
+        }
     }
 }

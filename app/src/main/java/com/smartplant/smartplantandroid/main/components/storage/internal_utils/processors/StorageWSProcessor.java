@@ -11,9 +11,9 @@ import com.smartplant.smartplantandroid.core.data.json.JsonUtils;
 import com.smartplant.smartplantandroid.core.models.ApplicationResponse;
 import com.smartplant.smartplantandroid.main.components.storage.internal_utils.connection.StorageConnectCallback;
 import com.smartplant.smartplantandroid.main.components.storage.internal_utils.connection.StorageDisconnectCallback;
-import com.smartplant.smartplantandroid.main.components.storage.internal_utils.connection.StorageFailureCallback;
+import com.smartplant.smartplantandroid.main.components.storage.internal_utils.connection.StorageConnectFailureCallback;
 import com.smartplant.smartplantandroid.main.components.storage.internal_utils.connection.StorageWSConnection;
-import com.smartplant.smartplantandroid.main.components.storage.internal_utils.storage_request.StorageRequest;
+import com.smartplant.smartplantandroid.main.components.storage.utils.storage_request.StorageRequest;
 import com.smartplant.smartplantandroid.main.components.storage.models.StorageDataMessage;
 
 import java.util.UUID;
@@ -80,7 +80,7 @@ public class StorageWSProcessor {
 
     @ReturnThis
     @CanIgnoreReturnValue
-    public StorageWSProcessor onConnectionFailure(@NonNull StorageFailureCallback callback) {
+    public StorageWSProcessor onConnectionFailure(@NonNull StorageConnectFailureCallback callback) {
         this._connection.failureCallback(callback);
         return this;
     }

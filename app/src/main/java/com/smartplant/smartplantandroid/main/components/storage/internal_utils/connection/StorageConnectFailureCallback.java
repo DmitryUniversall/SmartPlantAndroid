@@ -2,6 +2,6 @@ package com.smartplant.smartplantandroid.main.components.storage.internal_utils.
 
 import androidx.annotation.NonNull;
 
-public interface StorageFailureCallback {
+public interface StorageConnectFailureCallback {
     void onFailure(@NonNull Throwable error, okhttp3.Response response);
 }

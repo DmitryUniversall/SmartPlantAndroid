@@ -1,14 +1,16 @@
 package com.smartplant.smartplantandroid.main.components.sensors_data.models;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class SensorsData {
     @SerializedName("id")
-    private final @Nullable Integer _id;
+    private @Nullable Long _id;
 
     @SerializedName("water_level")
     private final int _waterLevel;
@@ -26,9 +28,9 @@ public class SensorsData {
     private final double _humidity;
 
     @SerializedName("created_at")
-    private final Date _createdAt;
+    private Date _createdAt;
 
-    public SensorsData(@Nullable Integer id, int waterLevel, int illumination, int soilMoisture, double temperature, double humidity, @Nullable Date createdAt) {
+    public SensorsData(@Nullable Long id, int waterLevel, int illumination, int soilMoisture, double temperature, double humidity, @Nullable Date createdAt) {
         this._id = id;
         this._waterLevel = waterLevel;
         this._illumination = illumination;
@@ -38,9 +40,27 @@ public class SensorsData {
         this._createdAt = createdAt != null ? createdAt : new Date();
     }
 
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        SensorsData that = (SensorsData) obj;
+        return _waterLevel == that._waterLevel &&
+                _illumination == that._illumination &&
+                _soilMoisture == that._soilMoisture &&
+                Double.compare(that._temperature, _temperature) == 0 &&
+                Double.compare(that._humidity, _humidity) == 0 &&
+                Objects.equals(_id, that._id) &&
+                Objects.equals(_createdAt, that._createdAt);
+    }
+
     @Nullable
-    public Integer getId() {
+    public Long getId() {
         return _id;
+    }
+
+    public void setId(@Nullable Long id) {
+        this._id = id;
     }
 
     public int getIllumination() {
@@ -65,5 +85,9 @@ public class SensorsData {
 
     public Date getCreatedAt() {
         return _createdAt;
+    }
+
+    public void setCreatedAt(@NonNull Date createdAt) {
+        this._createdAt = createdAt;
     }
 }

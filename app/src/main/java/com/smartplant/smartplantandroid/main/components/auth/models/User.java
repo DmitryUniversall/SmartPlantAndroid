@@ -1,5 +1,7 @@
 package com.smartplant.smartplantandroid.main.components.auth.models;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -22,6 +24,11 @@ public class User {
         this._username = username;
         this._createdAt = created_at;
         this._isDevice = _isDevice;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        return (obj instanceof User) && ((User) obj).getId() == this._id;
     }
 
     public int getId() {

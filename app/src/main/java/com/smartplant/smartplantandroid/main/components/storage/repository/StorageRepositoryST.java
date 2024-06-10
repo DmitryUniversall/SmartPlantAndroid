@@ -51,7 +51,7 @@ public class StorageRepositoryST {
         return this._apiService.writeRequest(payload);
     }
 
-    public HTTPApiRequest<Object> writeResponse(@NonNull StorageResponsePayload payload) {
+    public HTTPApiRequest<Void> writeResponse(@NonNull StorageResponsePayload payload) {
         return this._apiService.writeResponse(payload);
     }
 }
