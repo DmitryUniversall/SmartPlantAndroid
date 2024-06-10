@@ -8,7 +8,7 @@
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="15dp">
 
@@ -124,9 +124,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="110dp"
                         flexbox:flexDirection="row"
-                        flexbox:justifyContent="space_between">
+                        flexbox:justifyContent="space_between"
+                        android:layout_marginBottom="15dp">
                     <!-- Stat card -->
                     <com.google.android.flexbox.FlexboxLayout
+                            android:id="@+id/temperature_stat_card"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             flexbox:flexDirection="column"
@@ -138,7 +140,7 @@
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
                                 android:contentDescription="EditDeviceDescriptionIcon"
-                                android:src="@drawable/icon_temperature"/>
+                                android:src="@drawable/icon_temperature" />
 
                         <!-- Stat title -->
                         <TextView
@@ -149,7 +151,7 @@
                                 android:textAlignment="center"
                                 android:textColor="@color/L1_text_primary"
                                 android:textStyle="bold"
-                                android:textSize="14sp"/>
+                                android:textSize="14sp" />
 
                         <!-- Stat value -->
                         <TextView
@@ -165,6 +167,7 @@
 
                     <!-- Stat card -->
                     <com.google.android.flexbox.FlexboxLayout
+                            android:id="@+id/soil_moisture_stat_card"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             flexbox:flexDirection="column"
@@ -176,7 +179,7 @@
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
                                 android:contentDescription="EditDeviceDescriptionIcon"
-                                android:src="@drawable/icon_glass"/>
+                                android:src="@drawable/icon_glass" />
 
                         <!-- Stat title -->
                         <TextView
@@ -187,7 +190,7 @@
                                 android:textColor="@color/L1_text_primary"
                                 android:textStyle="bold"
                                 android:textSize="14sp"
-                                android:textAlignment="center"/>
+                                android:textAlignment="center" />
 
                         <!-- Stat value -->
                         <TextView
@@ -202,6 +205,7 @@
                     </com.google.android.flexbox.FlexboxLayout>
                     <!-- Stat card -->
                     <com.google.android.flexbox.FlexboxLayout
+                            android:id="@+id/humidity_stat_card"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             flexbox:flexDirection="column"
@@ -213,7 +217,7 @@
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
                                 android:contentDescription="EditDeviceDescriptionIcon"
-                                android:src="@drawable/icon_wind"/>
+                                android:src="@drawable/icon_wind" />
 
                         <!-- Stat title -->
                         <TextView
@@ -224,7 +228,7 @@
                                 android:textAlignment="center"
                                 android:textColor="@color/L1_text_primary"
                                 android:textStyle="bold"
-                                android:textSize="14sp"/>
+                                android:textSize="14sp" />
 
                         <!-- Stat value -->
                         <TextView
@@ -239,6 +243,7 @@
                     </com.google.android.flexbox.FlexboxLayout>
                     <!-- Stat card -->
                     <com.google.android.flexbox.FlexboxLayout
+                            android:id="@+id/illumination_stat_card"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             flexbox:flexDirection="column"
@@ -249,7 +254,7 @@
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
                                 android:contentDescription="EditDeviceDescriptionIcon"
-                                android:src="@drawable/icon_sun"/>
+                                android:src="@drawable/icon_sun" />
 
                         <!-- Stat title -->
                         <TextView
@@ -260,7 +265,7 @@
                                 android:textAlignment="center"
                                 android:textColor="@color/L1_text_primary"
                                 android:textStyle="bold"
-                                android:textSize="14sp"/>
+                                android:textSize="14sp" />
 
                         <!-- Stat value -->
                         <TextView
@@ -274,6 +279,11 @@
                                 android:textStyle="bold" />
                     </com.google.android.flexbox.FlexboxLayout>
                 </com.google.android.flexbox.FlexboxLayout>
+
+                <androidx.fragment.app.FragmentContainerView
+                        android:id="@+id/stat_action_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
             </com.google.android.flexbox.FlexboxLayout>
 
             <View
@@ -306,117 +316,6 @@
                         android:progress="70"
                         android:layout_weight="0.8" />
             </LinearLayout>
-
-            <View
-                    android:layout_height="2dp"
-                    android:layout_width="match_parent"
-                    android:background="#BEBEBE"
-                    android:layout_marginBottom="20dp" />
-
-            <com.google.android.flexbox.FlexboxLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    flexbox:flexDirection="column"
-                    android:layout_marginBottom="20dp">
-
-                <!-- Control Block -->
-                <com.google.android.flexbox.FlexboxLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        flexbox:flexDirection="row"
-                        flexbox:justifyContent="space_between"
-                        flexbox:alignItems="center"
-                        android:layout_marginBottom="10dp">
-                    <!-- Control Title -->
-                    <com.google.android.flexbox.FlexboxLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            flexbox:flexDirection="row"
-                            flexbox:justifyContent="center"
-                            flexbox:alignItems="center">
-                        <!-- Title -->
-                        <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                flexbox:flexDirection="row"
-                                android:text="Освещение"
-                                android:textSize="20sp"
-                                android:textColor="@color/L1_text_primary"
-                                android:textStyle="bold" />
-                    </com.google.android.flexbox.FlexboxLayout>
-
-                    <!-- Control Actions -->
-                    <com.google.android.flexbox.FlexboxLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            flexbox:flexDirection="row"
-                            flexbox:justifyContent="center"
-                            flexbox:alignItems="center">
-
-                        <com.smartplant.smartplantandroid.main.ui.items.button.CustomButton
-                                android:id="@+id/lampToggleButton"
-                                android:layout_width="100dp"
-                                android:layout_height="40dp"
-                                android:text="Включить"
-                                android:layout_marginEnd="10dp" />
-
-                        <com.smartplant.smartplantandroid.main.ui.items.button.CustomButton
-                                android:id="@+id/lampSettingsButton"
-                                android:layout_width="100dp"
-                                android:layout_height="40dp"
-                                android:text="Настроить" />
-                    </com.google.android.flexbox.FlexboxLayout>
-                </com.google.android.flexbox.FlexboxLayout>
-
-                <!-- Control Block -->
-                <com.google.android.flexbox.FlexboxLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        flexbox:flexDirection="row"
-                        flexbox:justifyContent="space_between"
-                        flexbox:alignItems="center">
-                    <!-- Control Title -->
-                    <com.google.android.flexbox.FlexboxLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            flexbox:flexDirection="row"
-                            flexbox:justifyContent="center"
-                            flexbox:alignItems="center">
-                        <!-- Title -->
-                        <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                flexbox:flexDirection="row"
-                                android:text="Полив"
-                                android:textSize="20sp"
-                                android:textColor="@color/L1_text_primary"
-                                android:textStyle="bold" />
-                    </com.google.android.flexbox.FlexboxLayout>
-
-                    <!-- Control Actions -->
-                    <com.google.android.flexbox.FlexboxLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            flexbox:flexDirection="row"
-                            flexbox:justifyContent="center"
-                            flexbox:alignItems="center">
-
-                        <com.smartplant.smartplantandroid.main.ui.items.button.CustomButton
-                                android:id="@+id/waterButton"
-                                android:layout_width="100dp"
-                                android:layout_height="40dp"
-                                android:text="Полить"
-                                android:layout_marginEnd="10dp" />
-
-                        <com.smartplant.smartplantandroid.main.ui.items.button.CustomButton
-                                android:id="@+id/pompSettingsButton"
-                                android:layout_width="100dp"
-                                android:layout_height="40dp"
-                                android:text="Настроить" />
-                    </com.google.android.flexbox.FlexboxLayout>
-                </com.google.android.flexbox.FlexboxLayout>
-
-            </com.google.android.flexbox.FlexboxLayout>
 
             <View
                     android:layout_height="2dp"

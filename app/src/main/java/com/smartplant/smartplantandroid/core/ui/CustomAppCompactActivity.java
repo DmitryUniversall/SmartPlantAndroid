@@ -10,18 +10,18 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 public class CustomAppCompactActivity extends AppCompatActivity {
-    protected void startNewActivity(Class<? extends AppCompatActivity> newActivity) {
+    protected void _startNewActivity(Class<? extends AppCompatActivity> newActivity) {
         Intent intent = new Intent(this, newActivity);
         startActivity(intent);
     }
 
-    protected void startNewActivity(Class<? extends AppCompatActivity> newActivity, Bundle extras) {
+    protected void _startNewActivity(Class<? extends AppCompatActivity> newActivity, Bundle extras) {
         Intent intent = new Intent(this, newActivity);
         intent.putExtras(extras);
         startActivity(intent);
     }
 
-    protected void replaceFragment(@IdRes int fragmentId, Fragment fragment) {
+    protected void _replaceFragment(@IdRes int fragmentId, Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(fragmentId, fragment);
@@ -29,7 +29,7 @@ public class CustomAppCompactActivity extends AppCompatActivity {
     }
 
     // With animation
-    protected void replaceFragment(@IdRes int fragmentId, Fragment fragment, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+    protected void _replaceFragment(@IdRes int fragmentId, Fragment fragment, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -40,7 +40,7 @@ public class CustomAppCompactActivity extends AppCompatActivity {
     }
 
     // With animation array
-    protected void replaceFragment(@IdRes int fragmentId, Fragment fragment, int[] animation) {
+    protected void _replaceFragment(@IdRes int fragmentId, Fragment fragment, int[] animation) {
         if (animation == null || animation.length != 4)
             throw new IllegalArgumentException("Animations array must have exactly 4 elements.");
 

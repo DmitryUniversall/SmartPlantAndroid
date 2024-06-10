@@ -3,9 +3,9 @@
     <string name="app_logo">SmartPlant Логотип</string>
     <string name="app_name">SmartPlant</string>
     <string name="on">Включён</string>
-    <string name="on_action">Включить</string>
+    <string name="turn_on">Включить</string>
     <string name="off">Выключен</string>
-    <string name="off_action">Выключить</string>
+    <string name="turn_off">Выключить</string>
 
     <!-- Icon descriptions -->
     <string name="temperature_icon_description">Температура</string>
@@ -77,4 +77,10 @@
     <string name="plant_image">Растение</string>
     <string name="default_device_description">Устройство SmartPlant</string>
     <string name="loading_with_dots">Загрузка...</string>
+    <string name="sensor_data">Данные датчика</string>
+    <string name="illumination_settings">Настройки освещения</string>
+    <string name="irrigation_settings">Настройки полива</string>
+    <string name="irrigate">Полить</string>
+    <string name="turn_on_lamp">Включить освещение</string>
+    <string name="turn_off_lamp">Выключить освещение</string>
 </resources>

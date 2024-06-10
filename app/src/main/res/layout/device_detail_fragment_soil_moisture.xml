@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Влажность почвы"
+            android:textAlignment="center"
+            android:textColor="@color/L1_text_primary"
+            android:textStyle="bold"
+            android:textSize="14sp"/>
+
+    <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/stat_data_line_chart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="15dp"/>
+
+    <com.smartplant.smartplantandroid.main.ui.items.button.CustomButton
+            android:id="@+id/irrigate_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="@string/irrigate"
+            android:layout_marginTop="15dp" />
+    <com.smartplant.smartplantandroid.main.ui.items.button.CustomButton
+            android:id="@+id/irrigation_settings_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="@string/irrigation_settings"
+            android:layout_marginTop="5dp" />
+</LinearLayout>

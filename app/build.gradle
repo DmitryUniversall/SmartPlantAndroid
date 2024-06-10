@@ -33,6 +33,7 @@ dependencies {
     implementation libs.gson
     implementation libs.security.crypto
     implementation libs.okhttp
+    implementation libs.mpandroidchart
 
     implementation libs.appcompat
     implementation libs.material

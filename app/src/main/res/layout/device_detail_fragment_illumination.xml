@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Освещение"
+            android:textAlignment="center"
+            android:textColor="@color/L1_text_primary"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+
+    <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/stat_data_line_chart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="15dp" />
+
+    <com.smartplant.smartplantandroid.main.ui.items.button.CustomButton
+            android:id="@+id/toggle_lamp_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="@string/turn_on_lamp"
+            android:layout_marginTop="15dp" />
+
+    <com.smartplant.smartplantandroid.main.ui.items.button.CustomButton
+            android:id="@+id/illumination_settings_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="@string/illumination_settings"
+            android:layout_marginTop="5dp" />
+</LinearLayout>

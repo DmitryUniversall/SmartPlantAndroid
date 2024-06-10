@@ -24,12 +24,12 @@ public class StartActivity extends CustomAppCompactActivity {
     private void onLoginBtnClick(View view) {
         Bundle extras = new Bundle();
         extras.putString("authType", "login");
-        startNewActivity(AuthActivity.class, extras);
+        _startNewActivity(AuthActivity.class, extras);
     }
 
     private void onRegisterBtnClick(View view) {
         Bundle extras = new Bundle();
         extras.putString("authType", "register");
-        startNewActivity(AuthActivity.class, extras);
+        _startNewActivity(AuthActivity.class, extras);
     }
 }

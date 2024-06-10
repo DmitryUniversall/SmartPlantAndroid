@@ -90,7 +90,7 @@ public class AuthActivity extends CustomAppCompactActivity {
     }
 
     void setFragment(Fragment fragment, int[] animation) {
-        replaceFragment(R.id.auth_fragment_container, fragment, animation);
+        _replaceFragment(R.id.auth_fragment_container, fragment, animation);
     }
 
     private void register() {
@@ -114,7 +114,7 @@ public class AuthActivity extends CustomAppCompactActivity {
             }
 
             submitButton.setEnabled(true);
-            if (authResult.ok) startNewActivity(MainActivity.class);
+            if (authResult.ok) _startNewActivity(MainActivity.class);
         });
     }
 
@@ -140,7 +140,7 @@ public class AuthActivity extends CustomAppCompactActivity {
             }
 
             submitButton.setEnabled(true);
-            if (authResult.ok) startNewActivity(MainActivity.class);
+            if (authResult.ok) _startNewActivity(MainActivity.class);
         });
     }
 }

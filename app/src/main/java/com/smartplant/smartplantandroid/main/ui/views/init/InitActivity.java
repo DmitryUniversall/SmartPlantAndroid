@@ -34,9 +34,9 @@ public class InitActivity extends CustomAppCompactActivity {
         AppLogger.debug("Waiting for user authentication");
         viewModel.getAuthenticatedLive().observe(this, isAuthenticated -> {
             if (isAuthenticated) {
-                startNewActivity(MainActivity.class);
+                _startNewActivity(MainActivity.class);
             } else {
-                startNewActivity(StartActivity.class);
+                _startNewActivity(StartActivity.class);
             }
         });
     }
