@@ -1,7 +1,5 @@
 package com.smartplant.smartplantandroid.main.components.sensors_data.repository;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -29,10 +27,10 @@ public class SensorsDataRepositoryST {
     private final Map<Integer, Long> _cacheTimeMap = new HashMap<>();
     private static final long CACHE_TTL = TimeUnit.HOURS.toMillis(1);  // TODO: Is it actually needed?
 
-    public static synchronized void createInstance(Context context) {
+    public static synchronized void createInstance() {
         if (_instance != null)
             throw new RuntimeException("SensorsDataRepositoryST has already been initialized");
-        _instance = new SensorsDataRepositoryST(context);
+        _instance = new SensorsDataRepositoryST();
     }
 
     public static synchronized SensorsDataRepositoryST getInstance() {
@@ -41,8 +39,8 @@ public class SensorsDataRepositoryST {
         return _instance;
     }
 
-    private SensorsDataRepositoryST(Context context) {
-        _dbService = new SensorsDataDBService(context);
+    private SensorsDataRepositoryST() {
+        _dbService = new SensorsDataDBService();
     }
 
     private void _cacheSensorsData(int deviceId, @NonNull SensorsData sensorsData) {
@@ -103,9 +101,5 @@ public class SensorsDataRepositoryST {
     public BackgroundTask<Void> deleteSensorsData(long id, int deviceId) {
         this._invalidateCachedSensorsData(deviceId);
         return _dbService.deleteSensorsData(id);
-    }
-
-    public void close() {
-        _dbService.close();
     }
 }

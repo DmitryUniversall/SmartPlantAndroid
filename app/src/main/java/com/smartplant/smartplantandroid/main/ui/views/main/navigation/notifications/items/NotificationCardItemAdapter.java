@@ -1,5 +1,6 @@
 package com.smartplant.smartplantandroid.main.ui.views.main.navigation.notifications.items;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.ViewGroup;
 
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationCardItemAdapter extends RecyclerView.Adapter<NotificationCardItemAdapter.NotificationCardViewHolder> {
-    private final List<AppNotification> _notifications = new ArrayList<>();
+    private List<AppNotification> _notifications = new ArrayList<>();
     private final Context _context;
 
     public static class NotificationCardViewHolder extends RecyclerView.ViewHolder {
@@ -26,6 +27,12 @@ public class NotificationCardItemAdapter extends RecyclerView.Adapter<Notificati
 
     public NotificationCardItemAdapter(Context context) {
         this._context = context;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setNotifications(@NonNull List<AppNotification> notifications) {
+        this._notifications = notifications;
+        notifyDataSetChanged();
     }
 
     public void addNotification(AppNotification notification) {

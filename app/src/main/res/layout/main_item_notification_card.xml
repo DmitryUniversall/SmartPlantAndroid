@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/item_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/L1_background_primary"
+        android:layout_margin="5dp"
         app:cardCornerRadius="10dp"
-        app:cardElevation="5dp"
-        >
+        app:cardElevation="5dp">
     <!-- Card content -->
     <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
@@ -58,11 +57,12 @@
                     android:layout_marginTop="4dp"
                     android:textSize="13sp"
                     android:layout_gravity="center_horizontal" />
+
             <LinearLayout
                     android:id="@+id/notification_actions_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"/>
+                    android:orientation="horizontal" />
         </com.google.android.flexbox.FlexboxLayout>
     </com.google.android.flexbox.FlexboxLayout>
 </androidx.cardview.widget.CardView>

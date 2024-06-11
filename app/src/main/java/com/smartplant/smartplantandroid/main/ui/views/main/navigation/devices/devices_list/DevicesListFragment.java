@@ -12,9 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.smartplant.smartplantandroid.R;
+import com.smartplant.smartplantandroid.core.logs.AppLogger;
 import com.smartplant.smartplantandroid.core.network.http.http_api_request.HTTPApiRequest;
 import com.smartplant.smartplantandroid.core.ui.CustomFragment;
 import com.smartplant.smartplantandroid.main.components.auth.models.User;
+import com.smartplant.smartplantandroid.main.components.notifiactions.models.AppNotification;
+import com.smartplant.smartplantandroid.main.components.notifiactions.repository.NotificationsRepositoryST;
 import com.smartplant.smartplantandroid.main.components.sensors_data.repository.SensorsDataRepositoryST;
 import com.smartplant.smartplantandroid.main.ui.items.button.CustomButton;
 import com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.devices_list.items.DeviceCardItemAdapter;
@@ -80,6 +83,7 @@ public class DevicesListFragment extends CustomFragment {
     }
 
     private void _onAddButtonClick(View view) {
-
+        NotificationsRepositoryST notificationsRepository = NotificationsRepositoryST.getInstance();
+        notificationsRepository.sendAppNotification(new AppNotification(null, 2, false, "Test Notification 1", "Notification description", R.drawable.icon_droplet, null)).execute();
     }
 }

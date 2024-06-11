@@ -1,14 +1,12 @@
 package com.smartplant.smartplantandroid.main.components.sensors_data.internal_utils.db;
 
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
-public class SensorsDataDbHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "AppData.db";
-    private static final int DATABASE_VERSION = 2;
+import com.smartplant.smartplantandroid.core.data.db.DBTable;
 
+public class SensorsDataDBTable implements DBTable {
     public static final String TABLE_NAME = "sensors_data";
+
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_DEVICE_ID = "device_id";
     public static final String COLUMN_ILLUMINATION = "illumination";
@@ -29,19 +27,18 @@ public class SensorsDataDbHelper extends SQLiteOpenHelper {
                     COLUMN_WATER_LEVEL + " INTEGER, " +
                     COLUMN_CREATED_AT + " DATETIME);";
 
-    public SensorsDataDbHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    @Override
+    public String getCreateScript() {
+        return TABLE_CREATE;
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(TABLE_CREATE);
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 2) {
-            db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COLUMN_DEVICE_ID + " INTEGER");
-        }
+
     }
 }

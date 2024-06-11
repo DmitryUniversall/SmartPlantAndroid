@@ -9,37 +9,31 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:fillViewport="true">
 
             <com.google.android.flexbox.FlexboxLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     app:flexDirection="column"
-                    app:alignItems="center">
+                    android:padding="10dp"
+                    app:justifyContent="space_between">
 
-                <com.google.android.flexbox.FlexboxLayout
+                <com.smartplant.smartplantandroid.core.ui.generics.NonScrollableRecyclerView
+                        android:id="@+id/devices_list_container"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:flexDirection="column"
-                        android:padding="10dp"
-                        app:justifyContent="space_between">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:nestedScrollingEnabled="false" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/devices_list_container"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:nestedScrollingEnabled="false" />
-
-                    <com.smartplant.smartplantandroid.main.ui.items.button.CustomButton
-                            android:id="@+id/addDeviceButton"
-                            android:layout_width="match_parent"
-                            android:text="@string/add_device"
-                            android:layout_height="43dp" />
-                </com.google.android.flexbox.FlexboxLayout>
+                <com.smartplant.smartplantandroid.main.ui.items.button.CustomButton
+                        android:id="@+id/addDeviceButton"
+                        android:layout_width="match_parent"
+                        android:text="@string/add_device"
+                        android:layout_height="43dp" />
             </com.google.android.flexbox.FlexboxLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>
