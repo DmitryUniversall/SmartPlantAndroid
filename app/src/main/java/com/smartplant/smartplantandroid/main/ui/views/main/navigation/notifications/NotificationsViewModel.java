@@ -1,5 +1,6 @@
 package com.smartplant.smartplantandroid.main.ui.views.main.navigation.notifications;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -22,9 +23,9 @@ public class NotificationsViewModel extends ViewModel {
 
     private void _observerNotifications() {
         this._notificationsRepository.getObservableNotifications().addObserver(obj -> {
-            AppLogger.info("UPDATING IN LIVE DATA");
-            AppLogger.info("SIZE %d", this._notificationsRepository.getUncheckedNotifications().size());
-            this._notificationsLiveData.postValue(this._notificationsRepository.getUncheckedNotifications());
+            Set<AppNotification> notifications = this._notificationsRepository.getUncheckedNotifications();
+            AppLogger.info("Updating notifications live data; Found unchecked notifications: %d", notifications.size());
+            this._notificationsLiveData.postValue(notifications);
         });
     }
 
@@ -42,5 +43,9 @@ public class NotificationsViewModel extends ViewModel {
 
     public Set<AppNotification> getUncheckedNotifications() {
         return this._notificationsRepository.getUncheckedNotifications();
+    }
+
+    public BackgroundTask<Void> updateNotification(@NonNull AppNotification notification) {
+        return this._notificationsRepository.updateNotification(notification);
     }
 }

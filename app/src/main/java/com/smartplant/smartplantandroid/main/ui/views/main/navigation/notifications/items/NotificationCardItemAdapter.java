@@ -18,10 +18,20 @@ public class NotificationCardItemAdapter extends RecyclerView.Adapter<Notificati
 
     public static class NotificationCardViewHolder extends RecyclerView.ViewHolder {
         private final NotificationCardItem _notificationCardItem;
+        private AppNotification _notification;
 
         public NotificationCardViewHolder(@NonNull NotificationCardItem itemView) {
             super(itemView);
             this._notificationCardItem = itemView;
+        }
+
+        public void bind(AppNotification notification) {
+            this._notification = notification;
+            _notificationCardItem.bind(notification);
+        }
+
+        public AppNotification getNotification() {
+            return _notification;
         }
     }
 
@@ -58,7 +68,7 @@ public class NotificationCardItemAdapter extends RecyclerView.Adapter<Notificati
     @Override
     public void onBindViewHolder(NotificationCardViewHolder holder, int position) {
         AppNotification notification = this._notifications.get(position);
-        holder._notificationCardItem.bind(notification);
+        holder.bind(notification);
     }
 
     @Override

@@ -14,7 +14,7 @@
             android:layout_height="match_parent"
             app:flexDirection="row"
             app:alignItems="center"
-            android:padding="5dp">
+            android:padding="10dp">
 
         <!-- Card image -->
         <com.google.android.flexbox.FlexboxLayout
@@ -26,8 +26,8 @@
 
             <ImageView
                     android:id="@+id/notification_icon"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:src="@drawable/icon_temperature"
                     android:contentDescription="@string/temperature_icon_description"
                     android:layout_gravity="center_horizontal" />
@@ -58,6 +58,7 @@
                     android:textSize="13sp"
                     android:layout_gravity="center_horizontal" />
 
+            <!-- Notification actions -->
             <LinearLayout
                     android:id="@+id/notification_actions_container"
                     android:layout_width="match_parent"

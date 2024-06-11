@@ -51,7 +51,7 @@ public class AppNotification {
         this._description = description;
     }
 
-    public int getImageResId() {
+    public int getIconResId() {
         return _imageResId;
     }
 

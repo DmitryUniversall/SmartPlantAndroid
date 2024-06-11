@@ -59,6 +59,10 @@ public class NotificationsRepositoryST {
         return this._dbService.insertNotification(notification);
     }
 
+    private BackgroundTask<Void> _updateNotificationInDB(@NonNull AppNotification notification) {
+        return this._dbService.updateNotification(notification);
+    }
+
     public boolean isLoaded() {
         return this._isLoaded;
     }
@@ -71,6 +75,7 @@ public class NotificationsRepositoryST {
     public BackgroundTask<List<AppNotification>> fetchUncheckedNotifications() {
         return _dbService.getUncheckedNotifications().onSuccess(this::_addNotifications);
     }
+
 
     public Set<AppNotification> getNotifications() {
         return this._notifications;
@@ -98,5 +103,14 @@ public class NotificationsRepositoryST {
                     AppLogger.info("Successfully send notification");
                 })
                 .onFailure(error -> AppLogger.error("Failed to send(insert) notification", error));
+    }
+
+    public BackgroundTask<Void> updateNotification(@NonNull AppNotification notification) {
+        return this._updateNotificationInDB(notification)
+                .onSuccess(result -> {
+                    AppLogger.info("Notification id=%d successfully updated", notification.getId());
+                    if (_notifications.contains(notification)) this._observableNotifications.notifyObservers(this._notifications);  // TODO: Add if not contains?
+                })
+                .onFailure(error -> AppLogger.error(error, "Failed to update notification id=%d", notification.getId()));
     }
 }

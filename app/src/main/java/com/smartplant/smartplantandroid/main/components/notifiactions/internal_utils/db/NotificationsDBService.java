@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import androidx.annotation.NonNull;
+
 import com.smartplant.smartplantandroid.core.async.background_task.BackgroundTask;
 import com.smartplant.smartplantandroid.core.data.DataUtils;
 import com.smartplant.smartplantandroid.core.data.db.CoreSqliteDBHelper;
@@ -19,7 +21,7 @@ public class NotificationsDBService {
         _db = CoreSqliteDBHelper.getInstance().getWritableDatabase();
     }
 
-    private AppNotification _createNotificationFromCursor(Cursor cursor) {
+    private AppNotification _createNotificationFromCursor(@NonNull Cursor cursor) {
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(NotificationsDBTable.COLUMN_ID));
         int deviceId = cursor.getInt(cursor.getColumnIndexOrThrow(NotificationsDBTable.COLUMN_DEVICE_ID));
         String title = cursor.getString(cursor.getColumnIndexOrThrow(NotificationsDBTable.COLUMN_TITLE));
@@ -31,16 +33,34 @@ public class NotificationsDBService {
         return new AppNotification(id, deviceId, isChecked, title, description, imageResId, DataUtils.convertStringToIntegerList(actions, NotificationsDBTable.ACTIONS_DELIMITER));
     }
 
-    public BackgroundTask<Void> insertNotification(AppNotification notification) {
+    public BackgroundTask<Void> insertNotification(@NonNull AppNotification notification) {
         return new BackgroundTask<>(() -> {
             ContentValues values = new ContentValues();
             values.put(NotificationsDBTable.COLUMN_TITLE, notification.getTitle());
+            values.put(NotificationsDBTable.COLUMN_DEVICE_ID, notification.getDeviceId());
+            values.put(NotificationsDBTable.COLUMN_IS_CHECKED, notification.isChecked());
             values.put(NotificationsDBTable.COLUMN_DESCRIPTION, notification.getDescription());
-            values.put(NotificationsDBTable.COLUMN_IMAGE_RES_ID, notification.getImageResId());
+            values.put(NotificationsDBTable.COLUMN_IMAGE_RES_ID, notification.getIconResId());
             values.put(NotificationsDBTable.COLUMN_ACTIONS, DataUtils.convertListToString(notification.getActions(), NotificationsDBTable.ACTIONS_DELIMITER));
 
             long newRowId = this._db.insert(NotificationsDBTable.TABLE_NAME, null, values);
             if (newRowId != -1) notification.setId(newRowId);
+            return null;
+        });
+    }
+
+    public BackgroundTask<Void> updateNotification(@NonNull AppNotification notification) {
+        return new BackgroundTask<>(() -> {
+            if (notification.getId() == null) throw new IllegalStateException("Unable to update AppNotification: notification has no id");
+
+            ContentValues values = new ContentValues();
+            values.put(NotificationsDBTable.COLUMN_TITLE, notification.getTitle());
+            values.put(NotificationsDBTable.COLUMN_DEVICE_ID, notification.getDeviceId());
+            values.put(NotificationsDBTable.COLUMN_IS_CHECKED, notification.isChecked());
+            values.put(NotificationsDBTable.COLUMN_DESCRIPTION, notification.getDescription());
+            values.put(NotificationsDBTable.COLUMN_IMAGE_RES_ID, notification.getIconResId());
+            values.put(NotificationsDBTable.COLUMN_ACTIONS, DataUtils.convertListToString(notification.getActions(), NotificationsDBTable.ACTIONS_DELIMITER));
+            _db.update(NotificationsDBTable.TABLE_NAME, values, NotificationsDBTable.COLUMN_ID + " = ?", new String[]{String.valueOf(notification.getId())});
             return null;
         });
     }

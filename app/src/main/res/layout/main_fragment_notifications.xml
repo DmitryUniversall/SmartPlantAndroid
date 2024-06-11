@@ -13,7 +13,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <com.smartplant.smartplantandroid.core.ui.generics.NonScrollableRecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/notifications_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
