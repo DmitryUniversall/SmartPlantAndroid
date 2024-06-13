@@ -82,8 +82,5 @@ public class DevicesListFragment extends CustomFragment {
         this._fetchDevices().after(() -> this._swipeRefreshLayout.setRefreshing(false)).send();
     }
 
-    private void _onAddButtonClick(View view) {
-        NotificationsRepositoryST notificationsRepository = NotificationsRepositoryST.getInstance();
-        notificationsRepository.sendAppNotification(new AppNotification(null, 2, false, "Test Notification 1", "Notification description", R.drawable.icon_droplet, null)).execute();
-    }
+    private void _onAddButtonClick(View view) {}
 }
