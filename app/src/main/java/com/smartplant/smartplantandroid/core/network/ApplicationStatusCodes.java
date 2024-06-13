@@ -70,17 +70,20 @@ public class ApplicationStatusCodes {
         public static StatusCode SUCCESS;
         public static StatusCode CREATED;
         public static StatusCode UPDATED;
+        public static StatusCode NOT_CHANDED;
 
         public static void init(Context context) {
             NOT_SPECIFIED = new StatusCode(0, "Not specified", getStringResource(context, R.string.code_not_specified));
             SUCCESS = new StatusCode(1000, "Success", getStringResource(context, R.string.code_success));
             CREATED = new StatusCode(1001, "Created", getStringResource(context, R.string.code_created));
             UPDATED = new StatusCode(1002, "Updated", getStringResource(context, R.string.code_updated));
+            NOT_CHANDED = new StatusCode(1003, "Not changed", getStringResource(context, R.string.code_not_changed));
 
             _statusCodeMap.put(NOT_SPECIFIED.getCode(), NOT_SPECIFIED);
             _statusCodeMap.put(SUCCESS.getCode(), SUCCESS);
             _statusCodeMap.put(CREATED.getCode(), CREATED);
             _statusCodeMap.put(UPDATED.getCode(), UPDATED);
+            _statusCodeMap.put(NOT_CHANDED.getCode(), NOT_CHANDED);
         }
     }
 

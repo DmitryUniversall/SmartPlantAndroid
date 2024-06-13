@@ -10,12 +10,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.github.mikephil.charting.data.Entry;
 import com.google.android.flexbox.FlexboxLayout;
 import com.smartplant.smartplantandroid.R;
 import com.smartplant.smartplantandroid.core.logs.AppLogger;
 import com.smartplant.smartplantandroid.core.ui.CustomFragment;
-import com.smartplant.smartplantandroid.main.ui.items.button.CustomButton;
+import com.smartplant.smartplantandroid.main.components.auth.models.User;
+import com.smartplant.smartplantandroid.main.components.sensors_data.models.SensorsData;
 import com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.device_detail.fragments.ChartCustomFragment;
 import com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.device_detail.fragments.HumidityStatFragment;
 import com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.device_detail.fragments.IlluminationStatFragment;
@@ -72,13 +72,24 @@ public class DeviceDetailFragment extends CustomFragment {
     // Utils
     private DeviceDetailViewModel _viewModel;
 
+    // Data
+    private User _device;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        _viewModel = new ViewModelProvider(this).get(DeviceDetailViewModel.class);
+        this._viewModel = new ViewModelProvider(this).get(DeviceDetailViewModel.class);
+
+        if (getArguments() == null)
+            throw new IllegalArgumentException("Device detail fragment requires deviceId argument");
+        int deviceId = getArguments().getInt("deviceId");
+        this._device = this._viewModel.getDeviceById(deviceId);
+        if (this._device == null)
+            throw new IllegalArgumentException(String.format("Unable to get device by id=%d", deviceId));
 
         View root = inflater.inflate(R.layout.main_fragment_device_detail, container, false);
 
         this._setupCards(root);
         this._setupObservers();
+        this._getSensorsData();
 
         return root;
     }
@@ -165,6 +176,21 @@ public class DeviceDetailFragment extends CustomFragment {
     }
 
     private void _observeSensorsData() {
+        this._viewModel.getSensorsLiveData().observe(getViewLifecycleOwner(), this::_setSensorsDataToUI);
+    }
+
+    private void _getSensorsData() {
+        this._viewModel.updateSensorsData(this._device.getId(), 5);
+        
+        // Device should ignore it (respond with 1003 - NotChanged), if it already received this request before in active session
+        this._viewModel.requestSensorsDataUpdate(this._device.getId(), 5).send();
+    }
+
+    private void _setSensorsDataToUI(@NonNull SensorsData sensorsData) {
+        this._setHumidityData((int) Math.round(sensorsData.getHumidity()));
+        this._setTemperatureData((int) Math.round(sensorsData.getTemperature()));
+        this._setSoilMoistureData((int) Math.round((sensorsData.getSoilMoisture() / 4096d) * 100d));
+        this._setIlluminationData((int) Math.round((sensorsData.getIllumination() / 4096d) * 100d));
     }
 
     private void _setTemperatureData(int temperature) {

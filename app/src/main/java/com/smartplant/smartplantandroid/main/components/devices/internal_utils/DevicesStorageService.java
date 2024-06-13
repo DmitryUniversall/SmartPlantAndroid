@@ -38,4 +38,16 @@ public class DevicesStorageService {
                 })
                 .build();
     }
+
+    public StorageRequest<Void> requestSensorsDataUpdate(int deviceId, int timeout) {
+        StorageWSActionProcessor processor = this._storageRepository.getProcessor();
+        StorageAction action = new StorageAction(StorageAction.ApplicationActionType.REQUEST_SENSORS_DATA_UPDATE.getValue(), null);
+
+        return processor.<Void>getStorageRequestBuilder()
+                .setTargetId(deviceId)
+                .setTimeout(timeout)
+                .setPayloadData(_gson.toJsonTree(action).getAsJsonObject())
+                .setResponseProcessor((dataMessage, applicationResponse) -> null)
+                .build();
+    }
 }

@@ -95,7 +95,7 @@ public class DeviceCardItem extends LinearLayout {
     private void _requestForState() {
         this.setStatus(DeviceCardStatus.LOADING);
 
-        this._deviceDetailViewModel.requestSensorsData(this._device.getId(), 5).observe((MainActivity) getContext(), result -> {
+        this._deviceDetailViewModel.liveRequestSensorsData(this._device.getId(), 5).observe((MainActivity) getContext(), result -> {
             if (result.success) {
                 assert result.result != null;
 

@@ -83,4 +83,5 @@
     <string name="irrigate">Полить</string>
     <string name="turn_on_lamp">Включить освещение</string>
     <string name="turn_off_lamp">Выключить освещение</string>
+    <string name="code_not_changed">Не изменено</string>
 </resources>

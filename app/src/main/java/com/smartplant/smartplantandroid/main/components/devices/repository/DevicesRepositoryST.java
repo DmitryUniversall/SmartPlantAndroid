@@ -81,4 +81,15 @@ public class DevicesRepositoryST {
                                 .execute()
         );
     }
+
+    public StorageRequest<Void> requestSensorsDataUpdate(int deviceId, int timeout) {
+        return this._storageService.requestSensorsDataUpdate(deviceId, timeout).onSuccess(
+                (result, dataMessage, response) -> AppLogger.info("Sensors data update request success; Code: %d", response.getApplicationStatusCode())
+        );
+    }
+
+    @Nullable
+    public User getDeviceById(int deviceId) {
+        return this._myDevices.get(deviceId);
+    }
 }
