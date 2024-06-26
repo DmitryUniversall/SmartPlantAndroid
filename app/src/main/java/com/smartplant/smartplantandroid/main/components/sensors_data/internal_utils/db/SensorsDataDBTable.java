@@ -39,6 +39,8 @@ public class SensorsDataDBTable implements DBTable {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        if (oldVersion < 5) {
+            db.execSQL("ALTER TABLE sensors_data ADD COLUMN device_id TEXT;");
+        }
     }
 }

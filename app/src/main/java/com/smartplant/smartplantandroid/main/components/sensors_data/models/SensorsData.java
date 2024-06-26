@@ -28,7 +28,7 @@ public class SensorsData {
     private double _humidity;
 
     @SerializedName("created_at")
-    private Date _createdAt;
+    private @NonNull Date _createdAt;
 
     public SensorsData(@Nullable Long id, int waterLevel, int illumination, int soilMoisture, double temperature, double humidity, @Nullable Date createdAt) {
         this._id = id;

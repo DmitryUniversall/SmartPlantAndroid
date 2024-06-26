@@ -3,10 +3,15 @@ package com.smartplant.smartplantandroid.main.components.sensors_data.repository
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.gson.JsonObject;
 import com.smartplant.smartplantandroid.core.async.background_task.BackgroundTask;
+import com.smartplant.smartplantandroid.core.data.json.JsonUtils;
 import com.smartplant.smartplantandroid.core.logs.AppLogger;
 import com.smartplant.smartplantandroid.main.components.sensors_data.internal_utils.db.SensorsDataDBService;
 import com.smartplant.smartplantandroid.main.components.sensors_data.models.SensorsData;
+import com.smartplant.smartplantandroid.main.components.storage.models.StorageAction;
+import com.smartplant.smartplantandroid.main.components.storage.models.StorageDataMessage;
+import com.smartplant.smartplantandroid.main.components.storage.repository.StorageRepositoryST;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -25,7 +30,7 @@ public class SensorsDataRepositoryST {
     // Cache
     private final Map<Integer, SensorsData> _cachedSensorsData = new HashMap<>();
     private final Map<Integer, Long> _cacheTimeMap = new HashMap<>();
-    private static final long CACHE_TTL = TimeUnit.HOURS.toMillis(1);  // TODO: Is it actually needed?
+    private static final long CACHE_TTL = TimeUnit.MINUTES.toMillis(20);
 
     public static synchronized void createInstance() {
         if (_instance != null)
@@ -41,6 +46,21 @@ public class SensorsDataRepositoryST {
 
     private SensorsDataRepositoryST() {
         _dbService = new SensorsDataDBService();
+//        StorageRepositoryST.getInstance().getProcessor()
+//                .onAction(
+//                        StorageAction.DeviceActionType.SENSORS_DATA_UPDATE.getValue(),
+//                        "SensorsDataRepository",
+//                        this::onSensorsDataUpdate
+//                );
+    }
+
+    private void onSensorsDataUpdate(@NonNull StorageDataMessage dataMessage, @NonNull StorageAction storageAction) {
+        JsonObject data = storageAction.getData();
+        assert data != null;
+        SensorsData sensorsData = JsonUtils.fromJsonWithNulls(data, SensorsData.class);
+        sensorsData.setCreatedAt(dataMessage.getCreatedAt());  // TODO: Refactor it
+
+        this.insertSensorsData(dataMessage.getSenderId(), sensorsData);
     }
 
     private void _cacheSensorsData(int deviceId, @NonNull SensorsData sensorsData) {

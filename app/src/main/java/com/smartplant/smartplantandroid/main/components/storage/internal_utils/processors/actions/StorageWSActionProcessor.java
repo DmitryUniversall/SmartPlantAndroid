@@ -74,4 +74,13 @@ public class StorageWSActionProcessor extends StorageWSProcessor {
         handlersMap.put(name, handler);
         return this;
     }
+
+    public void removeActionHandler(int action, @NonNull String name) {
+        ConcurrentHashMap<String, StorageActionHandler> handlersMap;
+        if (!this._actionHandlers.containsKey(action)) return;
+
+        handlersMap = this._actionHandlers.get(action);
+        assert handlersMap != null;
+        handlersMap.remove(name);
+    }
 }

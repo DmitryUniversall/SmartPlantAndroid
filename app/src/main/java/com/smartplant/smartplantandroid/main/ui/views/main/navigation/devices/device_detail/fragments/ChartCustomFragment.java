@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -22,6 +23,9 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.smartplant.smartplantandroid.R;
 import com.smartplant.smartplantandroid.core.ui.CustomFragment;
 import com.smartplant.smartplantandroid.core.ui.charts.formatters.TimeValueFormatter;
+import com.smartplant.smartplantandroid.main.components.auth.models.User;
+import com.smartplant.smartplantandroid.main.components.sensors_data.models.SensorsData;
+import com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.device_detail.DeviceDetailViewModel;
 
 import java.util.Collection;
 import java.util.List;
@@ -38,11 +42,28 @@ public abstract class ChartCustomFragment extends CustomFragment {
     protected final @IdRes int _chartId = R.id.stat_data_line_chart;
     protected LineChart _lineChart;
 
+    // Utils
+    protected DeviceDetailViewModel _viewModel;
+
+    // Data
+    protected User _device;
+
     protected abstract @NonNull View inflate(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
 
     public abstract @NonNull List<Entry> getDataSet();
 
+    public abstract void setData(List<Entry> dataSet);
+
+    public abstract void addSensorsData(SensorsData sensorsData);
+
+    public ChartCustomFragment(User device) {
+        super();
+        this._device = device;
+    }
+
     public @NonNull View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this._viewModel = new ViewModelProvider(this).get(DeviceDetailViewModel.class);
+
         View root = this.inflate(inflater, container, savedInstanceState);
 
         this._lineChart = root.findViewById(this._chartId);

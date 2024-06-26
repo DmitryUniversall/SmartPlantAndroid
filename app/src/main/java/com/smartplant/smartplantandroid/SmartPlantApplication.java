@@ -38,9 +38,9 @@ public class SmartPlantApplication extends Application {
 
     private void _initializeRepositories() {
         AuthRepositoryST.createInstance(this);
-        SensorsDataRepositoryST.createInstance();
-        NotificationsRepositoryST.createInstance();
         StorageRepositoryST.createInstance();
+        SensorsDataRepositoryST.createInstance();
         DevicesRepositoryST.createInstance();
+        NotificationsRepositoryST.createInstance();
     }
 }

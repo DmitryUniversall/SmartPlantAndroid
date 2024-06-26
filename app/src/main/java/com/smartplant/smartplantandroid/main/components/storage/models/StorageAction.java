@@ -11,7 +11,7 @@ public class StorageAction {
         REQUEST_SENSORS_DATA_UPDATE(2),
         COMMAND_STOP_DATA_UPDATE(3),
         COMMAND_SETTINGS_UPDATE(4),
-        COMMAND_WATER(5),
+        COMMAND_IRRIGATE(5),
         COMMAND_LAMP(6);
 
         private final int _value;
@@ -25,9 +25,9 @@ public class StorageAction {
         }
     }
 
-    public enum DeviceActionType {  // Can be sent by device (ESP32)
-        PING(1),
-        SENSORS_DATA_UPDATE(2);
+    public enum DeviceActionType {  // Can be sent by device
+        PING(101),
+        SENSORS_DATA_UPDATE(102);
 
         private final int _value;
 

@@ -169,8 +169,9 @@ public class StorageRequest<T> implements ExecutedInBackground<StorageRequestSuc
         _loopHandler.postDelayed(() -> this._cancel(new TimeOutException("Request timeout exceeded")), this._timeout * 1000L);
     }
 
-    protected void _processEnqueued() {
+    protected void _processEnqueued(String requestUUID) {
         if (this._done) return;
+        this._requestUUID = requestUUID;
         AppLogger.info("StorageRequest %s (RequestUUID %s) successfully enqueued", this._id, this._requestUUID);
     }
 
@@ -185,6 +186,10 @@ public class StorageRequest<T> implements ExecutedInBackground<StorageRequestSuc
 
     protected void _onDAR(@NonNull StorageDataMessage dataMessage, @NonNull ApplicationResponse response) {
         if (this._requestUUID == null) return;
+
+        AppLogger.info(dataMessage.getRequestUUID());
+        AppLogger.info(this._requestUUID);
+
         if (!Objects.equals(dataMessage.getRequestUUID(), this._requestUUID)) return;
 
         try {
@@ -199,8 +204,7 @@ public class StorageRequest<T> implements ExecutedInBackground<StorageRequestSuc
     protected void _sendWriteRequest(@NonNull StorageRequestPayload payload) {
         this._storageRepository.writeRequest(payload)
                 .onSuccess(((result, response, applicationResponse) -> {
-                    this._requestUUID = result;
-                    this._processEnqueued();
+                    this._processEnqueued(result);
                 }))
                 .onFailure(this::_cancel)
                 .send();

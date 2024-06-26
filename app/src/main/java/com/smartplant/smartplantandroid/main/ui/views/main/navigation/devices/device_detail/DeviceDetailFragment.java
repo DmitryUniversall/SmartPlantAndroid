@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.github.mikephil.charting.data.Entry;
 import com.google.android.flexbox.FlexboxLayout;
 import com.smartplant.smartplantandroid.R;
 import com.smartplant.smartplantandroid.core.logs.AppLogger;
@@ -47,11 +49,11 @@ public class DeviceDetailFragment extends CustomFragment {
     private ChartCustomFragment _currentStatFragment;
 
     // Stat-Fragments
-    private final TemperatureStatFragment _temperatureStatFragment = new TemperatureStatFragment();
-    private final SoilMoistureStatFragment _soilMoistureStatFragment = new SoilMoistureStatFragment();
-    private final HumidityStatFragment _humidityStatFragment = new HumidityStatFragment();
-    private final IlluminationStatFragment _illuminationStatFragment = new IlluminationStatFragment();
-    private final ChartCustomFragment _defaultStatFragment = _temperatureStatFragment;
+    private TemperatureStatFragment _temperatureStatFragment;
+    private SoilMoistureStatFragment _soilMoistureStatFragment;
+    private HumidityStatFragment _humidityStatFragment;
+    private IlluminationStatFragment _illuminationStatFragment;
+    private ChartCustomFragment _defaultStatFragment;
 
     // Animations
     private static final int[] _animationOutRightInLeft = {R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left};
@@ -68,6 +70,7 @@ public class DeviceDetailFragment extends CustomFragment {
     private TextView _soilMoistureTextView;
     private TextView _humidityTextView;
     private TextView _illuminationTextView;
+    private ProgressBar _waterLevelProgressBar;
 
     // Utils
     private DeviceDetailViewModel _viewModel;
@@ -85,7 +88,14 @@ public class DeviceDetailFragment extends CustomFragment {
         if (this._device == null)
             throw new IllegalArgumentException(String.format("Unable to get device by id=%d", deviceId));
 
+        _temperatureStatFragment = new TemperatureStatFragment(_device);
+        _soilMoistureStatFragment = new SoilMoistureStatFragment(_device);
+        _humidityStatFragment = new HumidityStatFragment(_device);
+        _illuminationStatFragment = new IlluminationStatFragment(_device);
+        _defaultStatFragment = _temperatureStatFragment;
+
         View root = inflater.inflate(R.layout.main_fragment_device_detail, container, false);
+        this._waterLevelProgressBar = root.findViewById(R.id.water_level_progress_bar);
 
         this._setupCards(root);
         this._setupObservers();
@@ -176,12 +186,32 @@ public class DeviceDetailFragment extends CustomFragment {
     }
 
     private void _observeSensorsData() {
-        this._viewModel.getSensorsLiveData().observe(getViewLifecycleOwner(), this::_setSensorsDataToUI);
+        this._viewModel.getSensorsLiveData().observe(getViewLifecycleOwner(), data -> {
+            this._setSensorsDataToUI(data);
+
+            _temperatureStatFragment.addSensorsData(data);
+            _soilMoistureStatFragment.addSensorsData(data);
+            _humidityStatFragment.addSensorsData(data);
+            _illuminationStatFragment.addSensorsData(data);
+
+            this._currentStatFragment.updateChartData();
+        });
     }
 
     private void _getSensorsData() {
         this._viewModel.updateSensorsData(this._device.getId(), 5);
-        
+//        this._viewModel.getDailySensorsData(_device.getId())
+//                .onSuccess(result -> {
+//                    List<Entry> entries = new ArrayList<>();
+//                    result.forEach((element) -> entries.add(new Entry(element.getCreatedAt(), element.getIllumination())));
+//                    _temperatureStatFragment.setData(new Entry(result));
+//                    _soilMoistureStatFragment.setData(new Entry(result));
+//                    _humidityStatFragment.setData(new Entry(result));
+//                    _illuminationStatFragment.setData(new Entry(result));
+//                })
+//                .onFailure(error -> AppLogger.warning("Failed to get daily sensors data"))
+//                .execute();
+
         // Device should ignore it (respond with 1003 - NotChanged), if it already received this request before in active session
         this._viewModel.requestSensorsDataUpdate(this._device.getId(), 5).send();
     }
@@ -191,6 +221,7 @@ public class DeviceDetailFragment extends CustomFragment {
         this._setTemperatureData((int) Math.round(sensorsData.getTemperature()));
         this._setSoilMoistureData((int) Math.round((sensorsData.getSoilMoisture() / 4096d) * 100d));
         this._setIlluminationData((int) Math.round((sensorsData.getIllumination() / 4096d) * 100d));
+        this._setWaterLevelData((int) Math.round((sensorsData.getWaterLevel() / 4096d) * 100d));
     }
 
     private void _setTemperatureData(int temperature) {
@@ -207,5 +238,9 @@ public class DeviceDetailFragment extends CustomFragment {
 
     private void _setIlluminationData(int illuminationPercent) {
         this._illuminationTextView.setText(String.format(Locale.US, "%d%%", illuminationPercent));
+    }
+
+    private void _setWaterLevelData(int waterLevel) {
+        this._waterLevelProgressBar.setProgress(waterLevel);
     }
 }

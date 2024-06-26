@@ -3,6 +3,7 @@ package com.smartplant.smartplantandroid.main.components.devices.repository;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.gson.JsonObject;
 import com.smartplant.smartplantandroid.core.logs.AppLogger;
 import com.smartplant.smartplantandroid.core.network.http.http_api_request.HTTPApiRequest;
 import com.smartplant.smartplantandroid.main.components.auth.models.User;
@@ -72,8 +73,8 @@ public class DevicesRepositoryST {
         return this._apiService.unpairDevice(deviceId).onSuccess((result, response, applicationResponse) -> this._myDevices.remove(deviceId));
     }
 
-    public StorageRequest<SensorsData> requestSensorsData(int deviceId, int timeout) {
-        return this._storageService.requestSensorsData(deviceId, timeout).onSuccess(
+    public StorageRequest<SensorsData> requestSensorsData(int deviceId, int timeout, @Nullable JsonObject data) {
+        return this._storageService.requestSensorsData(deviceId, timeout, data).onSuccess(
                 (result, dataMessage, response) ->
                         _sensorsDataRepository.insertSensorsData(deviceId, result)  // Save latest data to db
                                 .onSuccess(v -> AppLogger.info("SensorsData for device %d successfully saved", deviceId))
@@ -86,6 +87,14 @@ public class DevicesRepositoryST {
         return this._storageService.requestSensorsDataUpdate(deviceId, timeout).onSuccess(
                 (result, dataMessage, response) -> AppLogger.info("Sensors data update request success; Code: %d", response.getApplicationStatusCode())
         );
+    }
+
+    public StorageRequest<Boolean> commandLamp(int deviceId, int timeout, boolean newState, boolean toggle) {
+        return this._storageService.commandLamp(deviceId, timeout, newState, toggle);
+    }
+
+    public StorageRequest<Void> commandIrrigate(int deviceId, int timeout) {
+        return this._storageService.commandIrrigate(deviceId, timeout);
     }
 
     @Nullable

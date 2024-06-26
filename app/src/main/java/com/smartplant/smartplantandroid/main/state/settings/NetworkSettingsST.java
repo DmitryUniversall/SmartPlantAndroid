@@ -20,7 +20,7 @@ public class NetworkSettingsST {
 
     // Defaults
     protected static final int _DEFAULT_TS_PORT = 8000;
-    protected static final String _DEFAULT_TS_HOST = "185.250.46.64";
+    protected static final String _DEFAULT_TS_HOST = "192.168.1.38";
     protected static final String _DEFAULT_TS_API_BASE_URL = "/api/";
     protected static final String _DEFAULT_TS_AUTH_TOKEN_TYPE = "Bearer";
 

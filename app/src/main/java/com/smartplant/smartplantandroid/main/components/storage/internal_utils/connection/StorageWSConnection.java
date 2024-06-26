@@ -145,14 +145,12 @@ public class StorageWSConnection extends WebSocketListener {
 
     @Override
     public void onFailure(@NonNull WebSocket webSocket, @NonNull Throwable throwable, okhttp3.Response response) {
-        super.onFailure(webSocket, throwable, response);
         AppLogger.info("An WebSocket error occurred");
         this._callFailureCallbacks(throwable, response);
     }
 
     @Override
     public void onOpen(@NonNull WebSocket webSocket, @NonNull okhttp3.Response response) {
-        super.onOpen(webSocket, response);
         AppLogger.info("WebSocket connection is established");
 
         this._connected = true;
@@ -161,13 +159,11 @@ public class StorageWSConnection extends WebSocketListener {
 
     @Override
     public void onClosing(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
-        super.onClosing(webSocket, code, reason);
         AppLogger.info("WebSocket connection is about to close");
     }
 
     @Override
     public void onClosed(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
-        super.onClosed(webSocket, code, reason);
         AppLogger.info("WebSocket connection is closed");
 
         this._connected = false;
@@ -176,7 +172,6 @@ public class StorageWSConnection extends WebSocketListener {
 
     @Override
     public void onMessage(@NonNull WebSocket webSocket, @NonNull String text) {
-        super.onMessage(webSocket, text);
         AppLogger.info("Received a message from the WebSocket server");
 
         JsonObject json;
