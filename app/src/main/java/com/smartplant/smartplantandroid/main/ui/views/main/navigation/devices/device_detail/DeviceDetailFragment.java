@@ -11,13 +11,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.github.mikephil.charting.data.Entry;
 import com.google.android.flexbox.FlexboxLayout;
 import com.smartplant.smartplantandroid.R;
 import com.smartplant.smartplantandroid.core.logs.AppLogger;
 import com.smartplant.smartplantandroid.core.ui.CustomFragment;
 import com.smartplant.smartplantandroid.main.components.auth.models.User;
 import com.smartplant.smartplantandroid.main.components.sensors_data.models.SensorsData;
+import com.smartplant.smartplantandroid.main.components.sensors_data.repository.SensorsDataRepositoryST;
 import com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.device_detail.fragments.ChartCustomFragment;
 import com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.device_detail.fragments.HumidityStatFragment;
 import com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.device_detail.fragments.IlluminationStatFragment;
@@ -74,12 +74,17 @@ public class DeviceDetailFragment extends CustomFragment {
 
     // Utils
     private DeviceDetailViewModel _viewModel;
+    private SensorsDataRepositoryST _sensorsDataRepository;
 
     // Data
     private User _device;
 
+    // Other
+    private final String sensorsDataHandlerName = "DeviceDetail";
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this._viewModel = new ViewModelProvider(this).get(DeviceDetailViewModel.class);
+        this._sensorsDataRepository = SensorsDataRepositoryST.getInstance();
 
         if (getArguments() == null)
             throw new IllegalArgumentException("Device detail fragment requires deviceId argument");
@@ -102,6 +107,12 @@ public class DeviceDetailFragment extends CustomFragment {
         this._getSensorsData();
 
         return root;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        _sensorsDataRepository.removeNewSensorsDataHandler(sensorsDataHandlerName);
     }
 
     private ChartCustomFragment _getStateFragment(StatFragmentState state) {
@@ -182,46 +193,49 @@ public class DeviceDetailFragment extends CustomFragment {
     }
 
     private void _setupObservers() {
-        this._observeSensorsData();
+        _sensorsDataRepository.onNewSensorsData(sensorsDataHandlerName, this::_onNewSensorsData);  // TODO: Move to ViewModel
     }
 
-    private void _observeSensorsData() {
-        this._viewModel.getSensorsLiveData().observe(getViewLifecycleOwner(), data -> {
-            this._setSensorsDataToUI(data);
+    private void _onNewSensorsData(@NonNull SensorsData sensorsData) {
+        this._setSensorsDataToUI(sensorsData);
+        this._addSensorsDataToChart(sensorsData);
+    }
 
-            _temperatureStatFragment.addSensorsData(data);
-            _soilMoistureStatFragment.addSensorsData(data);
-            _humidityStatFragment.addSensorsData(data);
-            _illuminationStatFragment.addSensorsData(data);
+    private void _getSensorsData() {
+        this._viewModel.requestSensorsData(this._device.getId(), 5).onSuccess((result, dataMessage, response) -> this._onNewSensorsData(result));
+        this._viewModel.getDailySensorsData(_device.getId())
+                .onSuccess(dataArray -> {
+                    AppLogger.info("Fetched last sensors data for device id=%d (size=%d)", this._device.getId(), dataArray.size());
+                    dataArray.forEach(this::_addSensorsDataToChart);
+                })
+                .onFailure(error -> AppLogger.warning("Failed to get daily sensors data"))
+                .execute();
+
+        // Device should ignore it (respond with 1003 - NotChanged), if it already received this request before in active session
+        this._viewModel.requestSensorsDataUpdate(this._device.getId(), 5).onSuccess((result, dataMessage, response) ->
+                AppLogger.info("Sensors data update request success for device id=%d (code %s)", response.getStatusCode())
+        ).send();
+    }
+
+    protected void _addSensorsDataToChart(@NonNull SensorsData sensorsData) {
+        getActivity().runOnUiThread(() -> {
+            _temperatureStatFragment.addSensorsData(sensorsData);
+            _soilMoistureStatFragment.addSensorsData(sensorsData);
+            _humidityStatFragment.addSensorsData(sensorsData);
+            _illuminationStatFragment.addSensorsData(sensorsData);
 
             this._currentStatFragment.updateChartData();
         });
     }
 
-    private void _getSensorsData() {
-        this._viewModel.updateSensorsData(this._device.getId(), 5);
-//        this._viewModel.getDailySensorsData(_device.getId())
-//                .onSuccess(result -> {
-//                    List<Entry> entries = new ArrayList<>();
-//                    result.forEach((element) -> entries.add(new Entry(element.getCreatedAt(), element.getIllumination())));
-//                    _temperatureStatFragment.setData(new Entry(result));
-//                    _soilMoistureStatFragment.setData(new Entry(result));
-//                    _humidityStatFragment.setData(new Entry(result));
-//                    _illuminationStatFragment.setData(new Entry(result));
-//                })
-//                .onFailure(error -> AppLogger.warning("Failed to get daily sensors data"))
-//                .execute();
-
-        // Device should ignore it (respond with 1003 - NotChanged), if it already received this request before in active session
-        this._viewModel.requestSensorsDataUpdate(this._device.getId(), 5).send();
-    }
-
     private void _setSensorsDataToUI(@NonNull SensorsData sensorsData) {
-        this._setHumidityData((int) Math.round(sensorsData.getHumidity()));
-        this._setTemperatureData((int) Math.round(sensorsData.getTemperature()));
-        this._setSoilMoistureData((int) Math.round((sensorsData.getSoilMoisture() / 4096d) * 100d));
-        this._setIlluminationData((int) Math.round((sensorsData.getIllumination() / 4096d) * 100d));
-        this._setWaterLevelData((int) Math.round((sensorsData.getWaterLevel() / 4096d) * 100d));
+        getActivity().runOnUiThread(() -> {
+            this._setHumidityData((int) Math.round(sensorsData.getHumidity()));
+            this._setTemperatureData((int) Math.round(sensorsData.getTemperature()));
+            this._setSoilMoistureData((int) Math.round((sensorsData.getSoilMoisture() / 4096d) * 100d));
+            this._setIlluminationData((int) Math.round((sensorsData.getIllumination() / 4096d) * 100d));
+            this._setWaterLevelData((int) Math.round((sensorsData.getWaterLevel() / 4096d) * 100d));
+        });
     }
 
     private void _setTemperatureData(int temperature) {

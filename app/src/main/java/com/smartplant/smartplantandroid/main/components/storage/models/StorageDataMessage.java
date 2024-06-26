@@ -27,7 +27,7 @@ public class StorageDataMessage {
     @SerializedName("data_type")
     private final int _dataType;
 
-    @SerializedName("sender_id")
+    @SerializedName("sender_user_id")
     private final int _senderId;
 
     @SerializedName("request_uuid")

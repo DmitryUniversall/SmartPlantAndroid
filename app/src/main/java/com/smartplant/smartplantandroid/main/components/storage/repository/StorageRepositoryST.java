@@ -3,6 +3,7 @@ package com.smartplant.smartplantandroid.main.components.storage.repository;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.smartplant.smartplantandroid.core.callbacks.CallbackUtils;
 import com.smartplant.smartplantandroid.core.network.http.http_api_request.HTTPApiRequest;
 import com.smartplant.smartplantandroid.main.components.storage.internal_utils.StorageApiService;
 import com.smartplant.smartplantandroid.main.components.storage.internal_utils.StorageWSService;
@@ -10,10 +11,15 @@ import com.smartplant.smartplantandroid.main.components.storage.internal_utils.p
 import com.smartplant.smartplantandroid.main.components.storage.models.write.StorageRequestPayload;
 import com.smartplant.smartplantandroid.main.components.storage.models.write.StorageResponsePayload;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 public class StorageRepositoryST {
     private static @Nullable StorageRepositoryST _instance;
     private final StorageWSService _WSService;
     private final StorageApiService _apiService;
+
+    // Reusable handlers
+    protected final @NonNull ConcurrentHashMap<String, Runnable> _processorCreateHandlers = new ConcurrentHashMap<>();
 
     public static synchronized void createInstance() {
         if (_instance != null)
@@ -32,8 +38,22 @@ public class StorageRepositoryST {
         this._apiService = new StorageApiService();
     }
 
+    private void _callProcessorCreateHandlers() {
+        CallbackUtils.callRunnableCallbacks(this._processorCreateHandlers.values());
+    }
+
     public StorageWSActionProcessor connect() {
-        return _WSService.connect();
+        StorageWSActionProcessor processor = _WSService.connect();
+        _callProcessorCreateHandlers();
+        return processor;
+    }
+
+    public void onProcessorCreate(@NonNull String name, @NonNull Runnable handler) {
+        this._processorCreateHandlers.put(name, handler);
+    }
+
+    public void removeProcessorCreateHandler(@NonNull String name) {
+        this._processorCreateHandlers.remove(name);
     }
 
     @Nullable
@@ -43,7 +63,8 @@ public class StorageRepositoryST {
 
     public StorageWSActionProcessor getProcessor() {
         StorageWSActionProcessor actionProcessor = this.getProcessorOrNull();
-        if (actionProcessor == null) throw new IllegalStateException("Unable to set lamp state: not connected");
+        if (actionProcessor == null)
+            throw new IllegalStateException("Unable to get processor: not connected");
         return actionProcessor;
     }
 

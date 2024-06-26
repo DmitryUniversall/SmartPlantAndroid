@@ -84,6 +84,8 @@ public abstract class ChartCustomFragment extends CustomFragment {
         _lineChart.setDrawGridBackground(false);
         _lineChart.setBackgroundColor(ContextCompat.getColor(context, this._backgroundColorId));
         _lineChart.setNoDataTextColor(ContextCompat.getColor(context, this._noDataTextColorId));  // TODO: make color danger?
+        _lineChart.setVisibleXRangeMaximum(10);
+        _lineChart.setVisibleXRangeMinimum(10);
 
         this._setupLegend();
         this._setupXAxis();
@@ -108,6 +110,7 @@ public abstract class ChartCustomFragment extends CustomFragment {
         if (entries.isEmpty()) return null;
 
         LineDataSet dataSet = new LineDataSet(entries, getString(this._dataLabel));
+
         return new LineData(dataSet);
     }
 

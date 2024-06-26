@@ -10,6 +10,7 @@ import com.smartplant.smartplantandroid.R;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -37,6 +38,12 @@ public class ApplicationStatusCodes {
             this._code = code;
             this._message = message;
             this._translatedMessage = translatedMessage;
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return String.format(Locale.getDefault(), "StatusCode[%d; %s]", this._code, this._message);
         }
 
         @Override

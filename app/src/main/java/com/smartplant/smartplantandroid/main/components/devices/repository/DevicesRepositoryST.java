@@ -75,11 +75,7 @@ public class DevicesRepositoryST {
 
     public StorageRequest<SensorsData> requestSensorsData(int deviceId, int timeout, @Nullable JsonObject data) {
         return this._storageService.requestSensorsData(deviceId, timeout, data).onSuccess(
-                (result, dataMessage, response) ->
-                        _sensorsDataRepository.insertSensorsData(deviceId, result)  // Save latest data to db
-                                .onSuccess(v -> AppLogger.info("SensorsData for device %d successfully saved", deviceId))
-                                .onFailure(error -> AppLogger.error(error, "Failed to save sensors data for %d", deviceId))
-                                .execute()
+                (result, dataMessage, response) -> _sensorsDataRepository.insertSensorsData(deviceId, result).execute()  // Save latest data to db
         );
     }
 

@@ -18,7 +18,7 @@ import okhttp3.Request;
 
 public class StorageWSActionProcessor extends StorageWSProcessor {
     // Reusable handlers
-    protected final @NonNull ConcurrentHashMap<Integer, ConcurrentHashMap<String, StorageActionHandler>> _actionHandlers = new ConcurrentHashMap<>();  // Device Application Response Callback Stack
+    protected final @NonNull ConcurrentHashMap<Integer, ConcurrentHashMap<String, StorageActionHandler>> _actionHandlers = new ConcurrentHashMap<>();
 
     public StorageWSActionProcessor(@NonNull Request initialRequest) {
         super(initialRequest);
