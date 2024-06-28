@@ -1,7 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="10dp">
 
+    <LinearLayout
+            android:id="@+id/network_settings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+        <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:flexDirection="column"
+                android:layout_marginBottom="20dp">
+
+            <TextView
+                    android:text="@string/network_settings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/L1_text_secondary"
+                    android:layout_marginStart="10dp" />
+
+            <androidx.cardview.widget.CardView
+                    android:id="@+id/network_settings_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="5dp"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="@color/L1_background_primary">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+                    <com.smartplant.smartplantandroid.main.ui.views.main.navigation.settings.items.network.TransferServerIPSettingItem
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingVertical="10dp" />
+                    <com.smartplant.smartplantandroid.main.ui.views.main.navigation.settings.items.network.TransferServerPortSettingItem
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingVertical="10dp" />
+
+                    <View
+                            android:layout_height="2dp"
+                            android:layout_width="match_parent"
+                            android:background="#BEBEBE"
+                            android:layout_marginVertical="10dp" />
+                    <TextView
+                            android:text="@string/additional_settings"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textStyle="bold"
+                            android:textSize="12sp"
+                            android:textColor="@color/L1_text_secondary"
+                            android:layout_marginBottom="5dp"/>
+
+                    <com.smartplant.smartplantandroid.main.ui.views.main.navigation.settings.items.network.ApiBaseUrlSettingItem
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingVertical="10dp" />
+                    <com.smartplant.smartplantandroid.main.ui.views.main.navigation.settings.items.network.TokenTypeSettingItem
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingVertical="10dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:flexDirection="column">
+
+            <TextView
+                    android:text="@string/devices_settings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/L1_text_secondary"
+                    android:layout_marginStart="10dp" />
+
+            <androidx.cardview.widget.CardView
+                    android:id="@+id/devices_settings_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="5dp"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="@color/L1_background_primary">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                    <com.smartplant.smartplantandroid.main.ui.views.main.navigation.settings.items.devices.DataUpdateIntervalSettingItem
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingVertical="10dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </com.google.android.flexbox.FlexboxLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,7 +12,6 @@ import com.smartplant.smartplantandroid.core.ui.CustomFragment;
 
 public class SettingsFragment extends CustomFragment {  // TODO
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.main_fragment_settings, container, false);
-        return root;
+        return inflater.inflate(R.layout.main_fragment_settings, container, false);
     }
 }

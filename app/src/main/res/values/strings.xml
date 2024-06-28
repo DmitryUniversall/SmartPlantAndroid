@@ -84,4 +84,14 @@
     <string name="turn_on_lamp">Включить освещение</string>
     <string name="turn_off_lamp">Выключить освещение</string>
     <string name="code_not_changed">Не изменено</string>
+    <string name="transfer_server_ip_setting_title">IP</string>
+    <string name="network_settings">Transfer-Сервер</string>
+    <string name="network_settings_description">Данные сервера для передачи данных на устройство</string>
+    <string name="transfer_server_port_setting_title">Порт</string>
+    <string name="saved_successfully">Успешно сохранено</string>
+    <string name="devices_settings">Устройства</string>
+    <string name="data_update_interval_setting">Интервал обновления данных устройства</string>
+    <string name="additional_settings">Дополнительно</string>
+    <string name="transfer_server_token_type">Тип токена авторизации</string>
+    <string name="transfer_server_base_url">Базовый URL</string>
 </resources>

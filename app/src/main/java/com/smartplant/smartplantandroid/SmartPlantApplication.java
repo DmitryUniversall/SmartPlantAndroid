@@ -12,6 +12,7 @@ import com.smartplant.smartplantandroid.main.components.notifiactions.repository
 import com.smartplant.smartplantandroid.main.components.sensors_data.internal_utils.db.SensorsDataDBTable;
 import com.smartplant.smartplantandroid.main.components.sensors_data.repository.SensorsDataRepositoryST;
 import com.smartplant.smartplantandroid.main.components.storage.repository.StorageRepositoryST;
+import com.smartplant.smartplantandroid.main.state.settings.DevicesSettingsST;
 import com.smartplant.smartplantandroid.main.state.settings.NetworkSettingsST;
 
 public class SmartPlantApplication extends Application {
@@ -31,9 +32,10 @@ public class SmartPlantApplication extends Application {
     }
 
     private void _initializeUtils() {
+        NetworkSettingsST.createInstance(this);
+        DevicesSettingsST.createInstance(this);
         ApplicationStatusCodes.initialize(this);
         DevicesLocalDataManagerST.createInstance(this);
-        NetworkSettingsST.createInstance(this);
     }
 
     private void _initializeRepositories() {
