@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
@@ -38,6 +39,11 @@ public class IlluminationStatFragment extends ChartCustomFragment {
     public void setData(List<Entry> dataSet) {
         this._chartData.clear();
         this._chartData.addAll(dataSet);
+    }
+
+    @Override
+    public ImageView getIconView(View deviceDetailRoot) {
+        return deviceDetailRoot.findViewById(R.id.illumination_card_icon);
     }
 
     @Override

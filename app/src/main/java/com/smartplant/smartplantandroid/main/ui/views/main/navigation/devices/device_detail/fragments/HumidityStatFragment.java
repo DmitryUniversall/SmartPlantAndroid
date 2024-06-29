@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
@@ -17,10 +18,15 @@ import java.util.Calendar;
 import java.util.List;
 
 public class HumidityStatFragment extends ChartCustomFragment {
-    protected final @NonNull List<Entry> _chartData = new ArrayList<>();
+    private final @NonNull List<Entry> _chartData = new ArrayList<>();
 
     public HumidityStatFragment(User device) {
         super(device);
+    }
+
+    @Override
+    public ImageView getIconView(View deviceDetailRoot) {
+        return deviceDetailRoot.findViewById(R.id.humidity_card_icon);
     }
 
     @NonNull

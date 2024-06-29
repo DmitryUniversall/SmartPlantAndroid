@@ -1,5 +1,6 @@
 package com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.device_detail;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -43,6 +44,9 @@ public class DeviceDetailFragment extends CustomFragment {
             return _value;
         }
     }
+
+    // Root
+    private View _root;
 
     // Current stat-fragment
     private StatFragmentState _statFragmentState = StatFragmentState.TEMPERATURE;
@@ -99,14 +103,14 @@ public class DeviceDetailFragment extends CustomFragment {
         _illuminationStatFragment = new IlluminationStatFragment(_device);
         _defaultStatFragment = _temperatureStatFragment;
 
-        View root = inflater.inflate(R.layout.main_fragment_device_detail, container, false);
-        this._waterLevelProgressBar = root.findViewById(R.id.water_level_progress_bar);
+        this._root = inflater.inflate(R.layout.main_fragment_device_detail, container, false);
+        this._waterLevelProgressBar = this._root.findViewById(R.id.water_level_progress_bar);
 
-        this._setupCards(root);
+        this._setupCards(this._root);
         this._setupObservers();
         this._getSensorsData();
 
-        return root;
+        return this._root;
     }
 
     @Override
@@ -149,6 +153,9 @@ public class DeviceDetailFragment extends CustomFragment {
 
 //        this._replaceFragmentWithFullAnimation(this._currentStatFragment, newFragment, R.id.stat_action_container, R.anim.expand_in, R.anim.expand_out);
         this._replaceFragment(R.id.stat_action_container, newFragment, animation);
+
+        if (_currentStatFragment != null) _currentStatFragment.setActive(this._root, false);
+        newFragment.setActive(this._root, true);
         this._currentStatFragment = newFragment;
     }
 
@@ -218,18 +225,23 @@ public class DeviceDetailFragment extends CustomFragment {
     }
 
     protected void _addSensorsDataToChart(@NonNull SensorsData sensorsData) {
-        getActivity().runOnUiThread(() -> {
+        Activity activity = getActivity();
+        assert activity != null;
+
+        activity.runOnUiThread(() -> {
             _temperatureStatFragment.addSensorsData(sensorsData);
             _soilMoistureStatFragment.addSensorsData(sensorsData);
             _humidityStatFragment.addSensorsData(sensorsData);
             _illuminationStatFragment.addSensorsData(sensorsData);
-
-            this._currentStatFragment.updateChartData();
+            if (_currentStatFragment != null) this._currentStatFragment.updateChartData();
         });
     }
 
     private void _setSensorsDataToUI(@NonNull SensorsData sensorsData) {
-        getActivity().runOnUiThread(() -> {
+        Activity activity = getActivity();
+        assert activity != null;
+
+        activity.runOnUiThread(() -> {
             this._setHumidityData((int) Math.round(sensorsData.getHumidity()));
             this._setTemperatureData((int) Math.round(sensorsData.getTemperature()));
             this._setSoilMoistureData((int) Math.round((sensorsData.getSoilMoisture() / 4096d) * 100d));

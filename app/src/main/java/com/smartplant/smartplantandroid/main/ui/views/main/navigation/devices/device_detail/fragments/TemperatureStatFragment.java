@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
@@ -23,6 +24,11 @@ public class TemperatureStatFragment extends ChartCustomFragment {
 
     public TemperatureStatFragment(User device) {
         super(device);
+    }
+
+    @Override
+    public ImageView getIconView(View deviceDetailRoot) {
+        return deviceDetailRoot.findViewById(R.id.temperature_card_icon);
     }
 
     @NonNull

@@ -137,6 +137,7 @@
                             android:layout_marginEnd="5dp">
                         <!-- Icon -->
                         <ImageView
+                                android:id="@+id/temperature_card_icon"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
                                 android:contentDescription="EditDeviceDescriptionIcon"
@@ -176,6 +177,7 @@
                             android:layout_marginEnd="5dp">
                         <!-- Icon -->
                         <ImageView
+                                android:id="@+id/soil_moisture_card_icon"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
                                 android:contentDescription="EditDeviceDescriptionIcon"
@@ -214,6 +216,8 @@
                             android:layout_marginEnd="5dp">
                         <!-- Icon -->
                         <ImageView
+                                android:id="@+id/humidity_card_icon"
+
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
                                 android:contentDescription="EditDeviceDescriptionIcon"
@@ -251,6 +255,7 @@
                             flexbox:alignItems="center">
                         <!-- Icon -->
                         <ImageView
+                                android:id="@+id/illumination_card_icon"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
                                 android:contentDescription="EditDeviceDescriptionIcon"

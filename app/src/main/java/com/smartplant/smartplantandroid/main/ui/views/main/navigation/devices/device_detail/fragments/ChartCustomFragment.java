@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.IdRes;
@@ -55,6 +56,8 @@ public abstract class ChartCustomFragment extends CustomFragment {
     public abstract void setData(List<Entry> dataSet);
 
     public abstract void addSensorsData(SensorsData sensorsData);
+
+    protected abstract ImageView getIconView(View deviceDetailRoot);
 
     public ChartCustomFragment(User device) {
         super();
@@ -112,6 +115,15 @@ public abstract class ChartCustomFragment extends CustomFragment {
         LineDataSet dataSet = new LineDataSet(entries, getString(this._dataLabel));
 
         return new LineData(dataSet);
+    }
+
+    public void setActive(View deviceDetailRoot, boolean active) {
+        ImageView iconView = getIconView(deviceDetailRoot);
+        if (active) {
+            iconView.setColorFilter(deviceDetailRoot.getContext().getColor(R.color.L1_primary));
+        } else {
+            iconView.setColorFilter(deviceDetailRoot.getContext().getColor(R.color.L1_text_primary));
+        }
     }
 
     public void addChartEntry(Entry entry) {
