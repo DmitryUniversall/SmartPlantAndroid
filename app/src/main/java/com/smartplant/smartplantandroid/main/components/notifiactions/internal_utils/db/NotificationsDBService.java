@@ -1,6 +1,7 @@
 package com.smartplant.smartplantandroid.main.components.notifiactions.internal_utils.db;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -8,19 +9,22 @@ import androidx.annotation.NonNull;
 
 import com.smartplant.smartplantandroid.core.async.background_task.BackgroundTask;
 import com.smartplant.smartplantandroid.core.data.db.CoreSqliteDBHelper;
-import com.smartplant.smartplantandroid.main.components.notifiactions.models.AppNotificationData;
+import com.smartplant.smartplantandroid.main.components.notifiactions.models.AbstractAppNotification;
+import com.smartplant.smartplantandroid.main.components.notifiactions.utils.generics.AppNotificationFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationsDBService {
-    private final SQLiteDatabase _db;
+    private final @NonNull SQLiteDatabase _db;
+    private final @NonNull Context _context;
 
-    public NotificationsDBService() {
-        _db = CoreSqliteDBHelper.getInstance().getWritableDatabase();
+    public NotificationsDBService(@NonNull Context context) {
+        this._db = CoreSqliteDBHelper.getInstance().getWritableDatabase();
+        this._context = context;
     }
 
-    private AppNotificationData _createNotificationFromCursor(@NonNull Cursor cursor) {
+    private AbstractAppNotification _createNotificationFromCursor(@NonNull Cursor cursor) {
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(NotificationsDBTable.COLUMN_ID));
         int deviceId = cursor.getInt(cursor.getColumnIndexOrThrow(NotificationsDBTable.COLUMN_DEVICE_ID));
         int notificationType = cursor.getInt(cursor.getColumnIndexOrThrow(NotificationsDBTable.COLUMN_NOTIFICATION_TYPE));
@@ -28,10 +32,10 @@ public class NotificationsDBService {
         String description = cursor.getString(cursor.getColumnIndexOrThrow(NotificationsDBTable.COLUMN_DESCRIPTION));
         boolean isChecked = cursor.getInt(cursor.getColumnIndexOrThrow(NotificationsDBTable.COLUMN_IS_CHECKED)) == 1;
 
-        return new AppNotificationData(id, deviceId, notificationType, isChecked, title, description);
+        return AppNotificationFactory.createNotification(notificationType, this._context, deviceId, isChecked, id, title, description, null, null);  // TODO: CreatedAt
     }
 
-    private ContentValues _createContentValuesFromData(AppNotificationData notificationData) {
+    private ContentValues _createContentValuesFromData(AbstractAppNotification notificationData) {
         ContentValues values = new ContentValues();
         values.put(NotificationsDBTable.COLUMN_TITLE, notificationData.getTitle());
         values.put(NotificationsDBTable.COLUMN_DEVICE_ID, notificationData.getDeviceId());
@@ -41,7 +45,7 @@ public class NotificationsDBService {
         return values;
     }
 
-    public BackgroundTask<Void> insertNotification(@NonNull AppNotificationData notificationData) {
+    public BackgroundTask<Void> insertNotification(@NonNull AbstractAppNotification notificationData) {
         return new BackgroundTask<>(() -> {
             long newRowId = this._db.insertOrThrow(NotificationsDBTable.TABLE_NAME, null, _createContentValuesFromData(notificationData));
             if (newRowId != -1) notificationData.setId(newRowId);
@@ -49,7 +53,7 @@ public class NotificationsDBService {
         });
     }
 
-    public BackgroundTask<Void> updateNotification(@NonNull AppNotificationData notificationData) {
+    public BackgroundTask<Void> updateNotification(@NonNull AbstractAppNotification notificationData) {
         return new BackgroundTask<>(() -> {
             if (notificationData.getId() == null)
                 throw new IllegalStateException("Unable to update AppNotification: notification has no id");
@@ -58,9 +62,9 @@ public class NotificationsDBService {
         });
     }
 
-    public BackgroundTask<List<AppNotificationData>> getAllNotifications() {
+    public BackgroundTask<List<AbstractAppNotification>> getAllNotifications() {
         return new BackgroundTask<>(() -> {
-            List<AppNotificationData> notifications = new ArrayList<>();
+            List<AbstractAppNotification> notifications = new ArrayList<>();
 
             Cursor cursor = this._db.query(
                     NotificationsDBTable.TABLE_NAME,
@@ -84,9 +88,9 @@ public class NotificationsDBService {
         });
     }
 
-    public BackgroundTask<List<AppNotificationData>> getUncheckedNotifications() {
+    public BackgroundTask<List<AbstractAppNotification>> getUncheckedNotifications() {
         return new BackgroundTask<>(() -> {
-            List<AppNotificationData> notifications = new ArrayList<>();
+            List<AbstractAppNotification> notifications = new ArrayList<>();
             String selection = NotificationsDBTable.COLUMN_IS_CHECKED + " = ?";
             String[] selectionArgs = {"0"};
 
@@ -111,9 +115,9 @@ public class NotificationsDBService {
         });
     }
 
-    public BackgroundTask<List<AppNotificationData>> getAllNotificationsForDevice(int deviceId) {
+    public BackgroundTask<List<AbstractAppNotification>> getAllNotificationsForDevice(int deviceId) {
         return new BackgroundTask<>(() -> {
-            List<AppNotificationData> notifications = new ArrayList<>();
+            List<AbstractAppNotification> notifications = new ArrayList<>();
             String selection = NotificationsDBTable.COLUMN_DEVICE_ID + " = ?";
             String[] selectionArgs = {String.valueOf(deviceId)};
 
@@ -138,9 +142,9 @@ public class NotificationsDBService {
         });
     }
 
-    public BackgroundTask<List<AppNotificationData>> getUncheckedNotificationsForDevice(int deviceId) {
+    public BackgroundTask<List<AbstractAppNotification>> getUncheckedNotificationsForDevice(int deviceId) {
         return new BackgroundTask<>(() -> {
-            List<AppNotificationData> notifications = new ArrayList<>();
+            List<AbstractAppNotification> notifications = new ArrayList<>();
             String selection = NotificationsDBTable.COLUMN_DEVICE_ID + " = ? AND " + NotificationsDBTable.COLUMN_IS_CHECKED + " = ?";
             String[] selectionArgs = {String.valueOf(deviceId), "0"};
 

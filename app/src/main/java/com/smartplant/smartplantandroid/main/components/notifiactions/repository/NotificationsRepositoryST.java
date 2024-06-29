@@ -1,14 +1,16 @@
 package com.smartplant.smartplantandroid.main.components.notifiactions.repository;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.smartplant.smartplantandroid.core.async.background_task.BackgroundTask;
 import com.smartplant.smartplantandroid.core.data.observers.ObservableData;
 import com.smartplant.smartplantandroid.core.logs.AppLogger;
-import com.smartplant.smartplantandroid.main.components.notifiactions.internal_utils.android.AndroidNotificationUtils;
+import com.smartplant.smartplantandroid.main.components.notifiactions.utils.AndroidNotificationUtils;
 import com.smartplant.smartplantandroid.main.components.notifiactions.internal_utils.db.NotificationsDBService;
-import com.smartplant.smartplantandroid.main.components.notifiactions.models.AppNotificationData;
+import com.smartplant.smartplantandroid.main.components.notifiactions.models.AbstractAppNotification;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -23,16 +25,16 @@ public class NotificationsRepositoryST {
     private final @NonNull NotificationsDBService _dbService;
 
     // Cache
-    private final @NonNull Set<AppNotificationData> _notifications = new HashSet<>();
+    private final @NonNull Set<AbstractAppNotification> _notifications = new HashSet<>();
     private boolean _isLoaded = false;
 
     // Observers
-    private final @NonNull ObservableData<Set<AppNotificationData>> _observableNotifications = new ObservableData<>();
+    private final @NonNull ObservableData<Set<AbstractAppNotification>> _observableNotifications = new ObservableData<>();
 
-    public static synchronized void createInstance() {
+    public static synchronized void createInstance(@NonNull Context context) {
         if (_instance != null)
             throw new RuntimeException("NotificationsRepositoryST has already been initialized");
-        _instance = new NotificationsRepositoryST();
+        _instance = new NotificationsRepositoryST(context);
     }
 
     public static synchronized NotificationsRepositoryST getInstance() {
@@ -41,25 +43,25 @@ public class NotificationsRepositoryST {
         return _instance;
     }
 
-    private NotificationsRepositoryST() {
-        this._dbService = new NotificationsDBService();
+    private NotificationsRepositoryST(@NonNull Context context) {
+        this._dbService = new NotificationsDBService(context);
     }
 
-    private void _addNotifications(@NonNull Collection<AppNotificationData> notifications) {
+    private void _addNotifications(@NonNull Collection<AbstractAppNotification> notifications) {
         this._notifications.addAll(notifications);
         this._observableNotifications.notifyObservers(this._notifications);
     }
 
-    private void _addNotification(@NonNull AppNotificationData notification) {
+    private void _addNotification(@NonNull AbstractAppNotification notification) {
         this._notifications.add(notification);
         this._observableNotifications.notifyObservers(this._notifications);
     }
 
-    private BackgroundTask<Void> _insertNotification(@NonNull AppNotificationData notification) {
+    private BackgroundTask<Void> _insertNotification(@NonNull AbstractAppNotification notification) {
         return this._dbService.insertNotification(notification);
     }
 
-    private BackgroundTask<Void> _updateNotificationInDB(@NonNull AppNotificationData notification) {
+    private BackgroundTask<Void> _updateNotificationInDB(@NonNull AbstractAppNotification notification) {
         return this._dbService.updateNotification(notification);
     }
 
@@ -67,44 +69,44 @@ public class NotificationsRepositoryST {
         return this._isLoaded;
     }
 
-    public BackgroundTask<List<AppNotificationData>> fetchAllNotifications() {
+    public BackgroundTask<List<AbstractAppNotification>> fetchAllNotifications() {
         this._isLoaded = true;
         return _dbService.getAllNotifications().onSuccess(this::_addNotifications);
     }
 
-    public BackgroundTask<List<AppNotificationData>> fetchUncheckedNotifications() {
+    public BackgroundTask<List<AbstractAppNotification>> fetchUncheckedNotifications() {
         return _dbService.getUncheckedNotifications().onSuccess(this::_addNotifications);
     }
 
-    public Set<AppNotificationData> getNotifications() {
+    public Set<AbstractAppNotification> getNotifications() {
         return this._notifications;
     }
 
-    public ObservableData<Set<AppNotificationData>> getObservableNotifications() {
+    public ObservableData<Set<AbstractAppNotification>> getObservableNotifications() {
         return this._observableNotifications;
     }
 
-    public Set<AppNotificationData> getUncheckedNotifications() {
-        Set<AppNotificationData> result = new HashSet<>();
+    public Set<AbstractAppNotification> getUncheckedNotifications() {
+        Set<AbstractAppNotification> result = new HashSet<>();
 
-        for (AppNotificationData notification : this._notifications) {
+        for (AbstractAppNotification notification : this._notifications) {
             if (!notification.isChecked()) result.add(notification);
         }
 
         return result;
     }
 
-    public BackgroundTask<Void> sendAppNotification(@NonNull AppNotificationData notification) {
+    public BackgroundTask<Void> sendAppNotification(@NonNull AbstractAppNotification notification) {
         return this._insertNotification(notification)
                 .onSuccess(result -> {
-                    AndroidNotificationUtils.sendAndroidNotification(notification);
+                    AndroidNotificationUtils.sendGenericAndroidNotification(notification);
                     this._addNotification(notification);
                     AppLogger.info("Successfully send notification");
                 })
                 .onFailure(error -> AppLogger.error("Failed to send notification", error));
     }
 
-    public BackgroundTask<Void> updateNotification(@NonNull AppNotificationData notification) {
+    public BackgroundTask<Void> updateNotification(@NonNull AbstractAppNotification notification) {
         return this._updateNotificationInDB(notification)
                 .onSuccess(result -> {
                     AppLogger.info("Notification id=%d successfully updated", notification.getId());

@@ -113,13 +113,15 @@ public class DeviceCardItem extends LinearLayout {
     private void _setCardInfo() {
         this._setInactiveBackground();
 
-        String title = this._devicesLocalDataManager.getDeviceName(this._device.getId());
-        String description = this._devicesLocalDataManager.getDeviceDescription(this._device.getId());
-        Integer iconId = this._devicesLocalDataManager.getDeviceIconId(this._device.getId());
+        int deviceId = this._device.getId();
 
-        this.setTitle(title != null ? title : this._device.getUsername());
-        this.setDescription(description != null ? description : getContext().getString(R.string.default_device_description));
-        this.setIcon(iconId != null ? iconId : R.drawable.icon_house);
+        String title = this._devicesLocalDataManager.getOrSetDeviceName(deviceId, _device.getUsername());
+        String description = this._devicesLocalDataManager.getOrSetDeviceDescription(deviceId, getContext().getString(R.string.default_device_description));
+        int iconId = this._devicesLocalDataManager.getOrSetDeviceIconId(deviceId, R.drawable.icon_house);
+
+        this.setTitle(title);
+        this.setDescription(description);
+        this.setIcon(iconId);
     }
 
     private void _processInitialized() {

@@ -15,12 +15,16 @@ import com.smartplant.smartplantandroid.R;
 import com.smartplant.smartplantandroid.core.network.http.http_api_request.HTTPApiRequest;
 import com.smartplant.smartplantandroid.core.ui.CustomFragment;
 import com.smartplant.smartplantandroid.main.components.auth.models.User;
+import com.smartplant.smartplantandroid.main.components.notifiactions.models.AbstractAppNotification;
+import com.smartplant.smartplantandroid.main.components.notifiactions.repository.NotificationsRepositoryST;
+import com.smartplant.smartplantandroid.main.components.notifiactions.utils.generics.AppNotificationFactory;
 import com.smartplant.smartplantandroid.main.components.sensors_data.repository.SensorsDataRepositoryST;
 import com.smartplant.smartplantandroid.main.ui.items.button.CustomButton;
 import com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.devices_list.items.DeviceCardItemAdapter;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class DevicesListFragment extends CustomFragment {
     // UI
@@ -80,5 +84,18 @@ public class DevicesListFragment extends CustomFragment {
     }
 
     private void _onAddButtonClick(View view) {
+        NotificationsRepositoryST.getInstance().sendAppNotification(
+                AppNotificationFactory.createNotification(
+                        ThreadLocalRandom.current().nextInt(1, 8 + 1),
+                        getContext(),
+                        2,
+                        false,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                )
+        ).execute();
     }
 }

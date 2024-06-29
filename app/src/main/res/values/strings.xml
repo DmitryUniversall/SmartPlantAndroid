@@ -104,8 +104,8 @@
     <string name="low_humidity_default_title">Низкая влажность воздуха</string>
     <string name="low_humidity_default_description">Уровень влажности воздуха слишком низкий. Используйте увлажнитель или опрыскайте растение для поддержания оптимальных условий роста.</string>
 
-    <string name="darkness_default_title">Слишком темно</string>
-    <string name="darkness_default_description">Растению недостаточно света. Включите дополнительное освещение для улучшения условий.</string>
+    <string name="too_dark_default_title">Слишком темно</string>
+    <string name="too_dark_default_description">Растению недостаточно света. Включите дополнительное освещение для улучшения условий.</string>
 
     <string name="darkness_light_off_title">Слишком темно</string>
     <string name="darkness_light_off_description">Растение находится в темноте, а автоматическое освещение выключено. Включите свет для поддержания оптимальных условий роста.</string>
@@ -130,4 +130,6 @@
 
     <string name="low_temperature_default_title">Слишком низкая температура</string>
     <string name="low_temperature_default_description">Температура воздуха слишком низкая. Обеспечьте обогрев помещения для поддержания оптимальных условий роста.</string>
+    <string name="device">Устройство</string>
+    <string name="has_no_notifications">Нет уведомлений</string>
 </resources>

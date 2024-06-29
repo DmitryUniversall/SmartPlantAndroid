@@ -2,6 +2,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:fillViewport="true">
 
     <ScrollView
@@ -11,8 +12,19 @@
 
         <com.google.android.flexbox.FlexboxLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
+                android:layout_height="wrap_content"
+                app:flexDirection="column"
+                >
+            <TextView
+                    android:id="@+id/has_no_notifications_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/has_no_notifications"
+                    android:textAlignment="center"
+                    android:textSize="30sp"
+                    android:textColor="@color/L1_text_secondary"
+                    android:textStyle="bold"
+                    android:layout_marginTop="15dp"/>
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/notifications_container"
                     android:layout_width="match_parent"
