@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/item_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +29,7 @@
                     android:id="@+id/notification_icon"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:src="@drawable/icon_temperature"
+                    tools:src="@drawable/icon_temperature"
                     android:contentDescription="@string/temperature_icon_description"
                     android:layout_gravity="center_horizontal" />
         </com.google.android.flexbox.FlexboxLayout>
@@ -44,19 +45,21 @@
                     android:id="@+id/notification_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SmartPlant2: Слишком высокая температура"
+                    tools:text="SmartPlant2: Слишком высокая температура"
                     android:textStyle="bold"
                     android:textSize="16sp"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/L1_text_primary"/>
 
             <TextView
                     android:id="@+id/notification_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Устройство засекло слишком высокую температуру. Растению может быть не комфортно в таких условиях"
+                    tools:text="Устройство засекло слишком высокую температуру. Растению может быть не комфортно в таких условиях"
                     android:layout_marginTop="4dp"
                     android:textSize="13sp"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/L1_text_secondary"/>
 
             <!-- Notification actions -->
             <LinearLayout

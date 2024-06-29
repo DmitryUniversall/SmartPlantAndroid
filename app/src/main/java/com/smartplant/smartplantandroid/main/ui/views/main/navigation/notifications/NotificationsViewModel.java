@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.smartplant.smartplantandroid.core.async.background_task.BackgroundTask;
 import com.smartplant.smartplantandroid.core.logs.AppLogger;
-import com.smartplant.smartplantandroid.main.components.notifiactions.models.AppNotification;
+import com.smartplant.smartplantandroid.main.components.notifiactions.models.AppNotificationData;
 import com.smartplant.smartplantandroid.main.components.notifiactions.repository.NotificationsRepositoryST;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class NotificationsViewModel extends ViewModel {
     private final NotificationsRepositoryST _notificationsRepository;
-    private final MutableLiveData<Set<AppNotification>> _notificationsLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Set<AppNotificationData>> _notificationsLiveData = new MutableLiveData<>();
 
     public NotificationsViewModel() {
         this._notificationsRepository = NotificationsRepositoryST.getInstance();
@@ -23,7 +23,7 @@ public class NotificationsViewModel extends ViewModel {
 
     private void _observerNotifications() {
         this._notificationsRepository.getObservableNotifications().addObserver(obj -> {
-            Set<AppNotification> notifications = this._notificationsRepository.getUncheckedNotifications();
+            Set<AppNotificationData> notifications = this._notificationsRepository.getUncheckedNotifications();
             AppLogger.info("Updating notifications live data; Found unchecked notifications: %d", notifications.size());
             this._notificationsLiveData.postValue(notifications);
         });
@@ -33,19 +33,19 @@ public class NotificationsViewModel extends ViewModel {
         return this._notificationsRepository.isLoaded();
     }
 
-    public MutableLiveData<Set<AppNotification>> getNotificationsLiveData() {
+    public MutableLiveData<Set<AppNotificationData>> getNotificationsLiveData() {
         return this._notificationsLiveData;
     }
 
-    public BackgroundTask<List<AppNotification>> fetchNotifications() {
+    public BackgroundTask<List<AppNotificationData>> fetchNotifications() {
         return this._notificationsRepository.fetchAllNotifications();
     }
 
-    public Set<AppNotification> getUncheckedNotifications() {
+    public Set<AppNotificationData> getUncheckedNotifications() {
         return this._notificationsRepository.getUncheckedNotifications();
     }
 
-    public BackgroundTask<Void> updateNotification(@NonNull AppNotification notification) {
+    public BackgroundTask<Void> updateNotification(@NonNull AppNotificationData notification) {
         return this._notificationsRepository.updateNotification(notification);
     }
 }

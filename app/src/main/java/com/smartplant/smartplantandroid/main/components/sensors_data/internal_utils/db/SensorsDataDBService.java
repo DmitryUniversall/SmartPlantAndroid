@@ -58,7 +58,7 @@ public class SensorsDataDBService {  // TODO: Throw exceptions on interaction er
             values.put(SensorsDataDBTable.COLUMN_HUMIDITY, sensorsData.getHumidity());
             values.put(SensorsDataDBTable.COLUMN_WATER_LEVEL, sensorsData.getWaterLevel());
             values.put(SensorsDataDBTable.COLUMN_CREATED_AT, new SimpleDateFormat(ProjectSettings.DATE_FORMAT, Locale.getDefault()).format(sensorsData.getCreatedAt()));
-            long newRowId = _db.insert(SensorsDataDBTable.TABLE_NAME, null, values);
+            long newRowId = _db.insertOrThrow(SensorsDataDBTable.TABLE_NAME, null, values);
             if (newRowId != -1) sensorsData.setId(newRowId);
             return null;
         });

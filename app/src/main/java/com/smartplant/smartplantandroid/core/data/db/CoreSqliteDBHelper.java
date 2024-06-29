@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.NonNull;
 
+import com.smartplant.smartplantandroid.core.logs.AppLogger;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +17,7 @@ public class CoreSqliteDBHelper extends SQLiteOpenHelper {
 
     // DB
     private static final String DATABASE_NAME = "AppData.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 10;
 
     // Tables
     private static final List<DBTable> _tables = new ArrayList<>();
@@ -49,6 +51,8 @@ public class CoreSqliteDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        AppLogger.info("Upgrading db. Old version: %d; New version: %d", oldVersion, newVersion);
+
         for (DBTable table : _tables) {
             table.onUpgrade(db, oldVersion, newVersion);
         }

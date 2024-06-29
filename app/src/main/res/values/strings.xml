@@ -90,8 +90,44 @@
     <string name="transfer_server_port_setting_title">Порт</string>
     <string name="saved_successfully">Успешно сохранено</string>
     <string name="devices_settings">Устройства</string>
+
+    <!-- Settings -->
     <string name="data_update_interval_setting">Интервал обновления данных устройства</string>
     <string name="additional_settings">Дополнительно</string>
     <string name="transfer_server_token_type">Тип токена авторизации</string>
     <string name="transfer_server_base_url">Базовый URL</string>
+
+    <!-- Notifications -->
+    <string name="high_humidity_default_title">Высокая влажность воздуха</string>
+    <string name="high_humidity_default_description">Уровень влажности воздуха слишком высокий. Проветрите помещение или включите осушитель для поддержания оптимальных условий роста.</string>
+
+    <string name="low_humidity_default_title">Низкая влажность воздуха</string>
+    <string name="low_humidity_default_description">Уровень влажности воздуха слишком низкий. Используйте увлажнитель или опрыскайте растение для поддержания оптимальных условий роста.</string>
+
+    <string name="darkness_default_title">Слишком темно</string>
+    <string name="darkness_default_description">Растению недостаточно света. Включите дополнительное освещение для улучшения условий.</string>
+
+    <string name="darkness_light_off_title">Слишком темно</string>
+    <string name="darkness_light_off_description">Растение находится в темноте, а автоматическое освещение выключено. Включите свет для поддержания оптимальных условий роста.</string>
+
+    <string name="too_bright_default_title">Слишком светло</string>
+    <string name="too_bright_default_description">Слшиком светло. Переместите растение в тень или уменьшите интенсивность света.</string>
+
+    <string name="wet_soil_default_title">Слишком влажный грунт</string>
+    <string name="wet_soil_default_description">Грунт растения слишком влажный. Уменьшите полив, чтобы предотвратить гниение корней.</string>
+
+    <string name="dry_soil_default_title">Слишком сухой грунт</string>
+    <string name="dry_soil_default_description">Грунт растения слишком сухой. Полейте растение, чтобы восстановить необходимый уровень влаги.</string>
+
+    <string name="dry_soil_no_water_title">Слишком сухой грунт</string>
+    <string name="dry_soil_no_water_description">Грунт растения слишком сухой, а вода в устройстве закончилась. Пополните резервуар с водой и полейте растение.</string>
+
+    <string name="dry_soil_irrigation_off_title">Слишком сухой грунт, а автоматический полив выключен</string>
+    <string name="dry_soil_irrigation_off_description">Грунт растения слишком сухой, а автоматический полив выключен. Включите автоматический полив или полейте растение вручную.</string>
+
+    <string name="high_temperature_default_title">Слишком высокая температура</string>
+    <string name="high_temperature_default_description">Температура воздуха слишком высокая. Обеспечьте охлаждение помещения для поддержания оптимальных условий роста.</string>
+
+    <string name="low_temperature_default_title">Слишком низкая температура</string>
+    <string name="low_temperature_default_description">Температура воздуха слишком низкая. Обеспечьте обогрев помещения для поддержания оптимальных условий роста.</string>
 </resources>

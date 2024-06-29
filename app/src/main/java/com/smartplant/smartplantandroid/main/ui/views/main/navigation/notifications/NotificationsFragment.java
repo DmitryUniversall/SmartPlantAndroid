@@ -14,15 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.smartplant.smartplantandroid.R;
 import com.smartplant.smartplantandroid.core.logs.AppLogger;
 import com.smartplant.smartplantandroid.core.ui.CustomFragment;
-import com.smartplant.smartplantandroid.main.components.notifiactions.models.AppNotification;
-import com.smartplant.smartplantandroid.main.ui.views.main.navigation.notifications.items.NotificationCardItemAdapter;
+import com.smartplant.smartplantandroid.main.components.notifiactions.models.AppNotificationData;
+import com.smartplant.smartplantandroid.main.ui.views.main.navigation.notifications.items.NotificationAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationsFragment extends CustomFragment {
     private NotificationsViewModel _notificationsViewModel;
-    private NotificationCardItemAdapter _notificationsAdapter;
+    private NotificationAdapter _notificationsAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.main_fragment_notifications, container, false);
@@ -34,7 +34,7 @@ public class NotificationsFragment extends CustomFragment {
         ItemTouchHelper itemTouchHelper = this.setupItemTouchHandler();
         itemTouchHelper.attachToRecyclerView(notificationsContainer);
 
-        this._notificationsAdapter = new NotificationCardItemAdapter(getContext());
+        this._notificationsAdapter = new NotificationAdapter(getContext(), new ArrayList<>());
         notificationsContainer.setAdapter(_notificationsAdapter);
 
         this._observeNotifications();
@@ -52,7 +52,7 @@ public class NotificationsFragment extends CustomFragment {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                AppNotification notification = ((NotificationCardItemAdapter.NotificationCardViewHolder) viewHolder).getNotification();
+                AppNotificationData notification = ((NotificationAdapter.NotificationViewHolder) viewHolder).getNotificationData();
                 assert notification != null;
 
                 _notificationsAdapter.removeNotification(notification);  // Remove from UI
@@ -67,7 +67,7 @@ public class NotificationsFragment extends CustomFragment {
         return new ItemTouchHelper(simpleCallback);
     }
 
-    private List<AppNotification> _getUncheckedNotificationsList() {
+    private List<AppNotificationData> _getUncheckedNotificationsList() {
         return new ArrayList<>(this._notificationsViewModel.getUncheckedNotifications());
     }
 
