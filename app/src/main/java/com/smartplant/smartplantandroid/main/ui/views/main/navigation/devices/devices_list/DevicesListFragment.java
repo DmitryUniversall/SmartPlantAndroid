@@ -1,11 +1,14 @@
 package com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.devices_list;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +23,7 @@ import com.smartplant.smartplantandroid.main.components.notifiactions.repository
 import com.smartplant.smartplantandroid.main.components.notifiactions.utils.generics.AppNotificationFactory;
 import com.smartplant.smartplantandroid.main.components.sensors_data.repository.SensorsDataRepositoryST;
 import com.smartplant.smartplantandroid.main.ui.items.button.CustomButton;
+import com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.devices_list.dialogs.AddDeviceDialog;
 import com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.devices_list.items.DeviceCardItemAdapter;
 
 import java.util.ArrayList;
@@ -70,7 +74,9 @@ public class DevicesListFragment extends CustomFragment {
     private void _observeDevices() {
         this._devicesViewModel.getDevicesLiveData().observe(
                 getViewLifecycleOwner(),
-                devices -> this._deviceAdapter.setDeviceList(new ArrayList<>(devices.values()))
+                devices -> {
+                    this._deviceAdapter.setDeviceList(new ArrayList<>(devices.values()));
+                }
         );
     }
 
@@ -84,18 +90,12 @@ public class DevicesListFragment extends CustomFragment {
     }
 
     private void _onAddButtonClick(View view) {
-        NotificationsRepositoryST.getInstance().sendAppNotification(
-                AppNotificationFactory.createNotification(
-                        ThreadLocalRandom.current().nextInt(1, 8 + 1),
-                        getContext(),
-                        2,
-                        false,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null
-                )
-        ).execute();
+        Context context = getContext();
+        assert context != null;
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        assert activity != null;
+
+        new AddDeviceDialog(context, activity).show();
     }
 }

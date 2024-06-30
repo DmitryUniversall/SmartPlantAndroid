@@ -5,6 +5,7 @@ import static com.smartplant.smartplantandroid.core.data.json.JsonUtils.getGson;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.smartplant.smartplantandroid.core.network.ApiUtils;
 import com.smartplant.smartplantandroid.core.network.http.http_api_request.HTTPApiRequest;
 import com.smartplant.smartplantandroid.main.components.auth.models.User;
@@ -43,13 +44,16 @@ public class DevicesApiService {
     }
 
     public HTTPApiRequest<Optional<User>> pairDevice(String deviceUsername) {
-        Request request = ApiUtils.getAuthorizedRequestBuilder().url(_devicesApiBase + "/device/" + deviceUsername + "/pair/").build();
+        Request request = ApiUtils.getAuthorizedRequestBuilder()
+                .url(_devicesApiBase + "device/" + deviceUsername + "/pair/")
+                .post(ApiUtils.createJsonRequestBody(""))
+                .build();
 
         return ApiUtils.createApiRequest(request, ((response, applicationResponse) -> {
             if (applicationResponse.getData() == null) return Optional.empty();
 
-            JsonArray deviceJson = applicationResponse.getData().getAsJsonArray("device_user");
-            User device = _gson.fromJson(deviceJson.getAsJsonObject(), User.class);
+            JsonObject deviceJson = applicationResponse.getData().getAsJsonObject("device_user");
+            User device = _gson.fromJson(deviceJson, User.class);
 
             return Optional.of(device);
         }));

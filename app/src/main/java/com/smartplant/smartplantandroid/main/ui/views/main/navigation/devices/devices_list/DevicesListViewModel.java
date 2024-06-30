@@ -37,7 +37,14 @@ public class DevicesListViewModel extends ViewModel {
     }
 
     public HTTPApiRequest<Optional<User>> pairDevice(String deviceUsername) {
-        return this._devicesRepository.pairDevice(deviceUsername).onSuccess((result, response, applicationResponse) -> this._devicesLiveData.postValue(this._devicesRepository.getMyDevices()));
+        return this._devicesRepository.pairDevice(deviceUsername)
+                .onSuccess((result, response, applicationResponse) -> {
+                    if (applicationResponse.getApplicationStatusCode() != 4401) return;
+                    if (!result.isPresent()) return;
+
+                    _devicesRepository.addDevice(result.get());  // FIXME: Does not update on screen
+                    this._devicesLiveData.postValue(this._devicesRepository.getMyDevices());
+                });
     }
 
     public HTTPApiRequest<Void> unpairDevice(int deviceId) {

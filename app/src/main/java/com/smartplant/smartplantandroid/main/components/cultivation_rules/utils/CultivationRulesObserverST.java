@@ -59,7 +59,7 @@ public class CultivationRulesObserverST {
         assert lastSend != null;
         Date now = new Date();
 
-        return Math.abs(now.getTime() - lastSend.getTime()) > 3 * 60 * 1000; // > 3 minutes since last notification of this type
+        return Math.abs(now.getTime() - lastSend.getTime()) > 10 * 60 * 1000; // 10 minutes since last notification of this type
     }
 
     private void _sendNotification(@NonNull AbstractAppNotification notification) {
@@ -106,8 +106,6 @@ public class CultivationRulesObserverST {
 
     private void _checkTemperature(int deviceId, int temperature) {
         CultivationRules rules = _cultivationRulesRepository.getCultivationRules(deviceId);
-
-        AppLogger.info("temp max: %d, temp curr: %d", rules.getMaxTemperature(), temperature);
 
         if (rules.getMinTemperature() >= temperature) {
             this._sendNotification(

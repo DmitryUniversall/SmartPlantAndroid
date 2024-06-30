@@ -149,4 +149,11 @@
     <string name="max_temparature">Максимальная температура</string>
     <string name="no_water_default_title">Закончилась вода</string>
     <string name="no_water_default_description">В устройстве закончилась вода. Пополните бак, чтобы использовать автополив</string>
+    <string name="device_add">Добавление устройства</string>
+    <string name="device_username">Имя устройства</string>
+    <string name="send_device_add_request">Отправить запрос на сопряжение</string>
+    <string name="specify_device_username">Укажите Username устройства, который можно найти в его web-настройках.</string>
+    <string name="request_with_dots">Запрос...</string>
+    <string name="failed_to_add_device">Не удалось добавить устройство</string>
+    <string name="device_added_successfully">Устройство успешно добавлено</string>
 </resources>

@@ -28,7 +28,7 @@ public class DevicesRepositoryST {
 
     // Cache
     private boolean _isLoaded = false;
-    private final @NonNull Map<Integer, User> _myDevices = new HashMap<>();
+    private @NonNull Map<Integer, User> _myDevices = new HashMap<>();
 
     public static synchronized void createInstance() {
         if (_instance != null)
@@ -52,13 +52,17 @@ public class DevicesRepositoryST {
         return this._isLoaded;
     }
 
+    public void addDevice(@NonNull User device) {
+        this._myDevices.put(device.getId(), device);
+    }
+
     public Map<Integer, User> getMyDevices() {
         return this._myDevices;
     }
 
     public HTTPApiRequest<Map<Integer, User>> fetchMyDevices() {
         this._isLoaded = true;
-        return this._apiService.fetchMyDevices().onSuccess((result, response, applicationResponse) -> this._myDevices.putAll(result));
+        return this._apiService.fetchMyDevices().onSuccess((result, response, applicationResponse) -> this._myDevices = result);
     }
 
     public HTTPApiRequest<Optional<User>> pairDevice(String deviceUsername) {

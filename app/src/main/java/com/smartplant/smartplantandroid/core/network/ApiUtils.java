@@ -8,6 +8,8 @@ import com.smartplant.smartplantandroid.main.components.auth.exceptions.Unauthor
 import com.smartplant.smartplantandroid.main.components.auth.models.AuthTokenPair;
 import com.smartplant.smartplantandroid.main.components.auth.repository.AuthRepositoryST;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -17,7 +19,12 @@ public class ApiUtils {
     private static final OkHttpClient _client = _createOkHttpClient();
 
     private static OkHttpClient _createOkHttpClient() {
-        return new OkHttpClient();
+        return new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(40, TimeUnit.SECONDS)
+                .retryOnConnectionFailure(true)
+                .build();
     }
 
     public static OkHttpClient getOkHttpClient() {
