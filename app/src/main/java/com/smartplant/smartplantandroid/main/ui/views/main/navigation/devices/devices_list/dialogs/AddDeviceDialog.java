@@ -75,7 +75,10 @@ public class AddDeviceDialog extends AlertDialog {
                     this.cancel();
                     this._activity.runOnUiThread(() -> Toast.makeText(context, context.getString(R.string.device_added_successfully), Toast.LENGTH_LONG).show());
                 })
-                .onFailure(error -> AppLogger.error("Got unknown error during device pair", error))
+                .onFailure(error -> {
+                    AppLogger.error("Got unknown error during device pair", error);
+                    this._activity.runOnUiThread(() -> Toast.makeText(context, context.getString(R.string.failed_to_add_device), Toast.LENGTH_LONG).show());
+                })
                 .after(() -> this._activity.runOnUiThread(() -> _submitButton.setText(R.string.send_device_add_request)))
                 .send();
     }

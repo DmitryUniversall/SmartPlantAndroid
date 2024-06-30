@@ -19,7 +19,7 @@ public class SensorsDataDBTable implements DBTable {
     private static final String TABLE_CREATE =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_DEVICE_ID + "INTEGER, " +
+                    COLUMN_DEVICE_ID + " INTEGER, " +
                     COLUMN_ILLUMINATION + " INTEGER, " +
                     COLUMN_SOIL_MOISTURE + " INTEGER, " +
                     COLUMN_TEMPERATURE + " REAL, " +

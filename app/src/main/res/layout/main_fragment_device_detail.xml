@@ -148,7 +148,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 flexbox:flexDirection="row"
-                                android:text="Температура"
+                                android:text="@string/temperature"
                                 android:textAlignment="center"
                                 android:textColor="@color/L1_text_primary"
                                 android:textStyle="bold"
@@ -160,7 +160,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 flexbox:flexDirection="row"
-                                android:text="10 °C"
+                                android:text="0 °C"
                                 android:textSize="20sp"
                                 android:textColor="@color/L1_text_primary"
                                 android:textStyle="bold" />
@@ -188,7 +188,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 flexbox:flexDirection="row"
-                                android:text="Влажность почвы"
+                                android:text="@string/soil_moisture"
                                 android:textColor="@color/L1_text_primary"
                                 android:textStyle="bold"
                                 android:textSize="14sp"
@@ -200,7 +200,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 flexbox:flexDirection="row"
-                                android:text="70%"
+                                android:text="0%"
                                 android:textSize="20sp"
                                 android:textColor="@color/L1_text_primary"
                                 android:textStyle="bold" />
@@ -228,7 +228,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 flexbox:flexDirection="row"
-                                android:text="Влажность воздуха"
+                                android:text="@string/humidity"
                                 android:textAlignment="center"
                                 android:textColor="@color/L1_text_primary"
                                 android:textStyle="bold"
@@ -240,7 +240,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 flexbox:flexDirection="row"
-                                android:text="30%"
+                                android:text="0%"
                                 android:textSize="20sp"
                                 android:textColor="@color/L1_text_primary"
                                 android:textStyle="bold" />
@@ -266,7 +266,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 flexbox:flexDirection="row"
-                                android:text="Освещение"
+                                android:text="@string/illumination"
                                 android:textAlignment="center"
                                 android:textColor="@color/L1_text_primary"
                                 android:textStyle="bold"
@@ -278,7 +278,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 flexbox:flexDirection="row"
-                                android:text="95%"
+                                android:text="0%"
                                 android:textSize="20sp"
                                 android:textColor="@color/L1_text_primary"
                                 android:textStyle="bold" />
@@ -305,7 +305,7 @@
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Уровень воды"
+                        android:text="@string/water_level"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_marginEnd="10dp"
@@ -332,7 +332,7 @@
                     android:id="@+id/advancedSettingsButton"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:text="Дополнительные настройки" />
+                    android:text="@string/additional_settings" />
         </com.google.android.flexbox.FlexboxLayout>
     </LinearLayout>
 </ScrollView>

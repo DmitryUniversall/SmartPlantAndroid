@@ -93,7 +93,7 @@
 
     <!-- Settings -->
     <string name="data_update_interval_setting">Интервал обновления данных устройства</string>
-    <string name="additional_settings">Дополнительно</string>
+    <string name="additional_settings">Дополнительные настройки</string>
     <string name="transfer_server_token_type">Тип токена авторизации</string>
     <string name="transfer_server_base_url">Базовый URL</string>
 
@@ -156,4 +156,6 @@
     <string name="request_with_dots">Запрос...</string>
     <string name="failed_to_add_device">Не удалось добавить устройство</string>
     <string name="device_added_successfully">Устройство успешно добавлено</string>
+    <string name="humidity">Влажность воздуха</string>
+    <string name="water_level">Уровень воды</string>
 </resources>

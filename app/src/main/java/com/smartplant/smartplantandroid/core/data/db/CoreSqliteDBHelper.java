@@ -45,6 +45,8 @@ public class CoreSqliteDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         for (DBTable table : _tables) {
+            AppLogger.info("Creating table '%s' using script:\n%s", table.getTableName(), table.getCreateScript());
+            db.execSQL("DROP TABLE IF EXISTS " + table.getTableName());
             db.execSQL(table.getCreateScript());
         }
     }

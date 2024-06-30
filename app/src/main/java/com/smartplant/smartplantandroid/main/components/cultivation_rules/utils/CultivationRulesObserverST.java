@@ -75,7 +75,10 @@ public class CultivationRulesObserverST {
     private void _checkHumidity(int deviceId, int humidityPercent) {
         CultivationRules rules = _cultivationRulesRepository.getCultivationRules(deviceId);
 
-        if (rules.getMinHumidityPercent() >= humidityPercent) {
+        int min = rules.getMinHumidityPercent();
+        int max = rules.getMaxHumidityPercent();
+
+        if (min != -1 && min >= humidityPercent) {
             this._sendNotification(
                     AppNotificationFactory.createNotification(
                             2,  // LowHumidityAppNotification
@@ -88,7 +91,7 @@ public class CultivationRulesObserverST {
                             null,
                             null
                     ));
-        } else if (rules.getMaxHumidityPercent() <= humidityPercent) {
+        } else if (max != -1 && rules.getMaxHumidityPercent() <= humidityPercent) {
             this._sendNotification(
                     AppNotificationFactory.createNotification(
                             1,  // HighHumidityAppNotification
@@ -106,8 +109,10 @@ public class CultivationRulesObserverST {
 
     private void _checkTemperature(int deviceId, int temperature) {
         CultivationRules rules = _cultivationRulesRepository.getCultivationRules(deviceId);
+        int min = rules.getMinTemperature();
+        int max = rules.getMaxTemperature();
 
-        if (rules.getMinTemperature() >= temperature) {
+        if (min != -1 && min >= temperature) {
             this._sendNotification(
                     AppNotificationFactory.createNotification(
                             4,  // LowTemperatureAppNotification
@@ -120,7 +125,7 @@ public class CultivationRulesObserverST {
                             null,
                             null
                     ));
-        } else if (rules.getMaxTemperature() <= temperature) {
+        } else if (max != -1 && max <= temperature) {
             this._sendNotification(
                     AppNotificationFactory.createNotification(
                             3,  // HighTemperatureAppNotification

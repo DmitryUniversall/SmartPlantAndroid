@@ -1,5 +1,6 @@
 package com.smartplant.smartplantandroid.main.ui.views.main.navigation.notifications;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.smartplant.smartplantandroid.main.ui.views.main.navigation.notificati
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class NotificationsFragment extends CustomFragment {
     private NotificationsViewModel _notificationsViewModel;
@@ -86,8 +88,17 @@ public class NotificationsFragment extends CustomFragment {
     }
 
     private void _observeNotifications() {
-        this._notificationsViewModel.getNotificationsLiveData()
-                .observe(getViewLifecycleOwner(), notifications -> this._notificationsAdapter.setNotifications(new ArrayList<>(notifications)));
+        Activity activity = getActivity();
+        assert activity != null;
+
+        this._notificationsViewModel.getObservableNotifications().addObserver(obj -> {
+            Set<AbstractAppNotification> notifications = this._notificationsViewModel.getUncheckedNotifications();
+            AppLogger.info("Updating notifications; Found unchecked notifications: %d", notifications.size());
+            activity.runOnUiThread(() -> {
+                this._notificationsAdapter.setNotifications(new ArrayList<>(notifications));
+                this._noNotificationsCheck();
+            });
+        });
     }
 
     private void _noNotificationsCheck() {

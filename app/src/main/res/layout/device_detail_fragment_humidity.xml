@@ -8,7 +8,7 @@
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Влажность воздуха"
+            android:text="@string/humidity"
             android:textAlignment="center"
             android:textColor="@color/L1_text_primary"
             android:textStyle="bold"

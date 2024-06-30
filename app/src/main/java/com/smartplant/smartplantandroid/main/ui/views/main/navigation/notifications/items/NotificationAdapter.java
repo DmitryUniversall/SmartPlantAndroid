@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder> {
-    private final List<AbstractAppNotification> _notifications;
+    private List<AbstractAppNotification> _notifications;
     private final Context _context;
 
     public static class NotificationViewHolder extends RecyclerView.ViewHolder {
@@ -41,9 +41,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void setNotifications(@NonNull Collection<AbstractAppNotification> notifications) {
-        this._notifications.clear();
-        this._notifications.addAll(notifications);
+    public void setNotifications(@NonNull List<AbstractAppNotification> notifications) {
+        _notifications = notifications;
         notifyDataSetChanged();
     }
 
