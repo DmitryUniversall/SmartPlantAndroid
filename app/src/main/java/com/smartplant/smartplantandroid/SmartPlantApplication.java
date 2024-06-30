@@ -5,6 +5,8 @@ import android.app.Application;
 import com.smartplant.smartplantandroid.core.data.db.CoreSqliteDBHelper;
 import com.smartplant.smartplantandroid.core.network.ApplicationStatusCodes;
 import com.smartplant.smartplantandroid.main.components.auth.repository.AuthRepositoryST;
+import com.smartplant.smartplantandroid.main.components.cultivation_rules.internal_utils.db.CultivationRulesDBTable;
+import com.smartplant.smartplantandroid.main.components.cultivation_rules.repository.CultivationRulesRepositoryST;
 import com.smartplant.smartplantandroid.main.components.devices.repository.DevicesRepositoryST;
 import com.smartplant.smartplantandroid.main.components.devices.utils.DevicesLocalDataManagerST;
 import com.smartplant.smartplantandroid.main.components.notifiactions.internal_utils.db.NotificationsDBTable;
@@ -28,6 +30,7 @@ public class SmartPlantApplication extends Application {
     private void _initializeDB() {
         CoreSqliteDBHelper.registerTable(new SensorsDataDBTable());
         CoreSqliteDBHelper.registerTable(new NotificationsDBTable());
+        CoreSqliteDBHelper.registerTable(new CultivationRulesDBTable());
         CoreSqliteDBHelper.createInstance(this);
     }
 
@@ -44,5 +47,6 @@ public class SmartPlantApplication extends Application {
         SensorsDataRepositoryST.createInstance();
         DevicesRepositoryST.createInstance();
         NotificationsRepositoryST.createInstance(this);
+        CultivationRulesRepositoryST.createInstance();
     }
 }

@@ -132,4 +132,19 @@
     <string name="low_temperature_default_description">Температура воздуха слишком низкая. Обеспечьте обогрев помещения для поддержания оптимальных условий роста.</string>
     <string name="device">Устройство</string>
     <string name="has_no_notifications">Нет уведомлений</string>
+    <string name="set_min">Указать минимум</string>
+    <string name="set_max">Указать максимум</string>
+    <string name="temperature">Температура</string>
+    <string name="dialog_ok">Ок</string>
+    <string name="dialog_cancel">Отмена</string>
+    <string name="illumination">Освещение</string>
+    <string name="soil_moisture">Влажность почвы</string>
+    <string name="min_humidity">Минимальная влажность воздуха</string>
+    <string name="max_humidity">Максимальная влажность воздуха</string>
+    <string name="min_soil_moisture">Минимальная влажность почвы</string>
+    <string name="max_soil_moisture">Максимальная влажность почвы</string>
+    <string name="min_illumination">Минимальная освещенность</string>
+    <string name="max_illumination">Максимальная освещенность</string>
+    <string name="min_temperature">Минимальная температура</string>
+    <string name="max_temparature">Максимальная температура</string>
 </resources>

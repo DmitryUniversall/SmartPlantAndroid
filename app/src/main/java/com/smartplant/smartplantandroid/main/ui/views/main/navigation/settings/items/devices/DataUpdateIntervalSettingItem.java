@@ -44,8 +44,8 @@ public class DataUpdateIntervalSettingItem extends BaseSettingsItem {
     }
 
     @Override
-    protected String validateInput(String input) {
-        return "";  // TODO
+    protected @Nullable String validateInput(String input) {
+        return null;  // TODO
     }
 
     @Override

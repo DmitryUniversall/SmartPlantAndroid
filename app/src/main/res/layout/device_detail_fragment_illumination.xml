@@ -2,12 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical">
 
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Освещение"
+            android:text="@string/illumination"
             android:textAlignment="center"
             android:textColor="@color/L1_text_primary"
             android:textStyle="bold"
@@ -17,19 +18,32 @@
             android:id="@+id/stat_data_line_chart"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:layout_marginTop="15dp" />
+            android:layout_marginTop="10dp" />
+
+    <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:flexDirection="row"
+            app:justifyContent="space_between"
+            android:layout_marginTop="10dp" >
+        <com.smartplant.smartplantandroid.main.ui.items.button.CustomButton
+                android:id="@+id/set_min_illumination"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="@string/set_min"
+                android:layout_marginEnd="2.5dp" />
+        <com.smartplant.smartplantandroid.main.ui.items.button.CustomButton
+                android:id="@+id/set_max_illumination"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="@string/set_max"
+                android:layout_marginStart="2.5dp" />
+    </com.google.android.flexbox.FlexboxLayout>
 
     <com.smartplant.smartplantandroid.main.ui.items.button.CustomButton
             android:id="@+id/toggle_lamp_button"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:text="@string/turn_on_lamp"
-            android:layout_marginTop="15dp" />
-
-    <com.smartplant.smartplantandroid.main.ui.items.button.CustomButton
-            android:id="@+id/illumination_settings_button"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="@string/illumination_settings"
             android:layout_marginTop="5dp" />
 </LinearLayout>

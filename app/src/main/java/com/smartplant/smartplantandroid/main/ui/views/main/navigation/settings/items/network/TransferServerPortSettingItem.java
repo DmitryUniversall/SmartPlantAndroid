@@ -5,6 +5,7 @@ import android.text.InputType;
 import android.util.AttributeSet;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
 
 import com.smartplant.smartplantandroid.R;
 
@@ -33,8 +34,8 @@ public class TransferServerPortSettingItem extends NetworkSettingItem {
     }
 
     @Override
-    protected String validateInput(String input) {
-        return "";  // TODO
+    protected @Nullable String validateInput(String input) {
+        return null;  // TODO
     }
 
     @Override

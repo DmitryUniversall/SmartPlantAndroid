@@ -17,7 +17,7 @@ public class CoreSqliteDBHelper extends SQLiteOpenHelper {
 
     // DB
     private static final String DATABASE_NAME = "AppData.db";
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 14;
 
     // Tables
     private static final List<DBTable> _tables = new ArrayList<>();

@@ -4,17 +4,16 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.Nullable;
 
 import com.smartplant.smartplantandroid.R;
+import com.smartplant.smartplantandroid.core.ui.edit_dialog.EditDialog;
 
 public abstract class BaseSettingsItem extends LinearLayout {
     protected TextView settingValueView;
@@ -27,7 +26,7 @@ public abstract class BaseSettingsItem extends LinearLayout {
 
     protected abstract int getInputType();
 
-    protected abstract String validateInput(String input);
+    protected abstract @Nullable String validateInput(String input);
 
     protected abstract String getValue();
 
@@ -65,36 +64,12 @@ public abstract class BaseSettingsItem extends LinearLayout {
         Context context = getContext();
         assert context != null;
 
-        // Builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(title);
-
-        // Input
-        final EditText input = new EditText(context);  // TODO: from xml
-        input.setInputType(inputType);
-        input.setText(currentValue);
-        builder.setView(input);
-
-        // OK button
-        builder.setPositiveButton("OK", (dialog, which) -> {
-            String newValue = input.getText().toString();
-
-            String errorMessage = validateInput(newValue);
-            if (errorMessage.isEmpty()) {
-                Toast.makeText(context, context.getString(R.string.saved_successfully), Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            setValue(newValue);
-            settingValueView.setText(newValue);
-        });
-
-        // Cancel button
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-
-        // Show
-        builder.show();
+        new EditDialog(context, title, currentValue, inputType)
+                .setProcessor(value -> {
+                    this.setValue(value);
+                    settingValueView.setText(value);
+                })
+                .setValidator(this::validateInput)
+                .show();
     }
 }
