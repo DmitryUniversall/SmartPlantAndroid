@@ -23,13 +23,13 @@ public class DevicesSettingsST {
 
     public static synchronized void createInstance(Context context) {
         if (_instance != null)
-            throw new RuntimeException("Project settings has already been initialized");
+            throw new RuntimeException("DevicesSettingsST has already been initialized");
         _instance = new DevicesSettingsST(context);
     }
 
     public static synchronized DevicesSettingsST getInstance() {
         if (_instance == null)
-            throw new RuntimeException("Project settings has not been initialized");
+            throw new RuntimeException("DevicesSettingsST has not been initialized");
         return _instance;
     }
 

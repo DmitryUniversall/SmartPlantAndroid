@@ -36,6 +36,7 @@ public class DevicesStorageService {
                 .setResponseProcessor((dataMessage, applicationResponse) -> {
                     if (applicationResponse.getData() == null) throw new HasNoDataException();
                     SensorsData sensorsData = JsonUtils.fromJsonWithNulls(applicationResponse.getData(), SensorsData.class);
+                    sensorsData.setDeviceId(deviceId);
                     sensorsData.setCreatedAt(dataMessage.getCreatedAt());  // TODO: Refactor it
                     return sensorsData;
                 })

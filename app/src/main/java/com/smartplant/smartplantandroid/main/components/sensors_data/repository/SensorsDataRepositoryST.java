@@ -75,6 +75,7 @@ public class SensorsDataRepositoryST {
         JsonObject data = storageAction.getData();
         assert data != null;
         SensorsData sensorsData = JsonUtils.fromJsonWithNulls(data, SensorsData.class);
+        sensorsData.setDeviceId(dataMessage.getSenderId());
         sensorsData.setCreatedAt(dataMessage.getCreatedAt());  // TODO: Refactor it
 
         this.insertSensorsData(dataMessage.getSenderId(), sensorsData).execute();

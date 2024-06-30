@@ -97,6 +97,8 @@ public class NotificationsRepositoryST {
     }
 
     public BackgroundTask<Void> sendAppNotification(@NonNull AbstractAppNotification notification) {
+        AppLogger.debug("Sending notification type=%d", notification.getNotificationType());
+
         return this._insertNotification(notification)
                 .onSuccess(result -> {
                     AndroidNotificationUtils.sendGenericAndroidNotification(notification);

@@ -38,7 +38,7 @@ public class CultivationRulesRepositoryST {
 
     private CultivationRulesRepositoryST() {
         _dbService = new CultivationRulesDBService();
-        this.fetchAllCultivationRules().execute();  // TODO: Should it be here?
+        this.fetchAllCultivationRules().onSuccess(result -> AppLogger.info("Loaded all cultivation rules")).execute().waitForResult();  // TODO: Should it be here?
     }
 
     public BackgroundTask<Void> createCultivationRules(@NonNull CultivationRules cultivationRules) {

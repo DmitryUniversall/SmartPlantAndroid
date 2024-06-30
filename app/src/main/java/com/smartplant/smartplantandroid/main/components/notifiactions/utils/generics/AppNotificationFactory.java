@@ -15,6 +15,7 @@ import com.smartplant.smartplantandroid.main.components.notifiactions.utils.gene
 import com.smartplant.smartplantandroid.main.components.notifiactions.utils.generics.soil.WetSoilAppNotification;
 import com.smartplant.smartplantandroid.main.components.notifiactions.utils.generics.temperature.HighTemperatureAppNotification;
 import com.smartplant.smartplantandroid.main.components.notifiactions.utils.generics.temperature.LowTemperatureAppNotification;
+import com.smartplant.smartplantandroid.main.components.notifiactions.utils.generics.water.NoWaterAppNotification;
 
 import java.lang.reflect.Constructor;
 import java.util.Date;
@@ -36,6 +37,8 @@ public class AppNotificationFactory {
 
         _notificationClasses.put(7, WetSoilAppNotification.class);
         _notificationClasses.put(8, DrySoilAppNotification.class);
+
+        _notificationClasses.put(9, NoWaterAppNotification.class);
     }
 
     public static AbstractAppNotification createNotification(

@@ -32,13 +32,13 @@ public class NetworkSettingsST {
 
     public static synchronized void createInstance(Context context) {
         if (_instance != null)
-            throw new RuntimeException("Project settings has already been initialized");
+            throw new RuntimeException("NetworkSettingsST has already been initialized");
         _instance = new NetworkSettingsST(context);
     }
 
     public static synchronized NetworkSettingsST getInstance() {
         if (_instance == null)
-            throw new RuntimeException("Project settings has not been initialized");
+            throw new RuntimeException("NetworkSettingsST has not been initialized");
         return _instance;
     }
 

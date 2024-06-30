@@ -29,7 +29,7 @@ public class SensorsDataDBService {  // TODO: Throw exceptions on interaction er
     }
 
     @SuppressLint("Range")
-    private SensorsData cursorToSensorsData(Cursor cursor) {
+    private SensorsData cursorToSensorsData(int deviceId, Cursor cursor) {
         long id = cursor.getLong(cursor.getColumnIndex(SensorsDataDBTable.COLUMN_ID));
         int illumination = cursor.getInt(cursor.getColumnIndex(SensorsDataDBTable.COLUMN_ILLUMINATION));
         int soilMoisture = cursor.getInt(cursor.getColumnIndex(SensorsDataDBTable.COLUMN_SOIL_MOISTURE));
@@ -45,7 +45,10 @@ public class SensorsDataDBService {  // TODO: Throw exceptions on interaction er
             AppLogger.error("Unknown error during fetching sensors data", e);
         }
 
-        return new SensorsData(id, waterLevel, illumination, soilMoisture, temperature, humidity, createdAt);
+        SensorsData sensorsData = new SensorsData(id, waterLevel, illumination, soilMoisture, temperature, humidity, createdAt);
+        sensorsData.setDeviceId(deviceId);
+
+        return sensorsData;
     }
 
     public BackgroundTask<Void> insertSensorsData(int deviceId, SensorsData sensorsData) {
@@ -93,7 +96,7 @@ public class SensorsDataDBService {  // TODO: Throw exceptions on interaction er
             Cursor cursor = _db.rawQuery(query, new String[]{String.valueOf(deviceId)});
             if (cursor == null || !cursor.moveToFirst()) return Optional.empty();
 
-            SensorsData sensorsData = cursorToSensorsData(cursor);
+            SensorsData sensorsData = cursorToSensorsData(deviceId, cursor);
             cursor.close();
             return Optional.of(sensorsData);
         });
@@ -114,7 +117,7 @@ public class SensorsDataDBService {  // TODO: Throw exceptions on interaction er
             if (cursor == null) return sensorsDataList;
 
             while (cursor.moveToNext()) {
-                sensorsDataList.add(cursorToSensorsData(cursor));
+                sensorsDataList.add(cursorToSensorsData(deviceId, cursor));
             }
             cursor.close();
 

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.smartplant.smartplantandroid.core.callbacks.CallbackUtils;
+import com.smartplant.smartplantandroid.core.logs.AppLogger;
 import com.smartplant.smartplantandroid.core.network.http.http_api_request.HTTPApiRequest;
 import com.smartplant.smartplantandroid.main.components.storage.internal_utils.StorageApiService;
 import com.smartplant.smartplantandroid.main.components.storage.internal_utils.StorageWSService;
@@ -43,9 +44,28 @@ public class StorageRepositoryST {
     }
 
     public StorageWSActionProcessor connect() {
+        AppLogger.info("Connecting storage WS");
         StorageWSActionProcessor processor = _WSService.connect();
         _callProcessorCreateHandlers();
         return processor;
+    }
+
+    public void disconnect(int code, @NonNull String reason) {
+        AppLogger.info("Disconnecting storage WS");
+
+        StorageWSActionProcessor processor = _WSService.getProcessor();
+        if (processor == null) {
+            AppLogger.warning("Unable to disconnect storage WS: Not connected");
+            return;
+        }
+
+        processor.disconnect(code, reason);
+    }
+
+    public boolean isConnected() {
+        StorageWSActionProcessor processor = _WSService.getProcessor();
+        if (processor == null) return false;
+        return processor.isConnected();
     }
 
     public void onProcessorCreate(@NonNull String name, @NonNull Runnable handler) {

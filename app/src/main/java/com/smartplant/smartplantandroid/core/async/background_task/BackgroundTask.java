@@ -12,6 +12,7 @@ import com.smartplant.smartplantandroid.core.callbacks.SuccessCallback;
 import com.smartplant.smartplantandroid.core.logs.AppLogger;
 
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -30,7 +31,7 @@ public class BackgroundTask<T> implements ExecutedInBackground<SuccessCallback<T
 
     protected final Callable<T> _task;
 
-    protected @Nullable Future<T> _future;
+    protected @Nullable Future<Optional<T>> _future;
 
     public BackgroundTask(Callable<T> task) {
         this._task = task;
@@ -55,18 +56,19 @@ public class BackgroundTask<T> implements ExecutedInBackground<SuccessCallback<T
         this._afterCallbacks.clear();
     }
 
-    protected @Nullable T _executeTask() {
+    protected Optional<T> _executeTask() {
         try {
             T result = _task.call();
             this._callSuccessCallbacks(result);
-            return result;
+            if (result == null) return Optional.empty();
+            return Optional.of(result);
         } catch (Exception error) {
             this._callFailureCallbacks(error);
         } finally {
             this._callAfterCallbacks();
         }
 
-        return null;
+        return Optional.empty();
     }
 
     @CanIgnoreReturnValue
@@ -77,7 +79,7 @@ public class BackgroundTask<T> implements ExecutedInBackground<SuccessCallback<T
     }
 
     @CanIgnoreReturnValue
-    public T waitForResult() {  // FIXME: Eternal wait
+    public Optional<T> waitForResult() {
         if (this._future == null)
             throw new IllegalStateException("Unable to wait for background task: Task is not running");
 

@@ -83,4 +83,8 @@ public class StorageWSActionProcessor extends StorageWSProcessor {
         assert handlersMap != null;
         handlersMap.remove(name);
     }
+
+    public boolean isConnected() {
+        return this._connection.isConnected();
+    }
 }

@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.Objects;
 
 public class SensorsData {
+    private int _deviceId;
+
     @SerializedName("id")
     private @Nullable Long _id;
 
@@ -109,5 +111,13 @@ public class SensorsData {
 
     public void setCreatedAt(@NonNull Date createdAt) {
         this._createdAt = createdAt;
+    }
+
+    public int getDeviceId() {
+        return _deviceId;
+    }
+
+    public void setDeviceId(int _deviceId) {
+        this._deviceId = _deviceId;
     }
 }

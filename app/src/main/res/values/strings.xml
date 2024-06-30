@@ -147,4 +147,6 @@
     <string name="max_illumination">Максимальная освещенность</string>
     <string name="min_temperature">Минимальная температура</string>
     <string name="max_temparature">Максимальная температура</string>
+    <string name="no_water_default_title">Закончилась вода</string>
+    <string name="no_water_default_description">В устройстве закончилась вода. Пополните бак, чтобы использовать автополив</string>
 </resources>

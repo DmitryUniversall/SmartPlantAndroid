@@ -7,6 +7,7 @@ import com.smartplant.smartplantandroid.core.network.ApplicationStatusCodes;
 import com.smartplant.smartplantandroid.main.components.auth.repository.AuthRepositoryST;
 import com.smartplant.smartplantandroid.main.components.cultivation_rules.internal_utils.db.CultivationRulesDBTable;
 import com.smartplant.smartplantandroid.main.components.cultivation_rules.repository.CultivationRulesRepositoryST;
+import com.smartplant.smartplantandroid.main.components.cultivation_rules.utils.CultivationRulesObserverST;
 import com.smartplant.smartplantandroid.main.components.devices.repository.DevicesRepositoryST;
 import com.smartplant.smartplantandroid.main.components.devices.utils.DevicesLocalDataManagerST;
 import com.smartplant.smartplantandroid.main.components.notifiactions.internal_utils.db.NotificationsDBTable;
@@ -48,5 +49,6 @@ public class SmartPlantApplication extends Application {
         DevicesRepositoryST.createInstance();
         NotificationsRepositoryST.createInstance(this);
         CultivationRulesRepositoryST.createInstance();
+        CultivationRulesObserverST.createInstance(this);
     }
 }
