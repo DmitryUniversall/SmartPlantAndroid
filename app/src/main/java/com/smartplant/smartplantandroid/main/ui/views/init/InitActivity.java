@@ -26,26 +26,6 @@ public class InitActivity extends CustomAppCompactActivity {
 
         observerAuthenticated();
         checkAuthentication();
-
-        AndroidNotificationUtils.createNotificationChannel(this);
-        _setupPermissions();
-    }
-
-    private void _setupPermissions() {
-        AndroidNotificationUtils.requestNotificationPermissionIfNeeded(this);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == AndroidNotificationUtils.PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                AppLogger.info("Permission has been denied by user");
-            } else {
-                AppLogger.info("Permission has been granted by user");
-            }
-        }
     }
 
     private void checkAuthentication() {

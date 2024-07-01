@@ -1,7 +1,9 @@
 package com.smartplant.smartplantandroid.main.ui.views.main;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -12,7 +14,9 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.smartplant.smartplantandroid.R;
+import com.smartplant.smartplantandroid.core.logs.AppLogger;
 import com.smartplant.smartplantandroid.core.ui.CustomAppCompactActivity;
+import com.smartplant.smartplantandroid.main.components.notifiactions.utils.AndroidNotificationUtils;
 
 public class MainActivity extends CustomAppCompactActivity {
     private MainViewModel viewModel;
@@ -24,7 +28,28 @@ public class MainActivity extends CustomAppCompactActivity {
         setupNavigation();
 
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+
+        AndroidNotificationUtils.createNotificationChannel(this);
+        _setupPermissions();
+
         connectStorageWS();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == AndroidNotificationUtils.PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                AppLogger.info("Permission has been denied by user");
+            } else {
+                AppLogger.info("Permission has been granted by user");
+            }
+        }
+    }
+
+    private void _setupPermissions() {
+        AndroidNotificationUtils.requestNotificationPermissionIfNeeded(this);
     }
 
     private void connectStorageWS() {
