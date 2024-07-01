@@ -19,6 +19,7 @@ import com.smartplant.smartplantandroid.core.ui.CustomFragment;
 import com.smartplant.smartplantandroid.main.components.auth.models.User;
 import com.smartplant.smartplantandroid.main.components.sensors_data.models.SensorsData;
 import com.smartplant.smartplantandroid.main.components.sensors_data.repository.SensorsDataRepositoryST;
+import com.smartplant.smartplantandroid.main.state.settings.DevicesSettingsST;
 import com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.device_detail.fragments.ChartCustomFragment;
 import com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.device_detail.fragments.HumidityStatFragment;
 import com.smartplant.smartplantandroid.main.ui.views.main.navigation.devices.device_detail.fragments.IlluminationStatFragment;
@@ -79,6 +80,7 @@ public class DeviceDetailFragment extends CustomFragment {
     // Utils
     private DeviceDetailViewModel _viewModel;
     private SensorsDataRepositoryST _sensorsDataRepository;
+    private DevicesSettingsST _devicesSettings;
 
     // Data
     private User _device;
@@ -89,6 +91,7 @@ public class DeviceDetailFragment extends CustomFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this._viewModel = new ViewModelProvider(this).get(DeviceDetailViewModel.class);
         this._sensorsDataRepository = SensorsDataRepositoryST.getInstance();
+        this._devicesSettings = DevicesSettingsST.getInstance();
 
         if (getArguments() == null)
             throw new IllegalArgumentException("Device detail fragment requires deviceId argument");
@@ -219,7 +222,7 @@ public class DeviceDetailFragment extends CustomFragment {
                 .execute();
 
         // Device should ignore it (respond with 1003 - NotChanged), if it already received this request before in active session
-        this._viewModel.requestSensorsDataUpdate(this._device.getId(), 5).onSuccess((result, dataMessage, response) ->
+        this._viewModel.requestSensorsDataUpdate(this._device.getId(), _devicesSettings.getDataUpdateInterval(), 5).onSuccess((result, dataMessage, response) ->
                 AppLogger.info("Sensors data update request success for device id=%d (code %s)", response.getStatusCode())
         ).send();
     }

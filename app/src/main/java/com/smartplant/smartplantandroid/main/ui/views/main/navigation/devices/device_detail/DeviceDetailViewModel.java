@@ -38,8 +38,8 @@ public class DeviceDetailViewModel extends ViewModel {
                 .onFailure(error -> AppLogger.info("Failed to fetch sensors data"));
     }
 
-    public StorageRequest<Void> requestSensorsDataUpdate(int deviceId, int timeout) {
-        return this._devicesRepository.requestSensorsDataUpdate(deviceId, timeout)
+    public StorageRequest<Void> requestSensorsDataUpdate(int deviceId, int dataUpdateInterval, int timeout) {
+        return this._devicesRepository.requestSensorsDataUpdate(deviceId, dataUpdateInterval, timeout)
                 .onSuccess((result, dataMessage, response) -> AppLogger.info("Data update request for device id=%d responded with success", deviceId))
                 .onFailure(error -> AppLogger.info("Data update request failed for device id=%d", deviceId));
     }

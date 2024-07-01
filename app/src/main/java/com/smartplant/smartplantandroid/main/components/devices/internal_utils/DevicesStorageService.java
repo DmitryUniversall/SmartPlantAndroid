@@ -43,9 +43,12 @@ public class DevicesStorageService {
                 .build();
     }
 
-    public StorageRequest<Void> requestSensorsDataUpdate(int deviceId, int timeout) {
+    public StorageRequest<Void> requestSensorsDataUpdate(int deviceId, int dataUpdateInterval, int timeout) {
         StorageWSActionProcessor processor = this._storageRepository.getProcessor();
-        StorageAction action = new StorageAction(StorageAction.ApplicationActionType.REQUEST_SENSORS_DATA_UPDATE.getValue(), null);
+
+        JsonObject data = new JsonObject();
+        data.addProperty("interval", dataUpdateInterval);
+        StorageAction action = new StorageAction(StorageAction.ApplicationActionType.REQUEST_SENSORS_DATA_UPDATE.getValue(), data);
 
         return processor.<Void>getStorageRequestBuilder()
                 .setTargetId(deviceId)
