@@ -17,6 +17,7 @@ import com.smartplant.smartplantandroid.R;
 import com.smartplant.smartplantandroid.core.logs.AppLogger;
 import com.smartplant.smartplantandroid.core.ui.CustomFragment;
 import com.smartplant.smartplantandroid.main.components.auth.models.User;
+import com.smartplant.smartplantandroid.main.components.devices.utils.DevicesLocalDataManagerST;
 import com.smartplant.smartplantandroid.main.components.sensors_data.models.SensorsData;
 import com.smartplant.smartplantandroid.main.components.sensors_data.repository.SensorsDataRepositoryST;
 import com.smartplant.smartplantandroid.main.state.settings.DevicesSettingsST;
@@ -77,10 +78,15 @@ public class DeviceDetailFragment extends CustomFragment {
     private TextView _illuminationTextView;
     private ProgressBar _waterLevelProgressBar;
 
+    // Device info
+    private TextView _deviceNameTextView;
+    private TextView _deviceDescriprionTextView;
+
     // Utils
     private DeviceDetailViewModel _viewModel;
     private SensorsDataRepositoryST _sensorsDataRepository;
     private DevicesSettingsST _devicesSettings;
+    private DevicesLocalDataManagerST _devicesLocalDataManager;
 
     // Data
     private User _device;
@@ -92,6 +98,7 @@ public class DeviceDetailFragment extends CustomFragment {
         this._viewModel = new ViewModelProvider(this).get(DeviceDetailViewModel.class);
         this._sensorsDataRepository = SensorsDataRepositoryST.getInstance();
         this._devicesSettings = DevicesSettingsST.getInstance();
+        this._devicesLocalDataManager = DevicesLocalDataManagerST.getInstance();
 
         if (getArguments() == null)
             throw new IllegalArgumentException("Device detail fragment requires deviceId argument");
@@ -109,6 +116,10 @@ public class DeviceDetailFragment extends CustomFragment {
         this._root = inflater.inflate(R.layout.main_fragment_device_detail, container, false);
         this._waterLevelProgressBar = this._root.findViewById(R.id.water_level_progress_bar);
 
+        _deviceNameTextView = _root.findViewById(R.id.device_name_text);
+        _deviceDescriprionTextView = _root.findViewById(R.id.device_description_text);
+
+        this._setupDeviceInfo();
         this._setupCards(this._root);
         this._setupObservers();
         this._getSensorsData();
@@ -120,6 +131,11 @@ public class DeviceDetailFragment extends CustomFragment {
     public void onDestroyView() {
         super.onDestroyView();
         _sensorsDataRepository.removeNewSensorsDataHandler(sensorsDataHandlerName);
+    }
+
+    private void _setupDeviceInfo() {
+        _deviceNameTextView.setText(_devicesLocalDataManager.getDeviceName(this._device.getId()));
+        _deviceDescriprionTextView.setText(_devicesLocalDataManager.getDeviceDescription(this._device.getId()));
     }
 
     private ChartCustomFragment _getStateFragment(StatFragmentState state) {

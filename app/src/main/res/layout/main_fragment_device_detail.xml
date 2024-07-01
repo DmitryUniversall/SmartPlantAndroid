@@ -63,7 +63,7 @@
 
                     <!-- Name -->
                     <TextView
-                            android:id="@+id/deviceName"
+                            android:id="@+id/device_name_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="SmartPlant"
@@ -91,7 +91,7 @@
 
                     <!-- Description -->
                     <TextView
-                            android:id="@+id/deviceDescription"
+                            android:id="@+id/device_description_text"
                             android:layout_height="wrap_content"
                             android:layout_width="330dp"
                             android:text="Первое устройство SmartPlant"
@@ -321,18 +321,6 @@
                         android:progress="70"
                         android:layout_weight="0.8" />
             </LinearLayout>
-
-            <View
-                    android:layout_height="2dp"
-                    android:layout_width="match_parent"
-                    android:background="#BEBEBE"
-                    android:layout_marginBottom="20dp" />
-
-            <com.smartplant.smartplantandroid.main.ui.items.button.CustomButton
-                    android:id="@+id/advancedSettingsButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:text="@string/additional_settings" />
         </com.google.android.flexbox.FlexboxLayout>
     </LinearLayout>
 </ScrollView>
